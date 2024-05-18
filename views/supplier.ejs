@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinarBaru</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div style="background-color: aqua; padding: 20px;text-align: center;">
+        <span style="text-align: center;">SinarBaru</span>
+        <span style="float: right;">
+            <% if (!i_user) { %>
+                <button><a href="/login">Login</a></button>
+                <% } else { %>
+                    <button><a href="/logout">logout</a></button>
+                    <%} %>
+        </span>
+        <span style="float: right; padding-right: 10px;">
+            <%= i_user.Username %>
+        </span>
+    </div>
+    <div style="display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap;">
+        <div class="vertical-menu" style="-ms-flex: 20%; flex: 20%;">
+            <a href="/">Home</a>
+            <a href="/supplier" class="active">Data Supplier</a>
+            <a href="/product">Stok Barang</a>
+            <a href="">Laporan Kas</a>
+            <a href="">Prediksi Penjualan</a>
+            <a href="">Data Penjualan</a>
+            <a href="/purchase">Data Pembelian</a>
+            <a href="">Data Utang</a>
+            <a href="/operational">Data Operasional</a>
+        </div>
+        <div style="-ms-flex: 80%; flex: 80%;">
+            <div>
+                <span style="float: left; padding: 20px;">Supplier</span>
+                <button id="add" style="float: right; margin: 20px;">Tambah Supplier</button>
+            </div>
+
+            <!-- The form -->
+            <div class="form-popup" id="addForm">
+                <form action="" class="form-container">
+                    <h1>Supplier Baru</h1>
+
+                    <label for="nama"><b>Nama</b></label>
+                    <input type="text" name="nama" id="nama" required>
+
+                    <label for="nomor"><b>Nomor Telepon</b></label>
+                    <input type="text" name="nomor" id="nomor" required>
+
+                    <label for="alamat"><b>Alamat</b></label>
+                    <input type="text" name="alamat" id="alamat" required>
+
+                    <div style="display: flex;">
+                        <button type="submit" class="btn" style="flex: 45%;" id="simpan">Simpan</button>
+                        <span style="flex: 10%;"></span>
+                        <button type="button" class="btn cancel" style="flex: 45%;" onclick="closeForm()">Batal</button>
+                    </div>
+                </form>
+            </div>
+
+            <table style="width: 100%;">
+                <tr>
+                    <th style="width: 30%;">Nama</th>
+                    <th style="width: 20%;">No.Telepon</th>
+                    <th style="width: 30%;">Alamat</th>
+                    <th style="width: 20%;">Actions</th>
+                </tr>
+                <% for( let i=0; i < suppliers.length; i++ ) { %>
+                    <tr>
+                        <td>
+                            <%= suppliers[i].SupplierName %>
+                        </td>
+                        <td>
+                            <%= suppliers[i].PhoneNumber %>
+                        </td>
+                        <td>
+                            <%= suppliers[i].Address %>
+                        </td>
+                        <td>
+                            <div style="display: flex;">
+                                <button style="flex: 45%;" onclick= "edit('<%= suppliers[i].id %>','<%= suppliers[i].SupplierName %>', '<%= suppliers[i].PhoneNumber %>', '<%= suppliers[i].Address %>')">Edit</button>
+                                <span style="flex: 10%;"></span>
+                                <button id="del" style="flex: 45%;" onclick=<%='del(' +suppliers[i].id+')' %>
+                                    >Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
+            </table>
+
+            <!-- The form -->
+            <div class="form-popup" id="editForm">
+                <form action="" class="form-container">
+                    <h1>Edit Supplier</h1>
+                    <input type="text"  style="display: none;" id="Eid">
+
+                    <label for="nama"><b>Nama</b></label>
+                    <input type="text" name="nama" id="Enama">
+
+                    <label for="nomor"><b>Nomor Telepon</b></label>
+                    <input type="text" name="nomor" id="Enomor">
+
+                    <label for="alamat"><b>Alamat</b></label>
+                    <input type="text" name="alamat" id="Ealamat">
+
+                    <div style="display: flex;">
+                        <button type="submit" class="btn" style="flex: 45%;" id="edit">Simpan</button>
+                        <span style="flex: 10%;"></span>
+                        <button type="button" class="btn cancel" style="flex: 45%;"
+                            onclick="editCloseForm()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        let del = (id) => {
+            axios.delete('/api/supplier/' + id).then((result) => {
+                location.reload();
+            }).catch((err) => {
+                alert('error ' + err)
+            });
+        }
+    </script>
+    <script>
+        let edit = (id,nama, no, alamat) => {
+            document.getElementById("editForm").style.display = "block";
+            document.getElementById("Eid").value = id;
+            document.getElementById("Enama").value = nama;
+            document.getElementById("Enomor").value = no;
+            document.getElementById("Ealamat").value = alamat;
+        }
+    </script>
+    <script>
+        document.getElementById("add").onclick = () => {
+            document.getElementById("addForm").style.display = "block";
+        }
+
+        function closeForm() {
+            document.getElementById("addForm").style.display = "none";
+        }
+
+        function editCloseForm() {
+            document.getElementById("editForm").style.display = "none";
+        }
+    </script>
+    <script>
+        document.getElementById("simpan").onclick = () => {
+            let isi_nama = document.getElementById("nama").value;
+            let isi_no = document.getElementById("nomor").value;
+            let isi_alamat = document.getElementById("alamat").value;
+            axios({
+                method: 'post',
+                url: '/api/supplier',
+                data: {
+                    SupplierName: isi_nama,
+                    PhoneNumber: isi_no,
+                    Address: isi_alamat
+                }
+            }).then((result) => {
+                closeForm();
+            }).catch((err) => {
+                alert('error' + err);
+            });
+        }
+    </script>
+    <script>
+        document.getElementById("edit").onclick = () => {
+			axios({
+				method: 'put',
+				url: `/api/supplier/${document.getElementById('Eid').value}`,
+				data: {
+					SupplierName: document.getElementById('Enama').value,
+                    PhoneNumber: document.getElementById('Enomor').value,
+                    Address: document.getElementById('Ealamat').value,
+				}
+			}).then((results) => {
+				editCloseForm();
+			}).catch((err) => {
+				alert('Error : '+err);
+			});
+		}
+    </script>
+
+</body>
+
+</html>

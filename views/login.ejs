@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinarBaru</title>
+</head>
+
+<body>
+    <form action="/login" method="post" name="login">
+        <div>
+            <span>Username</span>
+            <input type="text" name="Username" placeholder="Username" autocomplete="off">
+        </div>
+        <div style="padding-top: 10px;">
+            <span>Password</span>
+            <input type="password" name="Password" placeholder="Password" autocomplete="off">
+        </div>
+
+        <% if (msg) { %>
+            <div>
+                <span style="color: red;">
+                    <%= msg %>
+                </span>
+            </div>
+        <% } %>
+
+        <div style="padding-top: 20px;"><button type="submit">Login</button></div>
+    </form>
+</body>
+
+</html>

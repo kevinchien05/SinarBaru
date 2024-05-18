@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinarBaru</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div style="background-color: aqua; padding: 20px;text-align: center;">
+        <span style="text-align: center;">SinarBaru</span>
+        <span style="float: right;">
+            <% if (!i_user) { %>
+                <button><a href="/login">Login</a></button>
+                <% } else { %>
+                    <button><a href="/logout">logout</a></button>
+                    <%} %>
+        </span>
+        <span style="float: right; padding-right: 10px;">
+            <%= i_user.Username %>
+        </span>
+    </div>
+    <div style="display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap;">
+        <div class="vertical-menu" style="-ms-flex: 20%; flex: 20%;">
+            <a href="/">Home</a>
+            <a href="/supplier">Data Supplier</a>
+            <a href="/product" class="active">Stok Barang</a>
+            <a href="">Laporan Kas</a>
+            <a href="">Prediksi Penjualan</a>
+            <a href="">Data Penjualan</a>
+            <a href="/purchase">Data Pembelian</a>
+            <a href="">Data Utang</a>
+            <a href="/operational">Data Operasional</a>
+        </div>
+        <div style="-ms-flex: 80%; flex: 80%;">
+            <div>
+                <span style="float: left; padding: 20px;">Stok Barang</span>
+                <button id="add" style="float: right; margin: 20px;" onclick="add('<%= counter %>')">Tambah
+                    Barang</button>
+            </div>
+
+            <!-- The form -->
+            <div class="form-popup" id="addForm">
+                <form action="" class="form-container">
+                    <h1>Barang Baru</h1>
+
+                    <label for="kode"><b>Kode Barang</b></label>
+                    <input type="text" name="kode" id="kode" disabled>
+
+                    <label for="nama"><b>Nama Barang</b></label>
+                    <input type="text" name="nama" id="nama" required>
+
+                    <label for="harga"><b>Harga</b></label>
+                    <input type="text" name="harga" id="harga" required>
+
+                    <div style="display: flex;">
+                        <button type="submit" class="btn" style="flex: 45%;" id="simpan">Simpan</button>
+                        <span style="flex: 10%;"></span>
+                        <button type="button" class="btn cancel" style="flex: 45%;" onclick="closeForm()">Batal</button>
+                    </div>
+                </form>
+            </div>
+
+            <table style="width: 100%;">
+                <tr>
+                    <th style="width: 10%;">Kode Barang</th>
+                    <th style="width: 20%;">Nama Barang</th>
+                    <th style="width: 20%;">Stok</th>
+                    <th style="width: 15%;">Harga Beli</th>
+                    <th style="width: 15%;">Harga Jual</th>
+                    <th style="width: 20%;">Actions</th>
+                </tr>
+                <% for( let i=0; i < products.length; i++ ) { %>
+                    <tr>
+                        <td>
+                            <%= products[i].ProductCode %>
+                        </td>
+                        <td>
+                            <%= products[i].ProductName %>
+                        </td>
+                        <td>
+                            <%= products[i].Qnt || "-" %>
+                        </td>
+                        <td>
+                            <%= formatRupiah(products[i].BuyPrice || "0" ) %>
+                        </td>
+                        <td>
+                            <%= formatRupiah(products[i].SellPrice) %>
+                        </td>
+                        <td>
+                            <div style="display: flex;">
+                                <button style="flex: 45%;"
+                                    onclick="edit('<%= products[i].ProductCode %>','<%= products[i].ProductName %>', '<%= products[i].SellPrice %>')">Edit</button>
+                                <span style="flex: 10%;"></span>
+                                <button id="del" style="flex: 45%;"
+                                    onclick="del('<%= products[i].ProductCode %>')">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
+            </table>
+
+            <!-- The form -->
+            <div class="form-popup" id="editForm">
+                <form action="" class="form-container">
+                    <h1>Edit Barang</h1>
+
+                    <label for="kode"><b>Kode Barang</b></label>
+                    <input type="text" name="kode" id="Ekode" disabled>
+
+                    <label for="nama"><b>Nama Barang</b></label>
+                    <input type="text" name="nama" id="Enama">
+
+                    <label for="harga"><b>Harga</b></label>
+                    <input type="text" name="harga" id="Eharga">
+
+                    <div style="display: flex;">
+                        <button type="submit" class="btn" style="flex: 45%;" id="edit">Simpan</button>
+                        <span style="flex: 10%;"></span>
+                        <button type="button" class="btn cancel" style="flex: 45%;"
+                            onclick="editCloseForm()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <% function formatRupiah(angka) { 
+        let reverse=angka.toString().split('').reverse().join(''); 
+        let ribuan=reverse.match(/\d{1,3}/g); 
+        let formatted=ribuan.join('.').split('').reverse().join(''); return 'Rp ' +formatted; } %>
+
+
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+            function generateNumber(counterTmp) {
+                let tmp = parseInt(counterTmp);
+                tmp++;
+                const formattedCounter = tmp.toString().padStart(3, '0');
+                const result = `BRG${formattedCounter}`;
+                return result;
+            }
+        </script>
+        <script>
+            function formatRupiahInput(input) {
+                // Menghapus karakter selain angka
+                let value = input.value.replace(/\D/g, '');
+
+                // Format sebagai Rupiah
+                let formattedValue = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR'
+                }).format(value);
+
+                // Tampilkan nilai yang telah diformat
+                input.value = formattedValue;
+            }
+        </script>
+        <script>
+            let add = (counter) => {
+                document.getElementById("addForm").style.display = "block";
+                document.getElementById("kode").value = generateNumber(counter);
+            }
+        </script>
+        <script>
+            let del = (id) => {
+                axios.delete('/api/stok/' + id).then((result) => {
+                    location.reload();
+                }).catch((err) => {
+                    alert('error ' + err)
+                });
+            }
+        </script>
+        <script>
+            let edit = (kode, nama, harga) => {
+                document.getElementById("editForm").style.display = "block";
+                document.getElementById("Ekode").value = kode;
+                document.getElementById("Enama").value = nama;
+                document.getElementById("Eharga").value = harga;
+            }
+        </script>
+        <script>
+            function closeForm() {
+                document.getElementById("addForm").style.display = "none";
+                document.getElementById("kode").value = "";
+                document.getElementById("nama").value = "";
+                document.getElementById("harga").value = "";
+            }
+
+            function editCloseForm() {
+                document.getElementById("editForm").style.display = "none";
+                location.reload();
+            }
+        </script>
+        <script>
+            document.getElementById("simpan").onclick = () => {
+                let isi_kode = document.getElementById("kode").value;
+                let isi_nama = document.getElementById("nama").value;
+                let isi_harga = document.getElementById("harga").value;
+                axios({
+                    method: 'post',
+                    url: '/api/stok',
+                    data: {
+                        ProductCode: isi_kode,
+                        ProductName: isi_nama,
+                        SellPrice: isi_harga,
+                        Qnt: 0,
+                        BuyPrice: "0"
+                    }
+                }).then((result) => {
+                    location.reload();
+                    closeForm();
+                }).catch((err) => {
+                    alert('error' + err);
+                });
+            }
+        </script>
+        <script>
+            document.getElementById("edit").onclick = () => {
+                axios({
+                    method: 'put',
+                    url: `/api/stok/${document.getElementById('Ekode').value}`,
+                    data: {
+                        ProductName: document.getElementById('Enama').value,
+                        SellPrice: document.getElementById('Eharga').value,
+                    }
+                }).then((results) => {
+                    editCloseForm();
+                }).catch((err) => {
+                    alert('Error : ' + err);
+                });
+            }
+        </script>
+
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinarBaru</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div style="background-color: aqua; padding: 20px;text-align: center;">
+        <span style="text-align: center;">SinarBaru</span>
+        <span style="float: right;">
+            <% if (!i_user) { %>
+                <button><a href="/login">Login</a></button>
+                <% } else { %>
+                    <button><a href="/logout">logout</a></button>
+                    <%} %>
+        </span>
+        <span style="float: right; padding-right: 10px;">
+            <%= i_user.Username %>
+        </span>
+    </div>
+    <div class="vertical-menu">
+        <a href="/" class="active">Home</a>
+        <a href="/supplier">Data Supplier</a>
+        <a href="/product">Stok Barang</a>
+        <a href="">Laporan Kas</a>
+        <a href="">Prediksi Penjualan</a>
+        <a href="">Data Penjualan</a>
+        <a href="/purchase">Data Pembelian</a>
+        <a href="">Data Utang</a>
+        <a href="/operational">Data Operasional</a>
+    </div>
+</body>
+
+</html>

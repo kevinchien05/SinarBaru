@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinarBaru</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div style="background-color: aqua; padding: 20px;text-align: center;">
+        <span style="text-align: center;">SinarBaru</span>
+        <span style="float: right;">
+            <% if (!i_user) { %>
+                <button><a href="/login">Login</a></button>
+                <% } else { %>
+                    <button><a href="/logout">logout</a></button>
+                    <%} %>
+        </span>
+        <span style="float: right; padding-right: 10px;">
+            <%= i_user.Username %>
+        </span>
+    </div>
+    <div style="display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap;">
+        <div class="vertical-menu" style="-ms-flex: 20%; flex: 20%;">
+            <a href="/">Home</a>
+            <a href="/supplier">Data Supplier</a>
+            <a href="/product">Stok Barang</a>
+            <a href="">Laporan Kas</a>
+            <a href="">Prediksi Penjualan</a>
+            <a href="">Data Penjualan</a>
+            <a href="/purchases" class="active">Data Pembelian</a>
+            <a href="">Data Utang</a>
+            <a href="/operational">Data Operasional</a>
+        </div>
+        <div style="-ms-flex: 80%; flex: 80%;">
+            <div>
+                <span style="float: left; padding: 20px;">Pembelian</span>
+                <button id="add" style="float: right; margin: 20px;" onclick="add('<%= counter %>')">Tambah
+                    Pembelian</button>
+            </div>
+
+            <!-- The form -->
+            <div class="form-popup" id="addForm">
+                <form action="" class="form-container">
+                    <h1>Pembelian Baru</h1>
+
+                    <input type="text" id="kode" hidden>
+
+                    <label for="supplier"><b>Supplier</b></label>
+                    <select name="supplier" id="supplier">
+                        <% for( let i=0; i < suppliers.length; i++ ) { %>
+                            <option value="<%= suppliers[i].id %>">
+                                <%= suppliers[i].SupplierName %>
+                            </option>
+                            <% } %>
+                    </select>
+
+                    <p></p>
+                    <label for="tanggal"><b>Tanggal Pemesanan</b></label>
+                    <input type="date" name="tanggal" id="tanggal" required>
+
+                    <p></p>
+                    <div id="resultContainer">
+                        <table id="resultTable">
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Kuantitas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Hasil akan dimasukkan di sini -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <p></p>
+                    <label for="produk"><b>Produk</b></label>
+                    <button type="button" id="additem">+</button>
+                    <p id="result"></p>
+
+                    <p></p>
+
+                    <p id="totalSemua"></p>
+
+                    <label for="bayar"><b>Pembayaran</b></label>
+                    <select name="bayar" id="bayar">
+                        <option value="0">Cash</option>
+                        <option value="1">Utang</option>
+                    </select>
+
+                    <div style="display: flex;">
+                        <button type="submit" class="btn" style="flex: 45%;" id="simpan"
+                            onclick="save()">Simpan</button>
+                        <span style="flex: 10%;"></span>
+                        <button type="button" class="btn cancel" style="flex: 45%;" onclick="closeForm()">Batal</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- The form -->
+            <div class="form-popup" id="addItemForm">
+                <form action="" class="form-container">
+                    <h1>Produk</h1>
+
+                    <% for( let i=0; i < products.length; i++ ) { %>
+                        <label for=<%=products[i].ProductCode %>>
+                            <input type="checkbox" id="<%= products[i].ProductCode %>" name="options"
+                                value="<%= products[i].ProductCode %>">
+                            <span>
+                                <%= products[i].ProductCode %>
+                            </span>
+                            <span class="productName">
+                                <%= products[i].ProductName %>
+                            </span>
+                            <span class="productQnt">
+                                <%= products[i].Qnt %>
+                            </span>
+                            <span class="productPrice" hidden>
+                                <%= products[i].BuyPrice %>
+                            </span>
+                            <span>Rp <input type="text" id="Harga_<%= products[i].ProductCode %>"
+                                    name="Harga_<%= products[i].ProductCode %>"></span>
+                            <span><input type="text" id="jumlah_<%= products[i].ProductCode %>"
+                                    name="jumlah_<%= products[i].ProductCode %>"></span>
+                        </label>
+                        <% } %>
+
+                            <div style="display: flex;">
+                                <button type="button" class="btn" style="flex: 45%;" id="simpan"
+                                    onclick="getCheckedValues()">Simpan</button>
+                                <span style="flex: 10%;"></span>
+                                <button type="button" class="btn cancel" style="flex: 45%;"
+                                    onclick="closeItemForm()">Batal</button>
+                            </div>
+                </form>
+            </div>
+
+            <table style="width: 100%;">
+                <tr>
+                    <th style="width: 15%;">Supplier</th>
+                    <th style="width: 15%;">Tanggal Pesanan</th>
+                    <th style="width: 20%;">Produk</th>
+                    <th style="width: 15%;">Kuantitas</th>
+                    <th style="width: 20%;">Harga Total</th>
+                    <th style="width: 15%;">Actions</th>
+                </tr>
+                <% for( let i=0; i < purchases.length; i++ ) { %>
+                    <tr>
+                        <td>
+                            <%= purchases[i].supplier.SupplierName %>
+                        </td>
+                        <td>
+                            <%= formatDate(purchases[i].OrderDate) %>
+                        </td>
+                        <td>
+                            <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
+                                <p>
+                                    <%= purchases[i].purchaseproducts[j].product.ProductName %>
+                                </p>
+                                <% } %>
+                        </td>
+                        <td>
+                            <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
+                                <p>
+                                    <%= purchases[i].purchaseproducts[j].Qnt %>
+                                </p>
+                                <% } %>
+                        </td>
+                        <td>
+                            <%= formatRupiah(purchases[i].Total) %>
+                        </td>
+                        <td>
+                            <div style="display: flex;">
+                                <button style="flex: 45%;"
+                                    onclick="edit('<%= purchases[i].id %>','<%= purchases[i].Date %>', '<%= purchases[i].Description %>', '<%= purchases[i].Total %>', '<%= purchases[i].Status %>')">Edit</button>
+                                <span style="flex: 10%;"></span>
+                                <button id="del" style="flex: 45%;"
+                                    data-purchaseproducts="<%= JSON.stringify(purchases[i].purchaseproducts) %>"
+                                    onclick="del('<%= purchases[i].id %>', this.dataset.purchaseproducts)">Delete</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <% } %>
+            </table>
+
+            <!-- The form -->
+            <div class="form-popup" id="editForm">
+                <form action="" class="form-container">
+                    <h1>Edit Biaya Operasional</h1>
+                    <input type="text" id="Eid" hidden>
+
+                    <label for="tanggal"><b>Tanggal</b></label>
+                    <input type="date" name="tanggal" id="Etanggal" required>
+
+                    <p></p>
+                    <label for="deskripsi"><b>Description</b></label>
+                    <input type="text" name="deskripsi" id="Edeskripsi" required>
+
+                    <label for="biaya"><b>Biaya</b></label>
+                    <input type="text" name="biaya" id="Ebiaya" required>
+
+                    <label for="biaya"><b>Status</b></label>
+                    <select name="status" id="Estatus">
+                        <option value="0">Masuk</option>
+                        <option value="1">Keluar</option>
+                    </select>
+
+                    <div style="display: flex;">
+                        <button type="submit" class="btn" style="flex: 45%;" id="edit"
+                            onclick="save('<%= i_user.id %>')">Simpan</button>
+                        <span style="flex: 10%;"></span>
+                        <button type="button" class="btn cancel" style="flex: 45%;" onclick="closeForm()">Batal</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <% function formatDate(dateString) { const date=new Date(dateString); const
+        day=String(date.getDate()).padStart(2, '0' ); const month=String(date.getMonth() + 1).padStart(2, '0' ); const
+        year=date.getFullYear(); return `${day}-${month}-${year}`; } %>
+
+        <% function formatRupiah(angka) { let reverse=angka.toString().split('').reverse().join(''); let
+            ribuan=reverse.match(/\d{1,3}/g); let formatted=ribuan.join('.').split('').reverse().join(''); return 'Rp '
+            +formatted; } %>
+
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+            <script>
+                const products = JSON.parse('<%- JSON.stringify(products)%> ');
+                let del = (id, purchaseJson) => {
+                    let qnt = 0;
+                    let price = 0;
+                    const purchase = JSON.parse(purchaseJson);
+                    purchase.forEach((tmp) => {
+                        products.forEach((pro) => {
+                            if (pro.ProductCode == tmp.ProductCode) {
+                                qnt = pro.Qnt - tmp.Qnt;
+                                let tmpPrice = pro.Qnt * pro.BuyPrice;
+                                price = (tmpPrice - tmp.Total) / qnt
+                                axios({
+                                    method: 'put',
+                                    url: `/api/purchase-product/${tmp.ProductCode}`,
+                                    data: {
+                                        ProductQnt: qnt,
+                                        BuyPrice: price,
+                                    }
+                                }).then(() => {
+                                    axios.delete('/api/purchase-purchaseproducts/' + id).then((result) => {
+                                        axios.delete('/api/purchase-purchases/' + id).then((result) => {
+                                            location.reload();
+                                        }).catch((err) => {
+                                            alert('error ' + err)
+                                        });
+                                        location.reload();
+                                    }).catch((err) => {
+                                        alert('error ' + err)
+                                    });
+                                }).catch((err) => {
+                                    alert('Error : ' + err);
+                                });
+                                console.log(qnt, price);
+                            }
+                        })
+                    });
+
+                }
+            </script>
+            <script>
+                function generateNumber(counterTmp) {
+                    let tmp = parseInt(counterTmp);
+                    tmp++;
+                    return tmp;
+                }
+            </script>
+            <script>
+                let add = (counter) => {
+                    document.getElementById("addForm").style.display = "block";
+                    document.getElementById("kode").value = generateNumber(counter);
+                }
+            </script>
+            <script>
+                let edit = (id, tanggal, deskripsi, biaya, status) => {
+                    document.getElementById("editForm").style.display = "block";
+                    document.getElementById("Eid").value = id;
+                    document.getElementById("Etanggal").value = tanggal;
+                    document.getElementById("Edeskripsi").value = deskripsi;
+                    document.getElementById("Ebiaya").value = biaya;
+                    document.getElementById("Estatus").value = status;
+                }
+            </script>
+            <script>
+                document.getElementById("additem").onclick = () => {
+                    document.getElementById("addForm").style.display = "block";
+                    document.getElementById("addItemForm").style.display = "block";
+                }
+
+                function closeItemForm() {
+                    document.getElementById("addItemForm").style.display = "none";
+                }
+
+                function closeForm() {
+                    document.getElementById("addForm").style.display = "none";
+                }
+
+                function editCloseForm() {
+                    document.getElementById("editForm").style.display = "none";
+                }
+            </script>
+            <script>
+                function formatRupiah(angka) {
+                    let reverse = angka.toString().split('').reverse().join(''); let
+                        ribuan = reverse.match(/\d{1,3}/g); let formatted = ribuan.join('.').split('').reverse().join(''); return 'Rp '
+                            + formatted;
+                }
+                let results = [];
+                function getCheckedValues() {
+                    const checkboxes = document.querySelectorAll('input[name="options"]:checked');
+                    const resultTableBody = document.getElementById('resultTable').querySelector('tbody');
+                    resultTableBody.innerHTML = ''; // Mengosongkan hasil sebelumnya
+                    let totalSemua = 0;
+                    results = [];
+
+                    checkboxes.forEach((checkbox) => {
+                        const productCode = checkbox.value;
+                        const productName = checkbox.parentElement.querySelector('.productName').innerText;
+                        const productQnt = checkbox.parentElement.querySelector('.productQnt').innerText;
+                        const productPrice = checkbox.parentElement.querySelector('.productPrice').innerText;
+                        const harga = document.getElementById('Harga_' + productCode).value;
+                        const jumlah = document.getElementById('jumlah_' + productCode).value;
+                        const total = harga * jumlah
+
+                        results.push({
+                            ProductCode: productCode,
+                            ProductName: productName,
+                            ProductQnt: productQnt,
+                            ProductPrice: productPrice,
+                            Harga: harga,
+                            Jumlah: jumlah,
+                            Total: total
+                        });
+
+                        // Membuat baris baru untuk tabel
+                        const row = document.createElement('tr');
+                        const cellProductName = document.createElement('td');
+                        const cellProductQnt = document.createElement('td');
+
+                        cellProductName.innerText = productName;
+                        cellProductQnt.innerText = jumlah;
+
+                        row.appendChild(cellProductName);
+                        row.appendChild(cellProductQnt);
+
+                        resultTableBody.appendChild(row);
+                        document.getElementById("addItemForm").style.display = "none";
+                        totalSemua += total;
+                        document.getElementById("totalSemua").innerHTML = formatRupiah(totalSemua);
+                    });
+                }
+            </script>
+            <script>
+                let save2 = () => {
+                    results.forEach((tmp) => {
+                        let start = tmp.ProductQnt * tmp.ProductPrice;
+                        let stokAkhir = parseInt(tmp.ProductQnt) + parseInt(tmp.Jumlah);
+                        let avgPrice = (start + parseInt(tmp.Total)) / stokAkhir;
+                        console.log(start, stokAkhir, avgPrice);
+                    });
+                }
+                let save = () => {
+                    let isi_id = document.getElementById("kode").value;
+                    let isi_supplier = document.getElementById("supplier").value;
+                    let isi_date = document.getElementById("tanggal").value;
+                    let isi_total = document.getElementById("totalSemua").innerText;
+                    let isi_status = document.getElementById("bayar").value;
+                    axios({
+                        method: 'post',
+                        url: '/api/purchase-purchases',
+                        data: {
+                            id: isi_id,
+                            OrderDate: isi_date,
+                            Total: isi_total,
+                            Status: isi_status,
+                            SupplierID: isi_supplier
+                        }
+                    }).then(() => {
+                        results.forEach((tmp) => {
+                            axios({
+                                method: 'post',
+                                url: '/api/purchase-purchaseproducts',
+                                data: {
+                                    Qnt: tmp.Jumlah,
+                                    Price: tmp.Harga,
+                                    ProductTotal: tmp.Total,
+                                    PurchasesID: isi_id,
+                                    ProductCode: tmp.ProductCode
+                                }
+                            }).then(() => {
+                                let start = tmp.ProductQnt * tmp.ProductPrice;
+                                let stokAkhir = parseInt(tmp.ProductQnt) + parseInt(tmp.Jumlah);
+                                let avgPrice = (start + parseInt(tmp.Total)) / stokAkhir;
+                                axios({
+                                    method: 'put',
+                                    url: `/api/purchase-product/${tmp.ProductCode}`,
+                                    data: {
+                                        ProductQnt: stokAkhir,
+                                        BuyPrice: avgPrice,
+                                    }
+                                }).then(() => {
+                                    location.reload();
+                                    closeForm();
+                                }).catch((err) => {
+                                    alert('Error : ' + err);
+                                });
+                            }).catch((err) => {
+                                alert('error' + err);
+                            });
+                        });
+                        location.reload();
+                    }).catch((err) => {
+                        alert('error' + err);
+                    });
+
+                }
+            </script>
+            <script>
+                document.getElementById("edit").onclick = () => {
+                    axios({
+                        method: 'put',
+                        url: `/api/operational/${document.getElementById('Eid').value}`,
+                        data: {
+                            Date: document.getElementById('Etanggal').value,
+                            Description: document.getElementById('Edeskripsi').value,
+                            Total: document.getElementById('Ebiaya').value,
+                            Status: document.getElementById('Estatus').value
+                        }
+                    }).then((results) => {
+                        editCloseForm();
+                    }).catch((err) => {
+                        alert('Error : ' + err);
+                    });
+                }
+            </script>
+            <script>
+                // JavaScript untuk mengatur nilai default
+                document.addEventListener('DOMContentLoaded', function () {
+                    const dateInput = document.getElementById('tanggal');
+                    const today = new Date();
+
+                    // Format tanggal menjadi YYYY-MM-DD
+                    const year = today.getFullYear();
+                    const month = String(today.getMonth() + 1).padStart(2, '0'); // bulan dimulai dari 0
+                    const day = String(today.getDate()).padStart(2, '0');
+
+                    const formattedDate = `${year}-${month}-${day}`;
+
+                    // Set nilai default input tanggal
+                    dateInput.value = formattedDate;
+                });
+            </script>
+
+</body>
+
+</html>
