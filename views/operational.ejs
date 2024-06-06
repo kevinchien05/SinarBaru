@@ -27,23 +27,28 @@
             <a href="/">Home</a>
             <a href="/supplier">Data Supplier</a>
             <a href="/product">Stok Barang</a>
-            <a href="">Laporan Kas</a>
-            <a href="">Prediksi Penjualan</a>
-            <a href="">Data Penjualan</a>
+            <a href="/kas">Laporan Kas</a>
+            <a href="/prediksi">Prediksi Penjualan</a>
+            <a href="/sale">Data Penjualan</a>
             <a href="/purchase">Data Pembelian</a>
-            <a href="">Data Utang</a>
+            <a href="/retur">Retur Pembelian</a>
+            <a href="/debt">Data Utang</a>
             <a href="/operational" class="active">Data Operasional</a>
         </div>
         <div style="-ms-flex: 80%; flex: 80%;">
             <div>
                 <span style="float: left; padding: 20px;">Biaya Operasional</span>
-                <button id="add" style="float: right; margin: 20px;">Tambah Biaya operational</button>
+                <button id="addDana" style="float: right; margin: 20px;" onclick="addDana('<%= counter %>')">Tambah
+                    Dana</button>
+                <button id="add" style="float: right; margin: 20px;" onclick="add('<%= counter %>')">Tambah Biaya operational</button>
             </div>
 
             <!-- The form -->
             <div class="form-popup" id="addForm">
                 <form action="" class="form-container">
                     <h1>Biaya Operasional Baru</h1>
+
+                    <input type="text" name="kode" id="kode" hidden>
 
                     <label for="tanggal"><b>Tanggal</b></label>
                     <input type="date" name="tanggal" id="tanggal" required>
@@ -59,12 +64,46 @@
                     <select name="status" id="status">
                         <option value="0">Masuk</option>
                         <option value="1">Keluar</option>
-                    </select>                    
+                    </select>
 
                     <div style="display: flex;">
-                        <button type="submit" class="btn" style="flex: 45%;" id="simpan" onclick="save('<%= i_user.id %>')">Simpan</button>
+                        <button type="submit" class="btn" style="flex: 45%;" id="simpan"
+                            onclick="save('<%= i_user.id %>')">Simpan</button>
                         <span style="flex: 10%;"></span>
                         <button type="button" class="btn cancel" style="flex: 45%;" onclick="closeForm()">Batal</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- The form -->
+            <div class="form-popup" id="danaForm">
+                <form action="" class="form-container">
+                    <h1>Dana</h1>
+
+                    <input type="text" name="Dkode" id="Dkode" hidden>
+
+                    <label for="tanggal"><b>Tanggal</b></label>
+                    <input type="date" name="tanggal" id="Dtanggal" required>
+
+                    <p></p>
+                    <label for="deskripsi"><b>Description</b></label>
+                    <input type="text" name="deskripsi" id="Ddeskripsi" required>
+
+                    <label for="biaya"><b>Biaya</b></label>
+                    <input type="text" name="biaya" id="Dbiaya" required>
+
+                    <label for="status"><b>Status</b></label>
+                    <select name="status" id="Dstatus">
+                        <option value="2">Masuk</option>
+                        <option value="3">Keluar</option>
+                    </select>
+
+                    <div style="display: flex;">
+                        <button type="submit" class="btn" style="flex: 45%;" id="simpan"
+                            onclick="saveDana('<%= i_user.id %>')">Simpan</button>
+                        <span style="flex: 10%;"></span>
+                        <button type="button" class="btn cancel" style="flex: 45%;"
+                            onclick="closeDanaForm()">Batal</button>
                     </div>
                 </form>
             </div>
@@ -80,7 +119,7 @@
                 <% for( let i=0; i < operationals.length; i++ ) { %>
                     <tr>
                         <td>
-                            <%= formatDate(operationals[i].Date)  %>
+                            <%= formatDate(operationals[i].Date) %>
                         </td>
                         <td>
                             <%= operationals[i].Description %>
@@ -89,7 +128,7 @@
                             <%= formatRupiah(operationals[i].Total) %>
                         </td>
                         <td>
-                            <% if (operationals[i].Status==0) { %>
+                            <% if (operationals[i].Status== 0 || operationals[i].Status == 2) { %>
                                 Masuk
                                 <% } else { %>
                                     Keluar
@@ -128,122 +167,184 @@
                     <select name="status" id="Estatus">
                         <option value="0">Masuk</option>
                         <option value="1">Keluar</option>
-                    </select>                    
+                    </select>
 
                     <div style="display: flex;">
-                        <button type="submit" class="btn" style="flex: 45%;" id="edit" onclick="save('<%= i_user.id %>')">Simpan</button>
+                        <button type="submit" class="btn" style="flex: 45%;" id="edit">Simpan</button>
                         <span style="flex: 10%;"></span>
-                        <button type="button" class="btn cancel" style="flex: 45%;" onclick="closeForm()">Batal</button>
+                        <button type="button" class="btn cancel" style="flex: 45%;"
+                            onclick="editCloseForm()">Batal</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <% function formatDate(dateString) {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${day}-${month}-${year}`;
-      } %>
+    <% function formatDate(dateString) { const date=new Date(dateString); const
+        day=String(date.getDate()).padStart(2, '0' ); const month=String(date.getMonth() + 1).padStart(2, '0' ); const
+        year=date.getFullYear(); return `${day}-${month}-${year}`; } %>
 
-    <% function formatRupiah(angka) { 
-        let reverse=angka.toString().split('').reverse().join(''); 
-        let ribuan=reverse.match(/\d{1,3}/g); 
-        let formatted=ribuan.join('.').split('').reverse().join(''); return 'Rp ' +formatted; } %>
+        <% function formatRupiah(angka) { let reverse=angka.toString().split('').reverse().join(''); let
+            ribuan=reverse.match(/\d{1,3}/g); let formatted=ribuan.join('.').split('').reverse().join(''); return 'Rp '
+            +formatted; } %>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-        let del = (id) => {
-            axios.delete('/api/operational/' + id).then((result) => {
-                location.reload();
-            }).catch((err) => {
-                alert('error ' + err)
-            });
-        }
-    </script>
-    <script>
-        let edit = (id, tanggal, deskripsi, biaya, status) => {
-            document.getElementById("editForm").style.display = "block";
-            document.getElementById("Eid").value = id;
-            document.getElementById("Etanggal").value = tanggal;
-            document.getElementById("Edeskripsi").value = deskripsi;
-            document.getElementById("Ebiaya").value = biaya;
-            document.getElementById("Estatus").value = status;
-        }
-    </script>
-    <script>
-        document.getElementById("add").onclick = () => {
-            document.getElementById("addForm").style.display = "block";
-        }
-
-        function closeForm() {
-            document.getElementById("addForm").style.display = "none";
-        }
-
-        function editCloseForm() {
-            document.getElementById("editForm").style.display = "none";
-        }
-    </script>
-    <script>
-        let save = (id) => {
-            let isi_tanggal = document.getElementById("tanggal").value;
-            let isi_deskripsi = document.getElementById("deskripsi").value;
-            let isi_biaya = document.getElementById("biaya").value;
-            let isi_status = document.getElementById("status").value;
-            axios({
-                method: 'post',
-                url: '/api/operational',
-                data: {
-                    Date: isi_tanggal,
-                    Description: isi_deskripsi,
-                    Total: isi_biaya,
-                    Status: isi_status,
-                    UserID: id
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+            <script>
+                function generateNumber(counterTmp) {
+                    let tmp = parseInt(counterTmp);
+                    tmp++;
+                    const formattedCounter = tmp.toString().padStart('0');
+                    const result = `${formattedCounter}`;
+                    return result;
                 }
-            }).then((result) => {
-                closeForm();
-            }).catch((err) => {
-                alert('error' + err);
-            });
-        }
-    </script>
-    <script>
-        document.getElementById("edit").onclick = () => {
-            axios({
-                method: 'put',
-                url: `/api/operational/${document.getElementById('Eid').value}`,
-                data: {
-                    Date: document.getElementById('Etanggal').value,
-                    Description: document.getElementById('Edeskripsi').value,
-                    Total: document.getElementById('Ebiaya').value,
-                    Status: document.getElementById('Estatus').value
+            </script>
+            <script>
+                let del = (id) => {
+                    axios.delete('/api/operational/' + id).then((result) => {
+                        location.reload();
+                    }).catch((err) => {
+                        alert('error ' + err)
+                    });
                 }
-            }).then((results) => {
-                editCloseForm();
-            }).catch((err) => {
-                alert('Error : ' + err);
-            });
-        }
-    </script>
-    <script>
-        // JavaScript untuk mengatur nilai default
-        document.addEventListener('DOMContentLoaded', function() {
-          const dateInput = document.getElementById('tanggal');
-          const today = new Date();
-          
-          // Format tanggal menjadi YYYY-MM-DD
-          const year = today.getFullYear();
-          const month = String(today.getMonth() + 1).padStart(2, '0'); // bulan dimulai dari 0
-          const day = String(today.getDate()).padStart(2, '0');
-          
-          const formattedDate = `${year}-${month}-${day}`;
-          
-          // Set nilai default input tanggal
-          dateInput.value = formattedDate;
-        });
-      </script>
+            </script>
+            <script>
+                let edit = (id, tanggal, deskripsi, biaya, status) => {
+                    document.getElementById("editForm").style.display = "block";
+                    document.getElementById("Eid").value = id;
+                    document.getElementById("Etanggal").value = tanggal;
+                    document.getElementById("Edeskripsi").value = deskripsi;
+                    document.getElementById("Ebiaya").value = biaya;
+                    document.getElementById("Estatus").value = status;
+                }
+            </script>
+            <script>
+                function closeForm() {
+                    document.getElementById("addForm").style.display = "none";
+                }
+
+                function closeDanaForm() {
+                    document.getElementById("danaForm").style.display = "none";
+                }
+
+                function editCloseForm() {
+                    document.getElementById("editForm").style.display = "none";
+                }
+            </script>
+            <script>
+                let add = (counter) => {
+                    document.getElementById("addForm").style.display = "block";
+                    document.getElementById("kode").value = generateNumber(counter);
+                }
+            </script>
+            <script>
+                let addDana = (counter) => {
+                    document.getElementById("danaForm").style.display = "block";
+                    document.getElementById("Dkode").value = generateNumber(counter);
+                }
+            </script>
+            <script>
+                let save = (id) => {
+                    let kode = document.getElementById("kode").value;
+                    let isi_tanggal = document.getElementById("tanggal").value;
+                    let isi_deskripsi = document.getElementById("deskripsi").value;
+                    let isi_biaya = document.getElementById("biaya").value;
+                    let isi_status = document.getElementById("status").value;
+                    axios({
+                        method: 'post',
+                        url: '/api/operational',
+                        data: {
+                            id: kode,
+                            Date: isi_tanggal,
+                            Description: isi_deskripsi,
+                            Total: isi_biaya,
+                            Status: isi_status,
+                            UserID: id
+                        }
+                    }).then((result) => {
+                        location.reload();
+                        closeForm();
+                    }).catch((err) => {
+                        alert('error' + err);
+                    });
+                }
+            </script>
+            <script>
+                let saveDana = (id) => {
+                    let kode = document.getElementById("kode").value;
+                    let isi_tanggal = document.getElementById("Dtanggal").value;
+                    let isi_deskripsi = document.getElementById("Ddeskripsi").value;
+                    let isi_biaya = document.getElementById("Dbiaya").value;
+                    let isi_status = document.getElementById("Dstatus").value;
+                    axios({
+                        method: 'post',
+                        url: '/api/operational',
+                        data: {
+                            id: kode,
+                            Date: isi_tanggal,
+                            Description: isi_deskripsi,
+                            Total: isi_biaya,
+                            Status: isi_status,
+                            UserID: id
+                        }
+                    }).then(() => {
+                        axios({
+                            method: 'post',
+                            url: '/api/fund',
+                            data: {
+                                Date: isi_tanggal,
+                                Total: isi_biaya,
+                                Status: isi_status,
+                                OperationalID: kode
+                            }
+                        }).then(() => {
+                            closeForm();
+                        }).catch((err) => {
+                            alert('error' + err);
+                        });
+                        location.reload();
+                        closeForm();
+                    }).catch((err) => {
+                        alert('error' + err);
+                    });
+                }
+            </script>
+            <script>
+                document.getElementById("edit").onclick = () => {
+                    axios({
+                        method: 'put',
+                        url: `/api/operational/${document.getElementById('Eid').value}`,
+                        data: {
+                            Date: document.getElementById('Etanggal').value,
+                            Description: document.getElementById('Edeskripsi').value,
+                            Total: document.getElementById('Ebiaya').value,
+                            Status: document.getElementById('Estatus').value
+                        }
+                    }).then((results) => {
+                        editCloseForm();
+                    }).catch((err) => {
+                        alert('Error : ' + err);
+                    });
+                }
+            </script>
+            <script>
+                // JavaScript untuk mengatur nilai default
+                document.addEventListener('DOMContentLoaded', function () {
+                    const dateInput = document.getElementById('tanggal');
+                    const dateDanaInput = document.getElementById('Dtanggal');
+                    const today = new Date();
+
+                    // Format tanggal menjadi YYYY-MM-DD
+                    const year = today.getFullYear();
+                    const month = String(today.getMonth() + 1).padStart(2, '0'); // bulan dimulai dari 0
+                    const day = String(today.getDate()).padStart(2, '0');
+
+                    const formattedDate = `${year}-${month}-${day}`;
+
+                    // Set nilai default input tanggal
+                    dateInput.value = formattedDate;
+                    dateDanaInput.value = formattedDate;
+                });
+            </script>
 
 </body>
 

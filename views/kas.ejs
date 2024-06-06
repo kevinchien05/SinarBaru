@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinarBaru</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div style="background-color: aqua; padding: 20px;text-align: center;">
+        <span style="text-align: center;">SinarBaru</span>
+        <span style="float: right;">
+            <% if (!i_user) { %>
+                <button><a href="/login">Login</a></button>
+                <% } else { %>
+                    <button><a href="/logout">logout</a></button>
+                    <%} %>
+        </span>
+        <span style="float: right; padding-right: 10px;">
+            <%= i_user.Username %>
+        </span>
+    </div>
+    <div style="display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap;">
+        <div class="vertical-menu" style="-ms-flex: 20%; flex: 20%;">
+            <a href="/">Home</a>
+            <a href="/supplier">Data Supplier</a>
+            <a href="/product">Stok Barang</a>
+            <a href="/kas" class="active">Laporan Kas</a>
+            <a href="/prediksi">Prediksi Penjualan</a>
+            <a href="/sale">Data Penjualan</a>
+            <a href="/purchase">Data Pembelian</a>
+            <a href="/retur">Retur Pembelian</a>
+            <a href="/debt">Data Utang</a>
+            <a href="/operational">Data Operasional</a>
+        </div>
+        <div style="-ms-flex: 80%; flex: 80%;">
+            <div>
+                <span style="float: left; padding: 20px;">Laporan Kas</span>
+                <div style="float: left; padding: 20px;">
+                    <label for="bulan"><b>Bulan</b></label>
+                    <select name="bulan" id="bulan" required>
+                        <option value="" disabled selected>Pilih Bulan</option>
+                        <option value="01">Januari</option>
+                        <option value="02">Febuari</option>
+                        <option value="03">Maret</option>
+                        <option value="04">April</option>
+                        <option value="05">Mei</option>
+                        <option value="06">Juni</option>
+                        <option value="07">Juli</option>
+                        <option value="08">Agustus</option>
+                        <option value="09">September</option>
+                        <option value="10">Oktober</option>
+                        <option value="11">November</option>
+                        <option value="12">Desember</option>
+                    </select>
+                </div>
+                <div style="float: left; padding: 20px;">
+                    <label for="tahun"><b>Tahun</b></label>
+                    <select name="tahun" id="tahun" required>
+                        <option value="" disabled selected>Pilih Tahun</option>
+                        <script>
+                            const startYear = 2024;
+                            const endYear = new Date().getFullYear();
+                            for (let year = startYear; year <= endYear; year++) {
+                                document.write(`<option value="${year}">${year}</option>`)
+                            }
+                        </script>
+                    </select>
+                </div>
+                <div style="float: left; padding: 20px;">
+                    <button type="button" onclick="start()">Terapkan</button>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="detail" style="display: none;">
+                <h3>Biaya Pembelian</h3>
+                <table style="width: 100%;" id="purchase">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Tanggal</th>
+                            <th style="width: 15%;">Supplier</th>
+                            <th style="width: 15%;">Produk</th>
+                            <th style="width: 15%;">Harga Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+                </table>
+                <h3>Pendapatan Penjualan</h3>
+                <table style="width: 100%;" id="sale">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Tanggal</th>
+                            <th style="width: 15%;">Produk</th>
+                            <th style="width: 15%;">Kuantitas</th>
+                            <th style="width: 15%;">Harga Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+                </table>
+                <h3>Biaya Operasional</h3>
+                <table style="width: 100%;" id="operational">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Tanggal</th>
+                            <th style="width: 15%;">Keterangan</th>
+                            <th style="width: 15%;">Status</th>
+                            <th style="width: 15%;">Harga Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+                </table>
+                <h3>Utang Pembelian</h3>
+                <table style="width: 100%;" id="debt">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Tanggal</th>
+                            <th style="width: 15%;">Supplier</th>
+                            <th style="width: 15%;">Produk</th>
+                            <th style="width: 15%;">Harga Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                    <tfoot>
+
+                    </tfoot>
+                </table>
+                <div>
+                    <p>
+                        <span>Kenaikan (Penurunan) Kas</span>
+                        <span id="totalKas">0</span>
+                    </p>
+                    <p>
+                        <span>Saldo Kas Awal</span>
+                        <span id="awal">0</span>
+                    </p>
+                    <p>
+                        <span>Saldo Kas Akhir</span>
+                        <span id="akhir">0</span>
+                    </p>
+                </div>
+            </div>
+            <div id="kosong" style="display: none;">
+                <p id="msg"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        function formatDate(dateString) {
+            const date = new Date(dateString); const
+                day = String(date.getDate()).padStart(2, '0'); const month = String(date.getMonth() + 1).padStart(2, '0'); const
+                    year = date.getFullYear(); return `${day}-${month}-${year}`;
+        }
+        function formatRupiah(angka) {
+            let reverse = angka.toString().split('').reverse().join(''); let
+                ribuan = reverse.match(/\d{1,3}/g); let formatted = ribuan.join('.').split('').reverse().join(''); return 'Rp '
+                    + formatted;
+        } 
+    </script>
+    <script>
+        async function start() {
+            let month = document.getElementById("bulan").value;
+            let year = document.getElementById("tahun").value;
+            const month2 = month;
+            const today = new Date();
+            const todayMonth = today.getMonth();
+            const todayYear = today.getFullYear();
+            const startDate = new Date(year, month - 1, 1);
+            month = parseInt(month) + 1;
+            const endDate = new Date(year, month - 1, 1);
+            const purchases = await axios.get(`/api/purchase/${startDate}/${endDate}`);
+            const sales = await axios.get(`/api/sale/${startDate}/${endDate}`);
+            const operationals = await axios.get(`/api/operational/${startDate}/${endDate}`);
+            const debts = await axios.get(`/api/debt/${startDate}/${endDate}`);
+            if (month2 < 5 && year <= 2024) {
+                document.getElementById("detail").style.display = 'none';
+                document.getElementById("kosong").style.display = 'block';
+                document.getElementById("msg").innerText = "Data tidak tersedia";
+            }
+            else if (purchases.data.response.length != 0 || sales.data.response.length != 0 || operationals.data.response.length != 0 || debts.data.response.length != 0) {
+                document.getElementById("detail").style.display = 'block';
+                document.getElementById("kosong").style.display = 'none';
+                //Biaya Pembelian
+                const purchaseTable = document.getElementById('purchase').querySelector('tbody');
+                purchaseTable.innerHTML = '';
+                let totalPurchase = 0;
+                purchases.data.response.forEach((pur) => {
+                    const row = document.createElement('tr');
+                    const cellDate = document.createElement('td');
+                    const cellSupplierName = document.createElement('td');
+                    const cellProduct = document.createElement('td');
+                    const cellTotal = document.createElement('td');
+                    cellDate.innerText = formatDate(pur.OrderDate);
+                    cellSupplierName.innerText = pur.supplier.SupplierName;
+                    let productNames = '';
+                    pur.purchaseproducts.forEach((pro, index) => {
+                        productNames += pro.product.ProductName;
+                        productNames += '\n';
+                    });
+                    cellProduct.innerText = productNames;
+                    cellTotal.innerText = formatRupiah(pur.Total);
+                    totalPurchase += parseInt(pur.Total);
+                    row.appendChild(cellDate);
+                    row.appendChild(cellSupplierName);
+                    row.appendChild(cellProduct);
+                    row.appendChild(cellTotal);
+                    purchaseTable.appendChild(row);
+                });
+                const purchaseTableFoot = document.getElementById('purchase').querySelector('tfoot');
+                purchaseTableFoot.innerText = '';
+                const rowFoot = document.createElement('tr');
+                for (let i = 0; i < 3; i++) {
+                    const emptyCell = document.createElement('td');
+                    rowFoot.appendChild(emptyCell);
+                }
+                const cellTotalSemua = document.createElement('td');
+                cellTotalSemua.innerText = formatRupiah(totalPurchase);
+                rowFoot.appendChild(cellTotalSemua)
+                purchaseTableFoot.appendChild(rowFoot);
+
+                //Pendapatan Penjualan
+                const saleTable = document.getElementById('sale').querySelector('tbody');
+                saleTable.innerHTML = '';
+                let totalSale = 0;
+                sales.data.response.forEach((sale) => {
+                    const row = document.createElement('tr');
+                    const cellDate = document.createElement('td');
+                    const cellProduct = document.createElement('td');
+                    const cellQnt = document.createElement('td');
+                    const cellTotal = document.createElement('td');
+                    cellDate.innerText = formatDate(sale.OrderDate);
+                    let productNames = '';
+                    let productQnt = '';
+                    sale.saleproducts.forEach((pro) => {
+                        productNames += pro.product.ProductName;
+                        productNames += '\n';
+                        productQnt += pro.Qnt;
+                        productQnt += '\n';
+                    });
+                    cellProduct.innerText = productNames;
+                    cellQnt.innerText = productQnt;
+                    cellTotal.innerText = formatRupiah(sale.Total);
+                    totalSale += parseInt(sale.Total);
+                    row.appendChild(cellDate);
+                    row.appendChild(cellProduct);
+                    row.appendChild(cellQnt);
+                    row.appendChild(cellTotal);
+                    saleTable.appendChild(row);
+                });
+                const saleTableFoot = document.getElementById('sale').querySelector('tfoot');
+                saleTableFoot.innerText = '';
+                const rowFoot2 = document.createElement('tr');
+                for (let i = 0; i < 3; i++) {
+                    const emptyCell = document.createElement('td');
+                    rowFoot2.appendChild(emptyCell);
+                }
+                const cellTotalSemua2 = document.createElement('td');
+                cellTotalSemua2.innerText = formatRupiah(totalSale);
+                rowFoot2.appendChild(cellTotalSemua2)
+                saleTableFoot.appendChild(rowFoot2);
+
+                //Biaya Operasional
+                const operationalTable = document.getElementById('operational').querySelector('tbody');
+                operationalTable.innerHTML = '';
+                let totalOperational = 0;
+                operationals.data.response.forEach((operational) => {
+                    const row = document.createElement('tr');
+                    const cellDate = document.createElement('td');
+                    const cellDescription = document.createElement('td');
+                    const cellStatus = document.createElement('td');
+                    const cellTotal = document.createElement('td');
+                    cellDate.innerText = formatDate(operational.Date);
+                    cellDescription.innerText = operational.Description;
+                    if (operational.Status == 0) {
+                        cellStatus.innerText = "Masuk";
+                        totalOperational += parseInt(operational.Total);
+                    } else {
+                        cellStatus.innerText = "Keluar";
+                        totalOperational -= parseInt(operational.Total);
+                    }
+                    cellTotal.innerText = formatRupiah(operational.Total);
+                    row.appendChild(cellDate);
+                    row.appendChild(cellDescription);
+                    row.appendChild(cellStatus);
+                    row.appendChild(cellTotal);
+                    operationalTable.appendChild(row);
+                });
+                const operationalTableFoot = document.getElementById('operational').querySelector('tfoot');
+                operationalTableFoot.innerText = '';
+                const rowFoot3 = document.createElement('tr');
+                for (let i = 0; i < 3; i++) {
+                    const emptyCell = document.createElement('td');
+                    rowFoot3.appendChild(emptyCell);
+                }
+                const cellTotalSemua3 = document.createElement('td');
+                cellTotalSemua3.innerText = formatRupiah(totalOperational);
+                rowFoot3.appendChild(cellTotalSemua3)
+                operationalTableFoot.appendChild(rowFoot3);
+
+                //Utang Pembelian
+                const debtTable = document.getElementById('debt').querySelector('tbody');
+                debtTable.innerHTML = '';
+                let totalDebt = 0;
+                debts.data.response.forEach((debt) => {
+                    const row = document.createElement('tr');
+                    const cellDate = document.createElement('td');
+                    const cellSupplierName = document.createElement('td');
+                    const cellProduct = document.createElement('td');
+                    const cellTotal = document.createElement('td');
+                    cellDate.innerText = formatDate(debt.OrderDate);
+                    cellSupplierName.innerText = debt.supplier.SupplierName;
+                    let productNames = '';
+                    debt.purchaseproducts.forEach((pro) => {
+                        productNames += pro.product.ProductName;
+                        productNames += '\n';
+                    });
+                    cellProduct.innerText = productNames;
+                    cellTotal.innerText = formatRupiah(debt.Total);
+                    totalDebt += parseInt(debt.Total);
+                    row.appendChild(cellDate);
+                    row.appendChild(cellSupplierName);
+                    row.appendChild(cellProduct);
+                    row.appendChild(cellTotal);
+                    debtTable.appendChild(row);
+                });
+                const debtTableFoot = document.getElementById('debt').querySelector('tfoot');
+                debtTableFoot.innerText = '';
+                const rowFoot4 = document.createElement('tr');
+                for (let i = 0; i < 3; i++) {
+                    const emptyCell = document.createElement('td');
+                    rowFoot4.appendChild(emptyCell);
+                }
+                const cellTotalSemua4 = document.createElement('td');
+                cellTotalSemua4.innerText = formatRupiah(totalDebt);
+                rowFoot4.appendChild(cellTotalSemua4)
+                debtTableFoot.appendChild(rowFoot4);
+                let totalKas = 0;
+                let danaAkhir = 0;
+                let danaAwal = 0;
+                totalKas = totalSale + totalOperational - totalPurchase;
+                const funds = await axios.get(`/api/fund/${startDate}/${endDate}`);
+                funds.data.response.forEach((fund) => {
+                    if (fund.Status == 2 || 4) {
+                        danaAwal += parseInt(fund.Total);
+                    } else {
+                        danaAwal -= parseInt(fund.Total);
+                    }
+
+                });
+                console.log(totalKas, danaAwal, danaAkhir)
+                danaAkhir = parseInt(danaAwal) + totalKas;
+                document.getElementById('totalKas').innerText = formatRupiah(totalKas);
+                document.getElementById('awal').innerText = formatRupiah(danaAwal);
+                document.getElementById('akhir').innerText = formatRupiah(danaAkhir);
+                const newStartDate = new Date(year, month - 1, 1);
+                const newEndDate = new Date(year, month, 1);
+                const newDate = new Date(year, month - 1, 2);
+                console.log(newStartDate, newEndDate);
+                const newFunds = await axios.get(`/api/next-fund/${newStartDate}/${newEndDate}`);
+                console.log(newFunds);
+                if (newFunds.data.response == null) {
+                    axios({
+                        method: 'post',
+                        url: '/api/fund',
+                        data: {
+                            Date: newDate,
+                            Total: danaAkhir,
+                            Status: 4
+                        }
+                    }).then((result) => {
+                    }).catch((err) => {
+                        alert('error' + err);
+                    });
+                } else {
+                    axios({
+                        method: 'put',
+                        url: `/api/fund/${newFunds.data.response.id}`,
+                        data: {
+                            Total: danaAkhir
+                        }
+                    }).then((results) => {
+                    }).catch((err) => {
+                        alert('Error : ' + err);
+                    });
+                }
+            } else {
+                document.getElementById("detail").style.display = 'none';
+                document.getElementById("kosong").style.display = 'block';
+                document.getElementById("msg").innerText = "Inputan Bulan dan Tahun harus lebih kecil";
+            }
+
+        };
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinarBaru</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div style="background-color: aqua; padding: 20px;text-align: center;">
+        <span style="text-align: center;">SinarBaru</span>
+        <span style="float: right;">
+            <% if (!i_user) { %>
+                <button><a href="/login">Login</a></button>
+                <% } else { %>
+                    <button><a href="/logout">logout</a></button>
+                    <%} %>
+        </span>
+        <span style="float: right; padding-right: 10px;">
+            <%= i_user.Username %>
+        </span>
+    </div>
+    <div style="display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap;">
+        <div class="vertical-menu" style="-ms-flex: 20%; flex: 20%;">
+            <a href="/">Home</a>
+            <a href="/supplier">Data Supplier</a>
+            <a href="/product">Stok Barang</a>
+            <a href="/kas">Laporan Kas</a>
+            <a href="/prediksi" class="active">Prediksi Penjualan</a>
+            <a href="/sale">Data Penjualan</a>
+            <a href="/purchase">Data Pembelian</a>
+            <a href="/retur">Retur Pembelian</a>
+            <a href="/debt">Data Utang</a>
+            <a href="/operational">Data Operasional</a>
+        </div>
+        <div style="-ms-flex: 80%; flex: 80%;">
+            <div>
+                <span style="float: left; padding: 20px;">Prediksi</span>
+                <div style="float: left; padding: 20px;">
+                    <label for="produk"><b>Produk</b></label>
+                    <select name="produk" id="produk" required>
+                        <option value="" disabled selected>Pilih Produk</option>
+                        <% for( let i=0; i < products.length; i++ ) { %>
+                            <option value="<%= products[i].ProductCode %>">
+                                <%= products[i].ProductName %>
+                            </option>
+                            <% } %>
+                    </select>
+                </div>
+                <div style="float: left; padding: 20px;">
+                    <label for="bulan"><b>Bulan</b></label>
+                    <select name="bulan" id="bulan" required>
+                        <option value="" disabled selected>Pilih Bulan</option>
+                        <option value="0">Januari</option>
+                        <option value="1">Febuari</option>
+                        <option value="2">Maret</option>
+                        <option value="3">April</option>
+                        <option value="4">Mei</option>
+                        <option value="5">Juni</option>
+                        <option value="6">Juli</option>
+                        <option value="7">Agustus</option>
+                        <option value="8">September</option>
+                        <option value="9">Oktober</option>
+                        <option value="10">November</option>
+                        <option value="11">Desember</option>
+                    </select>
+                </div>
+                <div style="float: left; padding: 20px;">
+                    <label for="tahun"><b>Tahun</b></label>
+                    <select name="tahun" id="tahun" required>
+                        <option value="" disabled selected>Pilih Tahun</option>
+                        <script>
+                            const startYear = 2024;
+                            const endYear = new Date().getFullYear();
+                            for (let year = startYear; year <= endYear; year++) {
+                                document.write(`<option value="${year}">${year}</option>`)
+                            }
+                        </script>
+                    </select>
+                </div>
+                <div style="float: left; padding: 20px;">
+                    <button type="button" onclick="start()">Mulai Prediksi</button>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+            <div id="detail" style="display: block;">
+                <table style="width: 100%;" id="sale">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Bulan</th>
+                            <th style="width: 15%;">Terjual</th>
+                            <th style="width: 15%;">Total Terjual</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+                <div>
+                    <p>
+                        <span>Prediksi total Penjualan</span>
+                        <span id="total"></span>
+                    </p>
+                </div>
+            </div>
+            <div id="kosong" style="display: none;">
+                <p id="msg"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        function formatDate(dateString) {
+            const date = new Date(dateString); const
+                day = String(date.getDate()).padStart(2, '0'); const month = String(date.getMonth() + 1).padStart(2, '0'); const
+                    year = date.getFullYear(); return `${day}-${month}-${year}`;
+        }
+        function formatRupiah(angka) {
+            let reverse = angka.toString().split('').reverse().join(''); let
+                ribuan = reverse.match(/\d{1,3}/g); let formatted = ribuan.join('.').split('').reverse().join(''); return 'Rp '
+                    + formatted;
+        } 
+    </script>
+    <script>
+        let total = 0;
+        async function start() {
+            //Menampilkan jumlah penjualan perbulan
+            const sales = await axios.get(`/api/predict/${document.getElementById("produk").value}`);
+            console.log(sales.data.Response);
+            const table = document.getElementById('sale').querySelector('tbody');
+            table.innerHTML = '';
+            total = 0;
+            sales.data.Response.forEach(sale => {
+                const row = document.createElement('tr');
+                const cellDate = document.createElement('td');
+                const cellQnt = document.createElement('td');
+                const cellTotal = document.createElement('td');
+                cellDate.innerText = sale.month;
+                cellQnt.innerText = sale.totalQuantity;
+                total += parseInt(sale.totalQuantity);
+                row.appendChild(cellDate);
+                row.appendChild(cellQnt);
+                row.appendChild(cellTotal);
+                table.appendChild(row);
+            });
+            const row = document.createElement('tr');
+            const cellTotal = document.createElement('td');
+            cellTotal.innerText = total;
+            for (let i = 0; i < 2; i++) {
+                const emptyCell = document.createElement('td');
+                row.appendChild(emptyCell);
+            }
+            row.appendChild(cellTotal);
+            table.appendChild(row);
+
+            //melakukan prediksi dengan trend moment
+            const year = document.getElementById('tahun').value;
+            const month = document.getElementById('bulan').value;
+            const start = new Date(year - 1, 0, 1);
+            const end = new Date(year - 1, 11, 31);
+            let sumMonth= 0;
+            let sumY = 0, sumX = 0, sumXY = 0, sumX2 = 0, avgY = 0, b = 0, a = 0, y = 0, im = 0, hasil = 0;
+            console.log(start, end);
+            const predicts = await axios.get(`/api/predictTrend/${document.getElementById("produk").value}/${start}/${end}`);
+            console.log(predicts.data.response);
+            predicts.data.response.forEach(predict => {
+                sumY += parseInt(predict.Qnt);
+                sumX += parseInt(predict.TimeIndex);
+                sumXY += (parseInt(predict.Qnt) * parseInt(predict.TimeIndex));
+                sumX2 += parseInt(predict.TimeIndex) * parseInt(predict.TimeIndex);
+                date = new Date(predict.Date).getMonth();
+                if(date == month){
+                    sumMonth = predict.Qnt;
+                }
+            });
+            console.log(sumMonth);
+            let n = predicts.data.response.length
+            avgY = (sumY / n).toFixed(2);
+            console.log(sumY, sumX, sumXY, sumX2, avgY);
+            b = ((n * (sumXY) - (sumX) * (sumY)) / (n * sumX2 - sumX2)).toFixed(2);
+            console.log(b);
+            a = ((sumY - (b * sumX)) / n).toFixed(2);
+            console.log(a);
+            y = (parseFloat(a) + (b * n)).toFixed(2);
+            console.log(y);
+            im = (sumMonth / parseFloat(avgY)).toFixed(2);
+            console.log(im);
+            hasil = Math.round(im * y)
+            console.log(hasil);
+            document.getElementById('total').innerText = hasil;
+        }
+    </script>
+
+
+</body>
+
+</html>

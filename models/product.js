@@ -9,7 +9,7 @@ const Product = sequelize.define('product', {
 }, {
     updatedAt: false,
     createdAt: false,
-    tableName: "product"
+    tableName: "products"
 });
 Product.removeAttribute('id');
 

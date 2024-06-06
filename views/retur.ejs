@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SinarBaru</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div style="background-color: aqua; padding: 20px;text-align: center;">
+        <span style="text-align: center;">SinarBaru</span>
+        <span style="float: right;">
+            <% if (!i_user) { %>
+                <button><a href="/login">Login</a></button>
+                <% } else { %>
+                    <button><a href="/logout">logout</a></button>
+                    <%} %>
+        </span>
+        <span style="float: right; padding-right: 10px;">
+            <%= i_user.Username %>
+        </span>
+    </div>
+    <div style="display: -ms-flexbox; display: flex; -ms-flex-wrap: wrap; flex-wrap: wrap;">
+        <div class="vertical-menu" style="-ms-flex: 20%; flex: 20%;">
+            <a href="/">Home</a>
+            <a href="/supplier">Data Supplier</a>
+            <a href="/product">Stok Barang</a>
+            <a href="/kas">Laporan Kas</a>
+            <a href="/prediksi">Prediksi Penjualan</a>
+            <a href="/sale">Data Penjualan</a>
+            <a href="/purchase">Data Pembelian</a>
+            <a href="/retur" class="active">Retur Pembelian</a>
+            <a href="/debt">Data Utang</a>
+            <a href="/operational">Data Operasional</a>
+        </div>
+        <div style="-ms-flex: 80%; flex: 80%;">
+            <div>
+                <span style="float: left; padding: 20px;">Retur Pembelian</span>
+                <button id="add" style="float: right; margin: 20px;" onclick="add('<%= counter %>')">Tambah
+                    Retur Pembelian</button>
+            </div>
+
+            <!-- The form -->
+            <div class="form-popup" id="addForm">
+                <form action="" class="form-container">
+                    <h1>Retur Pembelian</h1>
+
+                    <input type="text" id="kode" hidden>
+
+                    <label for="supplier"><b>Supplier</b></label>
+                    <select name="supplier" id="supplier">
+                        <option value="" disabled selected>Select an option</option>
+                        <% for( let i=0; i < suppliers.length; i++ ) { %>
+                            <option value="<%= suppliers[i].id %>">
+                                <%= suppliers[i].SupplierName %>
+                            </option>
+                            <% } %>
+                    </select>
+
+                    <p></p>
+                    <div style="display: flex;">
+                        <div style="flex: 80%;">
+                            <label for="tanggal"><b>Tanggal Pemesanan</b></label>
+                            <input type="date" name="tanggal" id="tanggal" required>
+                        </div>
+                        <div style="flex: 20%; margin: 10px;"><button type="button"
+                                onclick="fetchData()">Submit</button></div>
+                    </div>
+
+                    <p></p>
+                    <div id="resultContainer">
+                        <table id="resultTable">
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Total Kuantitas</th>
+                                    <th>Retur Kuantitas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Hasil akan dimasukkan di sini -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <p></p>
+
+                    <div style="display: flex;">
+                        <button type="button" class="btn" style="flex: 45%;" id="simpan"
+                            onclick="save()">Simpan</button>
+                        <span style="flex: 10%;"></span>
+                        <button type="button" class="btn cancel" style="flex: 45%;" onclick="closeForm()">Batal</button>
+                    </div>
+                </form>
+            </div>
+
+            <table style="width: 100%;">
+                <tr>
+                    <th style="width: 15%;">Supplier</th>
+                    <th style="width: 15%;">Tanggal Retur</th>
+                    <th style="width: 15%;">Retur Produk</th>
+                    <th style="width: 10%;">Kuantitas</th>
+                    <th style="width: 15%;">Harga Total</th>
+                </tr>
+                <% for( let i=0; i < returs.length; i++ ) { %>
+                    <tr>
+                        <td>
+                            <%= returs[i].supplier.SupplierName %>
+                        </td>
+                        <td>
+                            <%= formatDate(returs[i].ReturDate) %>
+                        </td>
+                        <td>
+                            <% for( let j=0; j < returs[i].returproducts.length; j++ ) { %>
+                                <p>
+                                    <%= returs[i].returproducts[j].product.ProductName %>
+                                </p>
+                                <% } %>
+                        </td>
+                        <td>
+                            <% for( let j=0; j < returs[i].returproducts.length; j++ ) { %>
+                                <p>
+                                    <%= returs[i].returproducts[j].Qnt %>
+                                </p>
+                                <% } %>
+                        </td>
+                        <td>
+                            <%= formatRupiah(returs[i].Total) %>
+                        </td>
+                    </tr>
+                    <% } %>
+            </table>
+        </div>
+    </div>
+
+    <% function formatDate(dateString) { const date=new Date(dateString); const
+        day=String(date.getDate()).padStart(2, '0' ); const month=String(date.getMonth() + 1).padStart(2, '0' ); const
+        year=date.getFullYear(); return `${day}-${month}-${year}`; } %>
+
+        <% function formatRupiah(angka) { let reverse=angka.toString().split('').reverse().join(''); let
+            ribuan=reverse.match(/\d{1,3}/g); let formatted=ribuan.join('.').split('').reverse().join(''); return 'Rp '
+            +formatted; } %>
+
+            <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+            <script>
+                let results = [];
+                async function fetchData() {
+                    let supplier = document.getElementById('supplier').value;
+                    let date = document.getElementById('tanggal').value;
+                    const resultTableBody = document.getElementById('resultTable').querySelector('tbody');
+                    resultTableBody.innerHTML = ''; // Mengosongkan hasil sebelumnya
+                    results = [];
+                    if (supplier && date) {
+                        try {
+                            const responses = await axios.get(`/api/retur/${supplier}/${date}`);
+                            console.log(responses.data.response)
+                            if (responses.data.response.length > 0) {
+                                responses.data.response.forEach((res) => {
+                                    res.purchaseproducts.forEach((pur) => {
+                                        if (pur.Qnt > 0) {
+                                            results.push({
+                                                ProductCode: pur.ProductCode,
+                                                ProductName: pur.product.ProductName,
+                                                ProductQnt: pur.Qnt,
+                                                ProductPrice: pur.Price,
+                                                ID: pur.id,
+                                                PurchasesID: pur.PurchasesID
+                                            });
+                                            // Membuat baris baru untuk tabel
+                                            const row = document.createElement('tr');
+                                            const cellProductName = document.createElement('td');
+                                            const cellProductQnt = document.createElement('td');
+                                            const cellReturQnt = document.createElement('td');
+
+                                            cellProductName.innerText = pur.product.ProductName;
+                                            cellProductQnt.innerText = pur.Qnt;
+                                            const inputReturQnt = document.createElement('input');
+                                            inputReturQnt.type = 'text';
+                                            inputReturQnt.id = `returnQuantityInput_${pur.id}`;
+                                            cellReturQnt.appendChild(inputReturQnt);
+
+                                            row.appendChild(cellProductName);
+                                            row.appendChild(cellProductQnt);
+                                            row.appendChild(cellReturQnt);
+
+                                            resultTableBody.appendChild(row);
+                                        }
+                                    })
+                                })
+                            } else {
+                                const row = document.createElement('p');
+                                row.innerText = 'Tidak ada Pembelian';
+                                resultTableBody.appendChild(row);
+                            }
+
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                }
+            </script>
+            <script>
+                function generateNumber(counterTmp) {
+                    let tmp = parseInt(counterTmp);
+                    tmp++;
+                    return tmp;
+                }
+            </script>
+            <script>
+                let add = (counter) => {
+                    document.getElementById("addForm").style.display = "block";
+                    document.getElementById("kode").value = generateNumber(counter);
+                }
+            </script>
+            <script>
+                function closeForm() {
+                    document.getElementById("addForm").style.display = "none";
+                    location.reload();
+                }
+
+            </script>
+            <script>
+                let save2 = () => {
+                    results.forEach((tmp) => {
+                        let returnQuantityValue = document.getElementById(`returnQuantityInput_${tmp.ID}`).value;
+                        let today = new Date();
+                        const year = today.getFullYear();
+                        const month = String(today.getMonth() + 1).padStart(2, '0'); // bulan dimulai dari 0
+                        const day = String(today.getDate()).padStart(2, '0');
+                        const formattedDate = `${year}-${month}-${day}`;
+                        console.log(returnQuantityValue, formattedDate);
+                    });
+
+                }
+                let total = 0;
+                let purchaseFinalTotal = 0;
+                let idPurchase;
+                let save = () => {
+                    const products = JSON.parse('<%- JSON.stringify(products)%> ');
+                    total = 0;
+                    let isi_id = document.getElementById("kode").value;
+                    let isi_supplier = document.getElementById("supplier").value;
+                    let today = new Date();
+                    const year = today.getFullYear();
+                    const month = String(today.getMonth() + 1).padStart(2, '0'); // bulan dimulai dari 0
+                    const day = String(today.getDate()).padStart(2, '0');
+                    const isi_date = `${year}-${month}-${day}`;
+                    results.forEach((res) => {
+                        //tambah pengecekan input dengan status
+                        let returnQuantityValue = document.getElementById(`returnQuantityInput_${res.ID}`).value;
+                        let price = res.ProductPrice;
+                        let tmpTotal = returnQuantityValue * price;
+                        total += tmpTotal;
+                        idPurchase = res.PurchasesID;
+                    });
+                    axios({
+                        method: 'post',
+                        url: '/api/retur-purchases',
+                        data: {
+                            id: isi_id,
+                            ReturDate: isi_date,
+                            Total: total,
+                            SupplierID: isi_supplier
+                        }
+                    }).then(() => {
+                        results.forEach((tmp) => {
+                            let jumlah = document.getElementById(`returnQuantityInput_${tmp.ID}`).value;
+                            let price = tmp.ProductPrice;
+                            let Total = jumlah * price;
+                            let purchaseQnt = tmp.ProductQnt - jumlah;
+                            let purchaseTotal = purchaseQnt * price;
+                            purchaseFinalTotal += purchaseTotal;
+
+                            axios({
+                                method: 'post',
+                                url: '/api/retur-returproducts',
+                                data: {
+                                    Qnt: jumlah,
+                                    Price: price,
+                                    ProductTotal: Total,
+                                    ReturID: isi_id,
+                                    ProductCode: tmp.ProductCode
+                                }
+                            }).then(() => {
+                                axios({
+                                    method: 'put',
+                                    url: `/api/retur-purchaseproduct/${tmp.ID}`,
+                                    data: {
+                                        Qnt: purchaseQnt,
+                                        Total: purchaseTotal,
+                                    }
+                                }).then(() => {
+                                    products.forEach((pro) => {
+                                        if (pro.ProductCode == tmp.ProductCode) {
+                                            qnt = pro.Qnt - jumlah;
+                                            let tmpPrice = pro.Qnt * pro.BuyPrice;
+                                            price = (tmpPrice - Total) / qnt;
+                                            axios({
+                                                method: 'put',
+                                                url: `/api/purchase-product/${tmp.ProductCode}`,
+                                                data: {
+                                                    ProductQnt: qnt,
+                                                    BuyPrice: price,
+                                                }
+                                            }).then(() => {
+                                                location.reload();
+                                                closeForm();
+                                            }).catch((err) => {
+                                                alert('Error : ' + err);
+                                            });
+                                        }
+                                    });
+                                    location.reload();
+                                    closeForm();
+                                }).catch((err) => {
+                                    alert('Error : ' + err);
+                                });
+
+                            }).catch((err) => {
+                                alert('error' + err);
+                            });
+                        });
+                        axios({
+                            method: 'put',
+                            url: `/api/retur-purchase/${idPurchase}`,
+                            data: {
+                                Total: purchaseFinalTotal
+                            }
+                        }).then(() => {
+                            location.reload();
+                            closeForm();
+                        }).catch((err) => {
+                            alert('Error : ' + err);
+                        });
+                        location.reload();
+                    }).catch((err) => {
+                        alert('error' + err);
+                    });
+
+
+                }
+            </script>
+            <script>
+                // JavaScript untuk mengatur nilai default
+                document.addEventListener('DOMContentLoaded', function () {
+                    const dateInput = document.getElementById('tanggal');
+                    const today = new Date();
+
+                    // Format tanggal menjadi YYYY-MM-DD
+                    const year = today.getFullYear();
+                    const month = String(today.getMonth() + 1).padStart(2, '0'); // bulan dimulai dari 0
+                    const day = String(today.getDate()).padStart(2, '0');
+
+                    const formattedDate = `${year}-${month}-${day}`;
+
+                    // Set nilai default input tanggal
+                    dateInput.value = formattedDate;
+                });
+            </script>
+
+</body>
+
+</html>
