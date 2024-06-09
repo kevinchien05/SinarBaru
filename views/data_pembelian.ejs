@@ -1,0 +1,809 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <link href="css/style.css" rel="stylesheet">
+  <script type="text/javascript" src="js/controller.js"></script>
+  <title>Data Supplier</title>
+</head>
+
+<body>
+  <!-- Navigation Bar-->
+  <nav class="navbar">
+    <button class="btn ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+      aria-controls="offcanvasWithBothOptions"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+        fill="currentColor" class="bi bi-list" viewBox="3 3 10 10">
+        <path fill-rule="evenodd"
+          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5">
+        </path>
+      </svg>
+    </button>
+    <h1>Sinar Baru</h1>
+    <ul>
+      <li>
+        <!-- Showing User Name -->
+        <a class="nav-link disabled" href="#" tabindex="-2" aria-disabled="true">Name</a>
+      </li>
+    </ul>
+    </div>
+  </nav>
+
+  <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+    aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+      <button type="button" class="btn" data-bs-dismiss="offcanvas" aria-label="Close"><svg
+          xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list"
+          viewBox="3 3 10 10">
+          <path fill-rule="evenodd"
+            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5">
+          </path>
+        </svg></button>
+    </div>
+
+    <!-- List Draft for Menu -->
+    <div class="offcanvas-body">
+      <div class="d-flex flex-column flex-shrink-0" style="width: 100%; height: 100%;">
+        <ul class="nav nav-pills flex-column mb-auto">
+          <!-- Data Supplier Page -->
+          <li>
+            <a href="/supplier" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                class="bi bi-people-fill" viewBox="0 0 16 16">
+                <path
+                  d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
+              </svg>
+              Data Supplier
+            </a>
+          </li><br>
+
+          <!-- Stok Barang Page -->
+          <li>
+            <a href="/product" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-seam"
+                viewBox="0 0 16 16">
+                <path
+                  d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z" />
+              </svg>
+              Stok Barang
+            </a>
+          </li><br>
+
+          <!-- Data Pembelian Page -->
+          <li>
+            <a href="/purchase" class="nav-link active" aria-current="page">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart-plus"
+                viewBox="0 0 16 16">
+                <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z" />
+                <path
+                  d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+              </svg>
+              Data Pembelian
+            </a>
+          </li><br>
+
+          <!-- Retur Pembelian Page -->
+          <li>
+            <a href="retur_pembelian.html" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart-x"
+                viewBox="0 0 16 16">
+                <path
+                  d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793z" />
+                <path
+                  d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+              </svg>
+              Retur Pembelian
+            </a>
+          </li><br>
+
+          <!-- Data Penjualan Page -->
+          <li>
+            <a href="data_penjualan.html" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bag-check"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                <path
+                  d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+              </svg>
+              Data Penjualan
+            </a>
+          </li><br>
+
+          <!-- Prediksi Penjualan Page -->
+          <li>
+            <a href="prediksi_penjualan.html" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5" />
+              </svg>
+              Prediksi Penjualan
+            </a>
+          </li><br>
+
+          <!-- Laporan Kas Page -->
+          <li>
+            <a href="laporan_kas.html" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                class="bi bi-journal-check" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                <path
+                  d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
+                <path
+                  d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
+              </svg>
+              Laporan Kas
+            </a>
+          </li><br>
+
+          <!-- Data Utang Page -->
+          <li>
+            <a href="utang.html" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                class="bi bi-credit-card" viewBox="0 0 16 16">
+                <path
+                  d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />
+                <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+              </svg> Data Utang
+            </a>
+          </li><br>
+
+          <!-- Biaya Operasional Page -->
+          <li>
+            <a href="biaya_operasional.html" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cash-coin"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0" />
+                <path
+                  d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z" />
+                <path
+                  d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z" />
+                <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567" />
+              </svg>
+              Biaya Operasional
+            </a>
+          </li><br>
+
+          <!-- Dana Toko Page -->
+          <li>
+            <a href="dana_toko.html" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bank"
+                viewBox="0 0 16 16">
+                <path
+                  d="m8 0 6.61 3h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.38l.5 2a.498.498 0 0 1-.485.62H.5a.498.498 0 0 1-.485-.62l.5-2A.5.5 0 0 1 1 13V6H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 3h.89zM3.777 3h8.447L8 1zM2 6v7h1V6zm2 0v7h2.5V6zm3.5 0v7h1V6zm2 0v7H12V6zM13 6v7h1V6zm2-1V4H1v1zm-.39 9H1.39l-.25 1h13.72z" />
+              </svg> Dana Toko
+            </a>
+          </li>
+        </ul>
+        <hr>
+
+        <!-- Logout Button -->
+        <a href="login.html">
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-danger">Logout</button>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Adding Filter Tanggal (Penambahan disini)-->
+  <div class="list-data-awal">
+    <div class="before-divider">
+      <div class="item-for-all">
+        Filter Tanggal Pembelian
+      </div>
+    </div>
+
+    <!-- Adding New Title Divider For Sorting-->
+    <div class="title-divider-pembelian-sorting">
+      <div class="btn-group prediksi less-height">
+        <button class="btn btn-secondary btn-sm prediksi-btn pembelian-penjualan" type="button" disabled>
+          <label class="tulisan-label-prediksi">Mulai Tanggal</label>
+        </button>
+        <input type="date" id="startDate" class="pembelian-sorting-time">
+      </div>
+
+      <div class="btn-group prediksi less-height">
+        <button class="btn btn-secondary btn-sm prediksi-btn pembelian-penjualan" type="button" disabled>
+          <label class="tulisan-label-prediksi">Sampai Tanggal</label>
+        </button>
+        <input type="date" id="endDate" class="pembelian-sorting-time">
+      </div>
+
+      <div class="item-btn prediksi">
+        <button class="btn btn-success prediksi" onclick="show()">Tampilkan</button>
+      </div>
+    </div>
+  </div>
+  <!-- End of Sorting Divider -->
+
+  <!-- Container for Showing List Pembelian -->
+  <div class="list-data-awal">
+    <div class="before-divider">
+      <div class="item-for-all">
+        Pembelian
+      </div>
+
+      <!-- Search Button -->
+      <div class="item-search padright">
+        <input class="form-control" type="search" placeholder="Cari" aria-label="Search" class="rounded"
+          id="search-input" value="<%= search %>" onkeypress="handleKeyPress(event)">
+      </div>
+
+      <!-- Adding Pembelian -->
+      <div class="item-btn">
+        <button id="add" class="btn btn-success" onclick="add('<%= counter %>')">Tambah Pembelian <svg
+            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
+            viewBox="0 0 16 16">
+            <path
+              d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+          </svg></button>
+      </div>
+      <br>
+      <br>
+
+      <!-- The Add form -->
+      <div class="form-popup" id="addForm">
+        <form action="" class="form-container-pembelian">
+          <h2 class="text-form">Pembelian Baru</h2>
+
+          <input type="text" id="kode" hidden>
+
+          <div class="dropdown-form">
+            <label for="supplier">Supplier</label>
+            <select class="dropdownsupp" id="supplier" name="supplier">
+              <option value="" disabled selected>Select an option</option>
+              <% for( let i=0; i < suppliers.length; i++ ) { %>
+                <option value="<%= suppliers[i].Id %>">
+                  <%= suppliers[i].SupplierName %>
+                </option>
+                <% } %>
+            </select>
+          </div>
+          <div class="date-form">
+            <label for="tglpesanan">Tanggal Pesanan</label>
+            <input type="date" name="tanggal" id="tanggal" required>
+          </div>
+
+          <div class="button-add-form">
+            <div class="for-generate-qty">
+              <label for="alamat">Produk</label><label id="tulisan-kuantitas"></label>
+            </div>
+            <span id="break-for-kuantitas"></span>
+            <div class="spawn-selected-product" id="resultTable">
+              <p id="item-name"></p>
+              <p id="item-qty"></p>
+            </div>
+            <button type="button" class="search-product-form" id="search-product-form">Tambah Produk<svg
+                xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-plus"
+                viewBox="0 0 16 16">
+                <path
+                  d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
+              </svg></button>
+          </div>
+          <div class="dropdown-form">
+            <label for="status">Pembayaran</label>
+            <select class="dropdownsupp" id="status" name="status">
+              <option value="0" selected>Cash</option>
+              <option value="1">Utang</option>
+            </select>
+          </div>
+          <input type="text" id="total" hidden>
+          <p id="error-message" style="color: red;"></p>
+
+          <div class="button-form">
+            <button class="btn btn-success yes-form-btn" type="button" onclick="save()">Simpan</button>
+            <button type="button" class="btn btn-danger no-form-btn" onclick="closeForm()">Batal</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Choose Product form -->
+      <div class="form-popup-produk" id="productForm">
+        <form action="" class="form-container-pembelian-produk">
+          <div class="product-search-form">
+            <h2 class="text-form-pembelian">Produk</h2>
+            <div class="item-search">
+              <input class="form-control" type="search" placeholder="Cari" aria-label="Search" class="rounded">
+            </div>
+          </div>
+          <div id="table-product-form" class="table-product-form">
+            <table id="productTable">
+              <tr>
+                <th> </th>
+                <th>Kode Barang</th>
+                <th>Nama Barang</th>
+                <th>Stok</th>
+                <th>Harga</th>
+                <th class="qty">Kuantitas</th>
+              </tr>
+
+              <!-- Looping Item-->
+              <tr class="separated">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              <% for( let i=0; i < products.length; i++ ) { %>
+                <tr>
+                  <td><label for=<%=products[i].ProductCode %>>
+                      <input type="checkbox" id="<%= products[i].ProductCode %>" name="options"
+                        value="<%= products[i].ProductCode %>">
+                    </label></td>
+                  <td id="kodebarang">
+                    <%= products[i].ProductCode %>
+                  </td>
+                  <td id="namabarang-x" class="productName">
+                    <%= products[i].ProductName %>
+                  </td>
+                  <td id="stokbarang" class="productQnt">
+                    <%= products[i].Qnt %>
+                      <%= products[i].Unit %>
+                  </td>
+                  <td id="hargabarang" class="productPrice" hidden>
+                    <%= products[i].BuyPrice %>
+                  </td>
+                  <td>Rp. <input class="form-harga" style="width: 90%;" type="text"
+                      id="Harga_<%= products[i].ProductCode %>" name="Harga_<%= products[i].ProductCode %>"></td>
+                  <td><input class="form-qty" type="text" id="jumlah_<%= products[i].ProductCode %>"
+                      name="jumlah_<%= products[i].ProductCode %>"></td>
+                </tr>
+
+                <% } %>
+            </table>
+          </div>
+          <div class="button-form">
+            <button type="button" class="btn btn-success yes-form-btn" onclick="SaveThickBoxData()">Simpan</button>
+            <button type="button" class="btn btn-danger no-form-btn" onclick="CancelThickBoxData()">Batal</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="title-divider-pembelian">
+      <!-- Identification For Each Data -->
+      <div class="nama-supplier">
+        Supplier
+        <button type="button" class="btn btn-sorting" id=""
+          onclick="sortData('supplierName',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
+            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
+          </svg></button>
+      </div>
+
+      <div class="tgl-pesanan">
+        Tanggal Pesanan
+        <button type="button" class="btn btn-sorting" id=""
+          onclick="sortData('OrderDate',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
+            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
+          </svg></button>
+      </div>
+
+      <div class="nama-barang-pembelian">
+        Produk
+      </div>
+
+      <div class="jumlah-stok">
+        Kuantitas
+      </div>
+
+      <div class="satuan-stok">
+        Satuan
+      </div>
+
+      <div class="harga-stok">
+        Harga Total
+        <button type="button" class="btn btn-sorting" id=""
+          onclick="sortData('Total',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg xmlns="http://www.w3.org/2000/svg"
+            width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
+          </svg></button>
+      </div>
+
+      <div class="jenis-pembayaran">
+        Pembayaran
+      </div>
+
+      <div class="actions-supplier">
+        <h5>Actions</h5>
+      </div>
+
+
+      <!-- Looping Data List Produk -->
+      <hr class="for-pembelian">
+      <% for( let i=0; i < purchases.length; i++ ) { %>
+        <div class="item centereditem" id="item">
+          <p id="kode">
+            <%= purchases[i].supplier.SupplierName %>
+          </p>
+        </div>
+        <div class="item centereditem" id="item">
+          <p id="kode">
+            <%= formatDate(purchases[i].OrderDate) %>
+          </p>
+        </div>
+        <div class="item centereditem" id="item">
+          <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
+            <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
+              <p hidden></p>
+              <% } else { %>
+                <p id="kode">
+                  <%= purchases[i].purchaseproducts[j].product.ProductName %>
+                </p><br>
+                <% } %>
+
+                  <% } %>
+        </div>
+        <div class="item-4 centereditem" id="item-4">
+          <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
+            <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
+              <p hidden></p>
+              <% } else { %>
+                <p id="kode-4">
+                  <%= purchases[i].purchaseproducts[j].Qnt %>
+                </p><br>
+                <% } %>
+
+                  <% } %>
+        </div>
+        <div class="item-5 centereditem" id="item-5">
+          <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
+            <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
+              <p hidden></p>
+              <% } else { %>
+                <p id="kode-5">
+                  <%= purchases[i].purchaseproducts[j].product.Unit %>
+                </p><br>
+                <% } %>
+
+                  <% } %>
+        </div>
+        <div class="item centereditem" id="item">
+          <p id="kode">
+            <%= formatRupiah(purchases[i].Total) %>
+          </p>
+        </div>
+        <div class="item centereditem" id="item">
+          <p id="kode">
+            <% if (purchases[i].Status==0) { %>
+              Cash
+              <% }else{ %>
+                Lunas
+                <% } %>
+          </p>
+        </div>
+        <!-- Button for delete data Produk -->
+        <div class="actions-delete centereditem" id="icon-actions">
+          <button type="button" class="btn" id="delete"
+            data-purchaseproducts="<%= JSON.stringify(purchases[i].purchaseproducts) %>"
+            onclick="del('<%= purchases[i].id %>', this.dataset.purchaseproducts)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+              class="bi bi-trash text-danger" viewBox="0 0 16 16">
+              <path
+                d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z">
+              </path>
+              <path
+                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z">
+              </path>
+            </svg>
+          </button>
+        </div>
+
+        <% } %>
+    </div>
+    <% function formatDate(dateString) { const date=new Date(dateString); const
+      day=String(date.getDate()).padStart(2, '0' ); const month=String(date.getMonth() + 1).padStart(2, '0' ); const
+      year=date.getFullYear(); return `${day}-${month}-${year}`; } %>
+
+      <% function formatRupiah(angka) { let reverse=angka.toString().split('').reverse().join(''); let
+        ribuan=reverse.match(/\d{1,3}/g); let formatted=ribuan.join('.').split('').reverse().join(''); return 'Rp '
+        +formatted; } %>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    //tambah purchase
+    function closeForm() {
+      document.getElementById("addForm").style.display = "none";
+    }
+
+    async function generateNumber(counterTmp) {
+      let tmp = parseInt(counterTmp);
+      tmp++;
+      exists = true;
+      while (exists) {
+        result = `${tmp}`;
+        let kode = await axios.get(`/api/stok/${result}`);
+        if (kode.data.response) {
+          tmp++;
+        } else {
+          exists = false;
+        }
+      }
+      return result;
+    }
+
+    let add = async (counter) => {
+      document.getElementById("addForm").style.display = "block";
+      document.getElementById("kode").value = await generateNumber(counter);
+    }
+  </script>
+  <script>
+    //Form produk
+    document.getElementById("search-product-form").onclick = () => {
+      document.getElementById("addForm").style.display = "none";
+      document.getElementById("productForm").style.display = "block";
+    }
+
+    function CancelThickBoxData() {
+      document.getElementById("productForm").style.display = "none";
+      document.getElementById("addForm").style.display = "block";
+    }
+
+    let results = [];
+    function SaveThickBoxData() {
+      const table = document.getElementById('productTable');
+      const checkboxes = table.querySelectorAll('input[name="options"]:checked');
+      const resultTableBody = document.getElementById('break-for-kuantitas');
+      resultTableBody.innerHTML = ""; //mengkosongkan hasil sebelumnya
+      results = [];
+
+      checkboxes.forEach((checkbox) => {
+        const row = checkbox.closest('tr');
+        const productCode = row.querySelector('#kodebarang').innerText.trim();
+        const productName = row.querySelector('.productName').innerText.trim();
+        const productPrice = row.querySelector('.productPrice').textContent.trim();
+        const productQntText = row.querySelector('.productQnt').innerText.trim();
+        const productQnt = productQntText.split(" ")[0].trim();
+        const harga = row.querySelector('.form-harga').value
+        const jumlah = row.querySelector('.form-qty').value
+        const total = harga * jumlah
+
+        results.push({
+          ProductCode: productCode,
+          ProductName: productName,
+          ProductQnt: productQnt,
+          ProductPrice: productPrice,
+          Harga: harga,
+          Jumlah: jumlah,
+          Total: total
+        });
+
+        displaySelectedProducts(results);
+        document.getElementById("productForm").style.display = "none";
+        document.getElementById("addForm").style.display = "block";
+      });
+    }
+
+    function formatRupiah(angka) {
+      let reverse = angka.toString().split('').reverse().join(''); let
+        ribuan = reverse.match(/\d{1,3}/g); let formatted = ribuan.join('.').split('').reverse().join(''); return 'Rp '
+          + formatted;
+    }
+
+    function displaySelectedProducts(products) {
+      const resultTable = document.getElementById('break-for-kuantitas');
+      resultTable.innerHTML = ''; // Clear previous results
+      let totalSemua = 0;
+
+      products.forEach(product => {
+        const productContainer = document.createElement('div');
+        productContainer.classList.add('spawn-selected-product')
+
+        const itemName = document.createElement('p');
+        itemName.id = 'item-name'
+        itemName.textContent = `${product.ProductName}`;
+        productContainer.appendChild(itemName);
+
+        const itemQty = document.createElement('p');
+        itemQty.id = 'item-qty'
+        itemQty.textContent = `${product.Jumlah}`;
+        productContainer.appendChild(itemQty);
+
+        resultTable.appendChild(productContainer);
+        totalSemua += parseInt(product.Total);
+      });
+      const productContainer = document.createElement('div');
+      productContainer.classList.add('spawn-selected-product')
+
+      const itemName = document.createElement('p');
+      itemName.id = 'item-name'
+      itemName.textContent = ``;
+      productContainer.appendChild(itemName);
+
+      const itemQty = document.createElement('p');
+      itemQty.id = 'item-qty'
+      itemQty.textContent = `${formatRupiah(totalSemua)}`;
+      productContainer.appendChild(itemQty);
+      document.getElementById('total').value = totalSemua;
+      resultTable.appendChild(productContainer);
+    }
+  </script>
+  <script>
+    //simpan ke database
+    let save = () => {
+      let isi_id = document.getElementById("kode").value;
+      let isi_supplier = document.getElementById("supplier").value;
+      let isi_date = document.getElementById("tanggal").value;
+      let isi_total = document.getElementById("total").value;
+      let isi_status = document.getElementById("status").value;
+      if (isi_supplier == "") {
+        document.getElementById("error-message").innerText = "Data Supplier Kosong";
+      } else if (results.length == 0) {
+        document.getElementById("error-message").innerText = "Produk Kosong";
+      } else {
+        axios({
+          method: 'post',
+          url: '/api/purchase-purchases',
+          data: {
+            id: isi_id,
+            OrderDate: isi_date,
+            Total: isi_total,
+            Status: isi_status,
+            SupplierID: isi_supplier
+          }
+        }).then(() => {
+          results.forEach((tmp) => {
+            axios({
+              method: 'post',
+              url: '/api/purchase-purchaseproducts',
+              data: {
+                Qnt: tmp.Jumlah,
+                Price: tmp.Harga,
+                ProductTotal: tmp.Total,
+                PurchasesID: isi_id,
+                ProductCode: tmp.ProductCode
+              }
+            }).then(() => {
+              let start = tmp.ProductQnt * tmp.ProductPrice;
+              let stokAkhir = parseInt(tmp.ProductQnt) + parseInt(tmp.Jumlah);
+              let avgPrice = (start + parseInt(tmp.Total)) / stokAkhir;
+              axios({
+                method: 'put',
+                url: `/api/purchase-product/${tmp.ProductCode}`,
+                data: {
+                  ProductQnt: stokAkhir,
+                  BuyPrice: avgPrice,
+                }
+              }).then(() => {
+              }).catch((err) => {
+                alert('Error : ' + err);
+              });
+            }).catch((err) => {
+              alert('error' + err);
+            });
+          });
+          location.reload();
+        }).catch((err) => {
+          alert('error' + err);
+        });
+        location.reload();
+      }
+
+    }
+  </script>
+  <script>
+    //delete
+    const products = JSON.parse('<%- JSON.stringify(products)%> ');
+    let del = (id, purchaseJson) => {
+      let qnt = 0;
+      let price = 0;
+      const purchase = JSON.parse(purchaseJson);
+      purchase.forEach((tmp) => {
+        products.forEach((pro) => {
+          if (pro.ProductCode == tmp.ProductCode) {
+            qnt = pro.Qnt - tmp.Qnt;
+            let tmpPrice = parseInt(pro.Qnt) * parseFloat(pro.BuyPrice);
+            price = (parseFloat(tmpPrice) - parseInt(tmp.Total)) / parseInt(qnt);
+            axios({
+              method: 'put',
+              url: `/api/purchase-product/${tmp.ProductCode}`,
+              data: {
+                ProductQnt: qnt,
+                BuyPrice: price,
+              }
+            }).then(() => {
+              axios.delete('/api/purchase-purchaseproducts/' + id).then((result) => {
+                axios.delete('/api/purchase-debt/' + id).then((result) => {
+                  axios.delete('/api/purchase-purchases/' + id).then((result) => {
+                    location.reload();
+                  }).catch((err) => {
+                    alert('error ' + err)
+                  });
+                  location.reload();
+                }).catch((err) => {
+                  alert('error ' + err)
+                });
+                location.reload();
+              }).catch((err) => {
+                alert('error ' + err)
+              });
+            }).catch((err) => {
+              alert('Error : ' + err);
+            });
+            console.log(qnt, price);
+          }
+        })
+      });
+    }
+  </script>
+  <script>
+    //sort dan search
+    function sortData(sortBy, order) {
+      window.location.href = `/purchase?sort=${sortBy}&order=${order}`;
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === 'Enter') {
+        console.log("berhasil");
+        searchProduct();
+      }
+    }
+
+    function searchProduct() {
+      const query = document.getElementById('search-input').value;
+      window.location.href = `/purchase?search=${query}`;
+    }
+
+    function show() {
+      const start = document.getElementById("startDate").value;
+      const end = document.getElementById("endDate").value;
+      if (start && end) {
+        window.location.href = `/purchase?startDate=${start}&endDate=${end}`;
+      }
+    }
+  </script>
+  <script>
+    // When the user clicks anywhere outside of the form-box, close it
+    var model_box_add = document.getElementById("addForm");
+    var model_box_buy = document.getElementById("productForm");
+    window.onclick = function (event) {
+      if (event.target == model_box_add || event.target == model_box_buy) {
+        model_box_add.style.display = "none";
+        model_box_buy.style.display = "none";
+      }
+    }
+  </script>
+  <script>
+    // JavaScript untuk mengatur nilai default
+    document.addEventListener('DOMContentLoaded', function () {
+      const dateInput = document.getElementById('tanggal');
+      const today = new Date();
+
+      // Format tanggal menjadi YYYY-MM-DD
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // bulan dimulai dari 0
+      const day = String(today.getDate()).padStart(2, '0');
+
+      const formattedDate = `${year}-${month}-${day}`;
+
+      // Set nilai default input tanggal
+      dateInput.value = formattedDate;
+    });
+  </script>
+</body>
+
+</html>
