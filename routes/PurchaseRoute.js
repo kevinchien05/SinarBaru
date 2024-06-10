@@ -29,6 +29,8 @@ router.get('/purchase', async (req, res) => {
                 { OrderDate: { [Op.like]: `%${search}%` } },
                 { Total: { [Op.like]: `%${search}%` } },
                 { '$Supplier.SupplierName$': { [Op.like]: `%${search}%` } },
+                { '$PurchaseProducts.Product.ProductName$': { [Op.like]: `%${search}%` } },
+                { '$PurchaseProducts.Qnt$': { [Op.like]: `%${search}%` } }
             ], Status: {
                 [Op.in]: [0, 2]
             }, OrderDate: {

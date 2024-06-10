@@ -10,14 +10,8 @@
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
   <link href="css/style.css" rel="stylesheet">
-  <title>Data Supplier</title>
-  <style>
-    img {
-      width: 50px;
-      height: 50px;
-    }
-  </style>
   <script type="text/javascript" src="js/controller.js"></script>
+  <title>Data Supplier</title>
 </head>
 
 <body>
@@ -73,7 +67,7 @@
 
           <!-- Stok Barang Page -->
           <li>
-            <a href="/product" class="nav-link active" aria-current="page">
+            <a href="/product" class="nav-link link-dark">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-seam"
                 viewBox="0 0 16 16">
                 <path
@@ -154,7 +148,7 @@
 
           <!-- Data Utang Page -->
           <li>
-            <a href="/debt" class="nav-link link-dark">
+            <a href="/debt" class="nav-link active" aria-current="page">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                 class="bi bi-credit-card" viewBox="0 0 16 16">
                 <path
@@ -203,11 +197,11 @@
     </div>
   </div>
 
-  <!-- Container for Showing Stok List -->
+  <!-- Container for Showing List Pembelian -->
   <div class="list-data-awal">
     <div class="before-divider">
       <div class="item-for-all">
-        Stok
+        Riwayat Utang
       </div>
 
       <!-- Search Button -->
@@ -216,331 +210,164 @@
           id="search-input" value="<%= search %>" onkeypress="handleKeyPress(event)">
       </div>
 
-      <!-- Adding New Produk -->
+      <!-- Adding Pembelian -->
       <div class="item-btn">
-        <button type="button" id="add" class="btn btn-success" onclick="add('<%= counter %>')">Tambah Produk <svg
-            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
-            viewBox="0 0 16 16">
+        <button type="button" id="TambahDana" class="btn btn-success">Back <svg xmlns="http://www.w3.org/2000/svg"
+            width="16" height="16" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
             <path
               d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
           </svg></button>
       </div>
       <br>
       <br>
-
-      <!-- The Add form -->
-      <div class="form-popup" id="addForm">
-        <form action="" method="" enctype="multipart/form-data" id="product-form" class="form-container">
-          <h2 class="text-form">Produk Baru</h2>
-
-          <label for="file">Gambar</label>
-          <br>
-          <div class="choose-file-bg">
-            <input type="file" id="file" name="file" required>
-          </div>
-          <br>
-
-          <label for="ProductCode" hidden>Kode Barang</label>
-          <input type="text" name="ProductCode" id="ProductCode" required hidden>
-
-          <label for="ProductName">Nama Barang</label>
-          <input type="text" name="ProductName" id="ProductName" required>
-
-          <label for="Unit">Satuan</label>
-          <input type="text" name="Unit" id="Unit" required>
-
-          <label for="SellPrice">Harga</label>
-          <input type="text" name="SellPrice" id="SellPrice" required>
-
-          <label for="BuyPrice" hidden>Harga Beli</label>
-          <input type="text" name="BuyPrice" id="BuyPrice" value="0" hidden>
-
-          <label for="Qnt" hidden>Kuantitas</label>
-          <input type="text" name="Qnt" id="Qnt" value="0" hidden>
-
-          <p id="error-message" style="color: red;"></p>
-
-          <div class="button-form">
-            <button type="submit" class="btn btn-success yes-form-btn" id="simpan">Simpan</button>
-            <button type="button" class="btn btn-danger no-form-btn" onclick="closeForm()">Batal</button>
-          </div>
-        </form>
-      </div>
-
     </div>
 
-    <div class="title-divider-stok">
+    <div class="title-divider-pembelian">
       <!-- Identification For Each Data -->
-      <div class="gambar-barang">
-        Gambar
-      </div>
-
-      <div class="kode-barang">
-        Kode Barang
+      <div class="nama-supplier">
+        Supplier
         <button type="button" class="btn btn-sorting" id=""
-          onclick="sortData('ProductCode',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
-            xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-arrow-down-up"
+          onclick="sortData('supplierName',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
+            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up"
             viewBox="0 0 16 16">
             <path fill-rule="evenodd"
               d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
           </svg></button>
       </div>
 
-      <div class="nama-barang">
-        Nama Barang
+      <div class="tgl-pesanan">
+        Tanggal Pesanan
         <button type="button" class="btn btn-sorting" id=""
-          onclick="sortData('ProductName',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
-            xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-arrow-down-up"
+          onclick="sortData('PayDate',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
+            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up"
             viewBox="0 0 16 16">
             <path fill-rule="evenodd"
               d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
           </svg></button>
       </div>
 
-      <div class="jumlah-stok-pg">
-        Stok
-        <button type="button" class="btn btn-sorting" id=""
-          onclick="sortData('Qnt',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg xmlns="http://www.w3.org/2000/svg"
-            width="14" height="14" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-              d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
-          </svg></button>
+      <div class="nama-barang-pembelian">
+        Produk
+      </div>
+
+      <div class="jumlah-stok">
+        Kuantitas
       </div>
 
       <div class="satuan-stok">
         Satuan
       </div>
 
-      <div class="harga-stok-beli">
-        Harga Beli
-      </div>
-
       <div class="harga-stok">
-        Harga Jual
+        Harga Total
+        <button type="button" class="btn btn-sorting" id=""
+          onclick="sortData('total',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg xmlns="http://www.w3.org/2000/svg"
+            width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
+          </svg></button>
       </div>
 
-      <div class="actions-supplier">
-        <h5>Actions</h5>
+      <div class="jenis-pembayaran">
+        Tanggal Pelunasan
+        <button type="button" class="btn btn-sorting" id=""
+          onclick="sortData('pelunasan',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg xmlns="http://www.w3.org/2000/svg"
+            width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
+          </svg></button>
       </div>
+
+
       <!-- Looping Data List Produk -->
-      <hr class="stok-barang">
-      <!-- Tampilkan Produk -->
-      <% for( let i=0; i < products.length; i++ ) { %>
-        <div id="item">
-          <a href="<%= products[i].Url %>" target="_blank"><img src='<%= products[i].Url %>'></a>
-        </div>
-        <div class="item-stok" id="item">
+      <hr class="for-pembelian">
+      <% for( let i=0; i < debts.length; i++ ) { %>
+        <div class="item centereditem" id="item">
           <p id="kode">
-            <%= products[i].ProductCode %>
+            <%= debts[i].purchase.supplier.SupplierName %>
           </p>
         </div>
-        <div class="item-stok" id="item">
+        <div class="item centereditem" id="item">
           <p id="kode">
-            <%= products[i].ProductName %>
+            <%= formatDate(debts[i].PayDate) %>
           </p>
         </div>
-        <div class="item-stok-4" id="item-4">
-          <p id="kode-4">
-            <%= products[i].Qnt %>
-          </p>
-        </div>
-        <div class="item-stok" id="item">
-          <p id="kode">
-            <%= products[i].Unit %>
-          </p>
-        </div>
-        <div class="item-stok" id="item">
-          <p id="kode">
-            <%= formatRupiah(products[i].BuyPrice || 0) %>
-          </p>
-        </div>
-        <div class="item-stok" id="item">
-          <p id="kode">
-            <%= formatRupiah(products[i].SellPrice) %>
-          </p>
-        </div>
-        <div class="icon-actions" id="icon-actions">
-          <!-- Button for edit data Produk -->
-          <div class="actions-edit">
-            <button type="button" class="btn" id="edit"
-              onclick="edit('<%= products[i].ProductCode %>','<%= products[i].ProductName %>', '<%= products[i].SellPrice %>', '<%= products[i].Unit %>','<%= products[i].Image %>')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                class="bi bi-pencil-square text-primary" viewBox="0 0 16 16">
-                <path
-                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                <path fill-rule="evenodd"
-                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-              </svg>
-            </button>
-          </div>
+        <div class="item centereditem" id="item">
+          <% for( let j=0; j < debts[i].purchase.purchaseproducts.length; j++ ) { %>
+            <% if (debts[i].purchase.purchaseproducts[j].Qnt==0) { %>
+              <p hidden></p>
+              <% } else { %>
+                <p id="kode">
+                  <%= debts[i].purchase.purchaseproducts[j].product.ProductName %>
+                </p><br>
+                <% } %>
 
-          <!-- Button for delete data Produk -->
-          <div id="actions-delete" class="actions-delete">
-            <button type="button" class="btn" id="delete" onclick="del('<%= products[i].ProductCode %>')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                class="bi bi-trash text-danger" viewBox="0 0 16 16">
-                <path
-                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z">
-                </path>
-                <path
-                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z">
-                </path>
-              </svg>
-            </button>
-          </div>
+                  <% } %>
         </div>
+        <div class="item-4 centereditem" id="item-4">
+          <% for( let j=0; j < debts[i].purchase.purchaseproducts.length; j++ ) { %>
+            <% if (debts[i].purchase.purchaseproducts[j].Qnt==0) { %>
+              <p hidden></p>
+              <% } else { %>
+                <p id="kode-4">
+                  <%= debts[i].purchase.purchaseproducts[j].Qnt %>
+                </p><br>
+                <% } %>
+
+                  <% } %>
+        </div>
+        <div class="item-5 centereditem" id="item-5">
+          <% for( let j=0; j < debts[i].purchase.purchaseproducts.length; j++ ) { %>
+            <% if (debts[i].purchase.purchaseproducts[j].Qnt==0) { %>
+              <p hidden></p>
+              <% } else { %>
+                <p id="kode-5">
+                  <%= debts[i].purchase.purchaseproducts[j].product.Unit %>
+                </p><br>
+                <% } %>
+
+                  <% } %>
+        </div>
+        <div class="item centereditem" id="item">
+          <p id="kode">
+            <%= formatRupiah(debts[i].purchase.Total) %>
+          </p>
+        </div>
+        <div class="item centereditem" id="item">
+          <p id="kode">
+            <%= formatDate(debts[i].purchase.OrderDate) %>
+          </p>
+        </div>
+        <!-- Button for bayar (ignore div class name)-->
+        <div class="actions-delete centereditem">
+          
+        </div>
+
         <% } %>
 
 
 
-          <!-- The Edit form -->
-          <div class="form-popup" id="editForm">
-            <form action="" method="" class="form-container" enctype="multipart/form-data" id="edit-form">
-              <h2 class="text-form">Edit Barang</h2>
-
-              <label for="Efile">Gambar</label>
-              <br>
-              <div class="choose-file-bg">
-                <input type="file" id="Efile" name="Efile">
-              </div>
-              <br>
-
-              <label for="EProductCode" hidden>Kode Barang</label>
-              <input type="text" name="EProductCode" id="EProductCode" hidden>
-
-              <label for="EProductName">Nama Barang</label>
-              <input type="text" name="EProductName" id="EProductName" required>
-
-              <label for="EUnit">Satuan</label>
-              <input type="text" name="EUnit" id="EUnit" required>
-
-              <label for="ESellPrice">Harga</label>
-              <input type="text" name="ESellPrice" id="ESellPrice">
-
-              <p id="edit-message" style="color: red;"></p>
-
-              <div class="button-form">
-                <button type="submit" class="btn btn-success yes-form-btn" id="Esimpan">Simpan</button>
-                <button type="button" class="btn btn-danger no-form-btn" onclick="editCloseForm()">Batal</button>
-              </div>
-            </form>
-          </div>
-
     </div>
+    <% function formatDate(dateString) { const date=new Date(dateString); const
+      day=String(date.getDate()).padStart(2, '0' ); const month=String(date.getMonth() + 1).padStart(2, '0' ); const
+      year=date.getFullYear(); return `${day}-${month}-${year}`; } %>
 
-    <% function formatRupiah(angka) { let reverse=angka.toString().split('').reverse().join(''); let
-      ribuan=reverse.match(/\d{1,3}/g); let formatted=ribuan.join('.').split('').reverse().join(''); return 'Rp '
-      +formatted; } %>
+      <% function formatRupiah(angka) { let reverse=angka.toString().split('').reverse().join(''); let
+        ribuan=reverse.match(/\d{1,3}/g); let formatted=ribuan.join('.').split('').reverse().join(''); return 'Rp '
+        +formatted; } %>
   </div>
-
-
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
 
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script>
-    //tambah produk
-    function closeForm() {
-      document.getElementById("addForm").style.display = "none";
-    }
-
-    async function generateNumber(counterTmp) {
-      let tmp = parseInt(counterTmp);
-      tmp++;
-      exists = true;
-      while (exists) {
-        formattedCounter = tmp.toString().padStart(3, '0');
-        result = `A${formattedCounter}`;
-        let kode = await axios.get(`/api/stok/${result}`);
-        if (kode.data.response) {
-          tmp++;
-        } else {
-          exists = false;
-        }
-      }
-      return result;
-    }
-
-    let add = async (counter) => {
-      document.getElementById("addForm").style.display = "block";
-      document.getElementById("ProductCode").value = await generateNumber(counter);
-    }
-
-    document.getElementById('product-form').addEventListener('submit', async function (event) {
-      event.preventDefault();
-
-      const formData = new FormData(this);
-      try {
-        const response = await axios.post('/api/stok', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        document.getElementById('error-message').textContent = response.data.msg;
-        if (response.data.msg == "") {
-          location.reload();
-        }
 
 
-      } catch (error) {
-        const errorMessage = error.response ? error.response.data.msg : 'Error uploading product';
-        console.error('Error uploading product:', error.response.data.msg);
-        alert('Error uploading product: ' + error.response.data.msg);
-      }
-    });
-
-  </script>
-  <script>
-    //edit
-    function editCloseForm() {
-      document.getElementById("editForm").style.display = "none";
-    }
-    let edit = (kode, nama, harga, satuan, gambar) => {
-      document.getElementById("editForm").style.display = "block";
-      document.getElementById("EProductCode").value = kode;
-      document.getElementById("EProductName").value = nama;
-      document.getElementById("EUnit").value = satuan;
-      document.getElementById("ESellPrice").value = harga;
-    }
-
-    document.getElementById('edit-form').addEventListener('submit', async function (event) {
-      event.preventDefault();
-
-      const formData = new FormData(this);
-      try {
-        const response = await axios.put(`/api/stok/${document.getElementById("EProductCode").value}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        });
-        document.getElementById('edit-message').textContent = response.data.msg;
-        if (response.data.msg == "") {
-          location.reload();
-        }
-
-      } catch (error) {
-        const errorMessage = error.response ? error.response.data.msg : 'Error uploading product';
-        console.error('Error uploading product:', error.response.data.msg);
-        alert('Error uploading product: ' + error.response.data.msg);
-      }
-    });
-  </script>
-  <script>
-    //delete produk
-    let del = (kode) => {
-      axios.delete('/api/stok/' + kode).then((result) => {
-        location.reload();
-      }).catch((err) => {
-        alert('error ' + err)
-      });
-    }
-  </script>
   <script>
     //sort dan search
     function sortData(sortBy, order) {
-      window.location.href = `/product?sort=${sortBy}&order=${order}`;
+      window.location.href = `/debtHistory?sort=${sortBy}&order=${order}`;
     }
 
     function handleKeyPress(event) {
@@ -552,18 +379,11 @@
 
     function searchProduct() {
       const query = document.getElementById('search-input').value;
-      window.location.href = `/product?search=${query}`;
+      window.location.href = `/debtHistory?search=${query}`;
     }
-  </script>
-  <script>
-    // When the user clicks anywhere outside of the form-box, close it
-    var model_box = document.getElementById("addForm");
-    var model_box_edit = document.getElementById("editForm");
-    window.onclick = function (event) {
-      if (event.target == model_box || event.target == model_box_edit) {
-        model_box.style.display = "none";
-        model_box_edit.style.display = "none";
-      }
+
+    document.getElementById("TambahDana").onclick = () => {
+      window.location.href='/debt';
     }
   </script>
 

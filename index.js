@@ -28,6 +28,7 @@ import RootRouter from './routes/Root.js';
 import SupplierRoute from './routes/SupplierRoute.js';
 import ProductRoute from './routes/ProductRoute.js';
 import PurchaseRoute from './routes/PurchaseRoute.js';
+import DebtRoute from './routes/DebtRoute.js';
 
 
 
@@ -59,6 +60,8 @@ app.use(SupplierRoute);
 app.use(ProductRoute);
 //Purchases
 app.use(PurchaseRoute);
+//Debt
+app.use(DebtRoute);
 
 //Operational
 app.get('/operational', async (req, res) => {
@@ -74,35 +77,6 @@ app.get('/operational', async (req, res) => {
     }
 
 });
-
-//dept
-app.get('/debt', async (req, res) => {
-    try {
-        Purchase.findAll({
-            where: { Status: 1 },
-            include: [
-                { model: PurchaseProduct, include: [{ model: Product }] },
-                { model: Supplier }]
-        }).then((results) => {
-            res.render("debt", { i_user: req.session.user || "", purchases: results });
-        });
-    } catch (error) {
-        res.status(500).send("Terjadi Error");
-    }
-});
-
-app.get('/debtHistory', (req, res) => {
-    Debt.findAll({
-        include: [
-            { model: Purchase, include: [{ model: PurchaseProduct, include: [{ model: Product }] }, { model: Supplier }] }
-        ]
-    }).then((results) => {
-        res.render("debtHis", { i_user: req.session.user || "", debts: results });
-    });
-});
-
-
-
 
 //Sales
 app.get('/sale', async (req, res) => {
@@ -198,28 +172,6 @@ app.post('/api/fund', (req, res) => {
         res.json({ status: 502, error: err });
     })
 });
-
-
-
-//debt
-app.put('/api/debt/:id', (req, res) => {
-    Purchase.update({ Status: req.body.Status, OrderDate: req.body.OrderDate },
-        { where: { id: req.params.id } }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
-
-app.post('/api/debt', (req, res) => {
-    Debt.create({ Date: req.body.Date, PurchasesID: req.body.PurchasesID }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-})
 
 //Sale
 //tambah table purchase
