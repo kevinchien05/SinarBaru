@@ -29,6 +29,8 @@ import SupplierRoute from './routes/SupplierRoute.js';
 import ProductRoute from './routes/ProductRoute.js';
 import PurchaseRoute from './routes/PurchaseRoute.js';
 import DebtRoute from './routes/DebtRoute.js';
+import OperationalRoute from './routes/OperationalRoute.js';
+import FundRoute from './routes/FundRoute.js';
 
 
 
@@ -62,21 +64,13 @@ app.use(ProductRoute);
 app.use(PurchaseRoute);
 //Debt
 app.use(DebtRoute);
+//Operational
+app.use(OperationalRoute);
+//Fund
+app.use(FundRoute);
 
 //Operational
-app.get('/operational', async (req, res) => {
-    try {
-        let operationalCount = await Operational.count();
-        Operational.findAll({
-            include: [{ model: User }]
-        }).then((results) => {
-            res.render("operational", { i_user: req.session.user || "", operationals: results, counter: operationalCount });
-        });
-    } catch (error) {
-        res.status(500).send("Terjadi Error");
-    }
 
-});
 
 //Sales
 app.get('/sale', async (req, res) => {
@@ -135,43 +129,11 @@ app.get('/api/user', (req, res) => {
 });
 
 
-//Operational
-app.post('/api/operational', (req, res) => {
-    Operational.create({ id: req.body.id, Date: req.body.Date, Description: req.body.Description, Total: req.body.Total, Status: req.body.Status, UserID: req.body.UserID }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
 
-app.put('/api/operational/:id', (req, res) => {
-    Operational.update({ Date: req.body.Date, Description: req.body.Description, Total: req.body.Total, Status: req.body.Status },
-        { where: { id: req.params.id } }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
 
-app.delete('/api/operational/:id', (req, res) => {
-    Operational.destroy({ where: { id: req.params.id } }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 500, error: err, Response: {} });
-    })
-});
 
-app.post('/api/fund', (req, res) => {
-    Fund.create({ Date: req.body.Date, Total: req.body.Total, Status: req.body.Status, OperationalID: req.body.OperationalID }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
+//Fund
+
 
 //Sale
 //tambah table purchase
