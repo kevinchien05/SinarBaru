@@ -31,6 +31,7 @@ import PurchaseRoute from './routes/PurchaseRoute.js';
 import DebtRoute from './routes/DebtRoute.js';
 import OperationalRoute from './routes/OperationalRoute.js';
 import FundRoute from './routes/FundRoute.js';
+import SaleRoute from './routes/SaleRoute.js';
 
 
 
@@ -68,26 +69,9 @@ app.use(DebtRoute);
 app.use(OperationalRoute);
 //Fund
 app.use(FundRoute);
-
-//Operational
-
-
 //Sales
-app.get('/sale', async (req, res) => {
-    try {
-        let saleCount = await Sale.count();
-        Sale.findAll({
-            include: [
-                { model: SaleProduct, include: [{ model: Product }] }]
-        }).then((results) => {
-            Product.findAll().then((pro) => {
-                res.render("sale", { i_user: req.session.user || "", sales: results, products: pro, counter: saleCount });
-            })
-        });
-    } catch (error) {
-        res.status(500).send("Terjadi Error");
-    }
-});
+app.use(SaleRoute);
+
 
 //Retur
 app.get('/retur', async (req, res) => {
@@ -132,58 +116,10 @@ app.get('/api/user', (req, res) => {
 
 
 
-//Fund
 
 
 //Sale
-//tambah table purchase
-app.post('/api/sale-sales', (req, res) => {
-    Sale.create({ id: req.body.id, OrderDate: req.body.OrderDate, Total: req.body.Total }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
 
-//tambah table purchaseproduct
-app.post('/api/sale-saleproducts', (req, res) => {
-    SaleProduct.create({ Qnt: req.body.Qnt, Price: req.body.Price, Total: req.body.ProductTotal, SalesID: req.body.SalesID, ProductCode: req.body.ProductCode }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
-
-//update table product
-app.put('/api/sale-product/:kode', (req, res) => {
-    Product.update({ Qnt: req.body.ProductQnt },
-        { where: { ProductCode: req.params.kode } }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
-
-app.delete('/api/sale-sales/:id', (req, res) => {
-    Sale.destroy({ where: { id: req.params.id } }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 500, error: err, Response: {} });
-    })
-});
-
-app.delete('/api/sale-saleproducts/:id', (req, res) => {
-    SaleProduct.destroy({ where: { SalesID: req.params.id } }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 500, error: err, Response: {} });
-    })
-});
 
 //Retur
 app.get('/api/retur/:id/:date', async (req, res) => {

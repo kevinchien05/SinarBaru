@@ -8,10 +8,9 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
   <link href="css/style.css" rel="stylesheet">
-  <script type="text/javascript" src="js/controller.js"></script>
   <title>Data Supplier</title>
+  <script type="text/javascript" src="js/controller.js"></script>
 </head>
 
 <body>
@@ -29,7 +28,9 @@
     <ul>
       <li>
         <!-- Showing User Name -->
-        <a class="nav-link disabled" href="#" tabindex="-2" aria-disabled="true"><%= i_user.Username %></a>
+        <a class="nav-link disabled" href="#" tabindex="-2" aria-disabled="true">
+          <%= i_user.Username %>
+        </a>
       </li>
     </ul>
     </div>
@@ -77,7 +78,7 @@
 
           <!-- Data Pembelian Page -->
           <li>
-            <a href="/purchase" class="nav-link active" aria-current="page">
+            <a href="/purchase" class="nav-link link-dark">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart-plus"
                 viewBox="0 0 16 16">
                 <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z" />
@@ -104,7 +105,7 @@
 
           <!-- Data Penjualan Page -->
           <li>
-            <a href="/sale" class="nav-link link-dark">
+            <a href="/sale" class="nav-link active" aria-current="page">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bag-check"
                 viewBox="0 0 16 16">
                 <path fill-rule="evenodd"
@@ -199,7 +200,7 @@
   <div class="list-data-awal">
     <div class="before-divider">
       <div class="item-for-all">
-        Filter Tanggal Pembelian
+        Filter Tanggal Penjualan
       </div>
     </div>
 
@@ -230,7 +231,7 @@
   <div class="list-data-awal">
     <div class="before-divider">
       <div class="item-for-all">
-        Pembelian
+        Penjualan
       </div>
 
       <!-- Search Button -->
@@ -241,7 +242,7 @@
 
       <!-- Adding Pembelian -->
       <div class="item-btn">
-        <button id="add" class="btn btn-success" onclick="add('<%= counter %>')">Tambah Pembelian <svg
+        <button id="add" class="btn btn-success" onclick="add('<%= counter %>')">Tambah Penjualan <svg
             xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus"
             viewBox="0 0 16 16">
             <path
@@ -253,26 +254,18 @@
 
       <!-- The Add form -->
       <div class="form-popup" id="addForm">
-        <form action="" class="form-container-pembelian">
-          <h2 class="text-form">Pembelian Baru</h2>
+        <form action="" class="form-container-penjualan">
+          <h2 class="text-form">Penjualan Baru</h2>
 
           <input type="text" id="kode" hidden>
 
-          <div class="dropdown-form">
-            <label for="supplier">Supplier</label>
-            <select class="dropdownsupp" id="supplier" name="supplier">
-              <option value="" disabled selected>Select an option</option>
-              <% for( let i=0; i < suppliers.length; i++ ) { %>
-                <option value="<%= suppliers[i].Id %>">
-                  <%= suppliers[i].SupplierName %>
-                </option>
-                <% } %>
-            </select>
-          </div>
           <div class="date-form">
             <label for="tglpesanan">Tanggal Pesanan</label>
             <input type="date" name="tanggal" id="tanggal" required>
           </div>
+
+          <label for="nama">Nama</label>
+          <input type="text" name="nama" id="nama" required>
 
           <div class="button-add-form">
             <div class="for-generate-qty">
@@ -289,19 +282,15 @@
                 <path
                   d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4" />
               </svg></button>
+
+            <label for="deskripsi">Deskripsi</label>
+            <input type="text" name="deskripsi" id="deskripsi" required>
+            <input type="text" id="total" hidden>
+            <p id="error-message" style="color: red;"></p>
           </div>
-          <div class="dropdown-form">
-            <label for="status">Pembayaran</label>
-            <select class="dropdownsupp" id="status" name="status">
-              <option value="0" selected>Cash</option>
-              <option value="1">Utang</option>
-            </select>
-          </div>
-          <input type="text" id="total" hidden>
-          <p id="error-message" style="color: red;"></p>
 
           <div class="button-form">
-            <button class="btn btn-success yes-form-btn" type="button" onclick="save()">Simpan</button>
+            <button type="button" class="btn btn-success yes-form-btn" onclick="SaveForm()">Simpan</button>
             <button type="button" class="btn btn-danger no-form-btn" onclick="closeForm()">Batal</button>
           </div>
         </form>
@@ -353,11 +342,12 @@
                     <%= products[i].Qnt %>
                       <%= products[i].Unit %>
                   </td>
-                  <td id="hargabarang" class="productPrice" hidden>
-                    <%= products[i].BuyPrice %>
+                  <td id="hargabarang" class="productPrice2">
+                    <%= formatRupiah(products[i].SellPrice) %>
                   </td>
-                  <td>Rp. <input class="form-harga" style="width: 90%;" type="text"
-                      id="Harga_<%= products[i].ProductCode %>" name="Harga_<%= products[i].ProductCode %>"></td>
+                  <td id="hargabarang" class="productPrice" hidden>
+                    <%= products[i].SellPrice %>
+                  </td>
                   <td><input class="form-qty" type="text" id="jumlah_<%= products[i].ProductCode %>"
                       name="jumlah_<%= products[i].ProductCode %>"></td>
                 </tr>
@@ -373,19 +363,8 @@
       </div>
     </div>
 
-    <div class="title-divider-pembelian">
+    <div class="title-divider-penjualan">
       <!-- Identification For Each Data -->
-      <div class="nama-supplier">
-        Supplier
-        <button type="button" class="btn btn-sorting" id=""
-          onclick="sortData('supplierName',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
-            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up"
-            viewBox="0 0 16 16">
-            <path fill-rule="evenodd"
-              d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
-          </svg></button>
-      </div>
-
       <div class="tgl-pesanan">
         Tanggal Pesanan
         <button type="button" class="btn btn-sorting" id=""
@@ -397,7 +376,18 @@
           </svg></button>
       </div>
 
-      <div class="nama-barang-pembelian">
+      <div class="tgl-pesanan">
+        Nama
+        <button type="button" class="btn btn-sorting" id=""
+          onclick="sortData('CustomerName',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
+            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up"
+            viewBox="0 0 16 16">
+            <path fill-rule="evenodd"
+              d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
+          </svg></button>
+      </div>
+
+      <div class="nama-barang">
         Produk
       </div>
 
@@ -412,15 +402,16 @@
       <div class="harga-stok">
         Harga Total
         <button type="button" class="btn btn-sorting" id=""
-          onclick="sortData('Total',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg xmlns="http://www.w3.org/2000/svg"
-            width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
+          onclick="sortData('Total',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
+            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up"
+            viewBox="0 0 16 16">
             <path fill-rule="evenodd"
               d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
           </svg></button>
       </div>
 
-      <div class="jenis-pembayaran">
-        Pembayaran
+      <div class="deskripsi-operasional">
+        Deskripsi
       </div>
 
       <div class="actions-supplier">
@@ -429,73 +420,54 @@
 
 
       <!-- Looping Data List Produk -->
-      <hr class="for-pembelian">
-      <% for( let i=0; i < purchases.length; i++ ) { %>
+      <hr class="for-pembelian-penjualan">
+      <% for( let i=0; i < sales.length; i++ ) { %>
         <div class="item centereditem" id="item">
           <p id="kode">
-            <%= purchases[i].supplier.SupplierName %>
+            <%= formatDate(sales[i].OrderDate) %>
           </p>
         </div>
         <div class="item centereditem" id="item">
           <p id="kode">
-            <%= formatDate(purchases[i].OrderDate) %>
+            <%= sales[i].CustomerName %>
           </p>
         </div>
         <div class="item centereditem" id="item">
-          <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
-            <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
-              <p hidden></p>
-              <% } else { %>
-                <p id="kode">
-                  <%= purchases[i].purchaseproducts[j].product.ProductName %>
-                </p><br>
-                <% } %>
-
-                  <% } %>
+          <% for( let j=0; j < sales[i].saleproducts.length; j++ ) { %>
+            <p id="kode">
+              <%= sales[i].saleproducts[j].product.ProductName %>
+            </p><br>
+            <% } %>
         </div>
-        <div class="item-4 centereditem" id="item-4">
-          <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
-            <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
-              <p hidden></p>
-              <% } else { %>
-                <p id="kode-4">
-                  <%= purchases[i].purchaseproducts[j].Qnt %>
-                </p><br>
-                <% } %>
-
-                  <% } %>
+        <div class="item-4 centereditem" id="item">
+          <% for( let j=0; j < sales[i].saleproducts.length; j++ ) { %>
+            <p id="kode-4">
+              <%= sales[i].saleproducts[j].Qnt %>
+            </p><br>
+            <% } %>
         </div>
-        <div class="item-5 centereditem" id="item-5">
-          <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
-            <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
-              <p hidden></p>
-              <% } else { %>
-                <p id="kode-5">
-                  <%= purchases[i].purchaseproducts[j].product.Unit %>
-                </p><br>
-                <% } %>
-
-                  <% } %>
+        <div class="item centereditem" id="item">
+          <% for( let j=0; j < sales[i].saleproducts.length; j++ ) { %>
+            <p id="kode">
+              <%= sales[i].saleproducts[j].product.Unit %>
+            </p><br>
+            <% } %>
         </div>
         <div class="item centereditem" id="item">
           <p id="kode">
-            <%= formatRupiah(purchases[i].Total) %>
+            <%= formatRupiah(sales[i].Total) %>
           </p>
         </div>
         <div class="item centereditem" id="item">
           <p id="kode">
-            <% if (purchases[i].Status==0) { %>
-              Cash
-              <% }else{ %>
-                Lunas
-                <% } %>
+            <%= sales[i].Description %>
           </p>
         </div>
         <!-- Button for delete data Produk -->
-        <div class="actions-delete centereditem" id="icon-actions">
-          <button type="button" class="btn" id="delete"
-            data-purchaseproducts="<%= JSON.stringify(purchases[i].purchaseproducts) %>"
-            onclick="del('<%= purchases[i].id %>', this.dataset.purchaseproducts)">
+        <div class="actions-delete centereditem" id="icon-actions"
+          data-saleproducts="<%= JSON.stringify(sales[i].saleproducts) %>"
+          onclick="del('<%= sales[i].id %>', this.dataset.saleproducts)">
+          <button type="button" class="btn" id="delete">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
               class="bi bi-trash text-danger" viewBox="0 0 16 16">
               <path
@@ -507,8 +479,9 @@
             </svg>
           </button>
         </div>
-
         <% } %>
+
+
     </div>
     <% function formatDate(dateString) { const date=new Date(dateString); const
       day=String(date.getDate()).padStart(2, '0' ); const month=String(date.getMonth() + 1).padStart(2, '0' ); const
@@ -519,13 +492,14 @@
         +formatted; } %>
   </div>
 
-
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
+
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
   <script>
-    //tambah purchase
+    //tambah sale
     function closeForm() {
       document.getElementById("addForm").style.display = "none";
     }
@@ -536,7 +510,7 @@
       exists = true;
       while (exists) {
         result = `${tmp}`;
-        let kode = await axios.get(`/api/purchase/${result}`);
+        let kode = await axios.get(`/api/sale/${result}`);
         if (kode.data.response) {
           tmp++;
         } else {
@@ -550,7 +524,21 @@
       document.getElementById("addForm").style.display = "block";
       document.getElementById("kode").value = await generateNumber(counter);
     }
+
   </script>
+
+  <script>
+    // When the user clicks anywhere outside of the form-box, close it
+    var model_box_add = document.getElementById("addForm");
+    var model_box_buy = document.getElementById("productForm");
+    window.onclick = function (event) {
+      if (event.target == model_box_add || event.target == model_box_buy) {
+        model_box_add.style.display = "none";
+        model_box_buy.style.display = "none";
+      }
+    }
+  </script>
+
   <script>
     //Form produk
     document.getElementById("search-product-form").onclick = () => {
@@ -578,16 +566,14 @@
         const productPrice = row.querySelector('.productPrice').textContent.trim();
         const productQntText = row.querySelector('.productQnt').innerText.trim();
         const productQnt = productQntText.split(" ")[0].trim();
-        const harga = row.querySelector('.form-harga').value
         const jumlah = row.querySelector('.form-qty').value
-        const total = harga * jumlah
+        const total = parseInt(productPrice) * jumlah
 
         results.push({
           ProductCode: productCode,
           ProductName: productName,
           ProductQnt: productQnt,
           ProductPrice: productPrice,
-          Harga: harga,
           Jumlah: jumlah,
           Total: total
         });
@@ -644,49 +630,49 @@
   </script>
   <script>
     //simpan ke database
-    let save = () => {
+    let SaveForm = () => {
       let isi_id = document.getElementById("kode").value;
-      let isi_supplier = document.getElementById("supplier").value;
+      let isi_nama = document.getElementById("nama").value;
       let isi_date = document.getElementById("tanggal").value;
       let isi_total = document.getElementById("total").value;
-      let isi_status = document.getElementById("status").value;
-      if (isi_supplier == "") {
-        document.getElementById("error-message").innerText = "Data Supplier Kosong";
+      let isi_deskripsi = document.getElementById("deskripsi").value;
+      if (isi_nama == "") {
+        document.getElementById("error-message").innerText = "Nama Kosong";
       } else if (results.length == 0) {
         document.getElementById("error-message").innerText = "Produk Kosong";
-      } else {
+      } else if (isi_deskripsi == "") {
+        document.getElementById("error-message").innerText = "Deskripsi Kosong";
+      }
+      else {
         axios({
           method: 'post',
-          url: '/api/purchase-purchases',
+          url: '/api/sale-sales',
           data: {
             id: isi_id,
             OrderDate: isi_date,
             Total: isi_total,
-            Status: isi_status,
-            SupplierID: isi_supplier
+            CustomerName: isi_nama,
+            Description: isi_deskripsi
           }
         }).then(() => {
           results.forEach((tmp) => {
             axios({
               method: 'post',
-              url: '/api/purchase-purchaseproducts',
+              url: '/api/sale-saleproducts',
               data: {
                 Qnt: tmp.Jumlah,
-                Price: tmp.Harga,
+                Price: tmp.ProductPrice,
                 ProductTotal: tmp.Total,
-                PurchasesID: isi_id,
+                SalesID: isi_id,
                 ProductCode: tmp.ProductCode
               }
             }).then(() => {
-              let start = tmp.ProductQnt * tmp.ProductPrice;
-              let stokAkhir = parseInt(tmp.ProductQnt) + parseInt(tmp.Jumlah);
-              let avgPrice = (start + parseInt(tmp.Total)) / stokAkhir;
+              let stokAkhir = parseInt(tmp.ProductQnt) - parseInt(tmp.Jumlah);
               axios({
                 method: 'put',
-                url: `/api/purchase-product/${tmp.ProductCode}`,
+                url: `/api/sale-product/${tmp.ProductCode}`,
                 data: {
                   ProductQnt: stokAkhir,
-                  BuyPrice: avgPrice,
                 }
               }).then(() => {
               }).catch((err) => {
@@ -705,34 +691,26 @@
 
     }
   </script>
+
   <script>
     //delete
     const products = JSON.parse('<%- JSON.stringify(products)%> ');
-    let del = (id, purchaseJson) => {
+    let del = (id, saleJson) => {
       let qnt = 0;
-      let price = 0;
-      const purchase = JSON.parse(purchaseJson);
-      purchase.forEach((tmp) => {
+      const sale = JSON.parse(saleJson);
+      sale.forEach((tmp) => {
         products.forEach((pro) => {
           if (pro.ProductCode == tmp.ProductCode) {
-            qnt = pro.Qnt - tmp.Qnt;
-            let tmpPrice = parseInt(pro.Qnt) * parseFloat(pro.BuyPrice);
-            price = (parseFloat(tmpPrice) - parseInt(tmp.Total)) / parseInt(qnt);
+            qnt = pro.Qnt + tmp.Qnt;
             axios({
               method: 'put',
-              url: `/api/purchase-product/${tmp.ProductCode}`,
+              url: `/api/sale-product/${tmp.ProductCode}`,
               data: {
                 ProductQnt: qnt,
-                BuyPrice: price,
               }
             }).then(() => {
-              axios.delete('/api/purchase-purchaseproducts/' + id).then((result) => {
-                axios.delete('/api/purchase-debt/' + id).then((result) => {
-                  axios.delete('/api/purchase-purchases/' + id).then((result) => {
-                    location.reload();
-                  }).catch((err) => {
-                    alert('error ' + err)
-                  });
+              axios.delete('/api/sale-saleproducts/' + id).then((result) => {
+                axios.delete('/api/sale-sales/' + id).then((result) => {
                   location.reload();
                 }).catch((err) => {
                   alert('error ' + err)
@@ -741,10 +719,11 @@
               }).catch((err) => {
                 alert('error ' + err)
               });
+              location.reload();
             }).catch((err) => {
-              alert('Error : ' + err);
+              alert('error ' + err)
             });
-            console.log(qnt, price);
+            console.log(qnt);
           }
         })
       });
@@ -753,7 +732,7 @@
   <script>
     //sort dan search
     function sortData(sortBy, order) {
-      window.location.href = `/purchase?sort=${sortBy}&order=${order}`;
+      window.location.href = `/sale?sort=${sortBy}&order=${order}`;
     }
 
     function handleKeyPress(event) {
@@ -765,25 +744,14 @@
 
     function searchProduct() {
       const query = document.getElementById('search-input').value;
-      window.location.href = `/purchase?search=${query}`;
+      window.location.href = `/sale?search=${query}`;
     }
 
     function show() {
       const start = document.getElementById("startDate").value;
       const end = document.getElementById("endDate").value;
       if (start && end) {
-        window.location.href = `/purchase?startDate=${start}&endDate=${end}`;
-      }
-    }
-  </script>
-  <script>
-    // When the user clicks anywhere outside of the form-box, close it
-    var model_box_add = document.getElementById("addForm");
-    var model_box_buy = document.getElementById("productForm");
-    window.onclick = function (event) {
-      if (event.target == model_box_add || event.target == model_box_buy) {
-        model_box_add.style.display = "none";
-        model_box_buy.style.display = "none";
+        window.location.href = `/sale?startDate=${start}&endDate=${end}`;
       }
     }
   </script>

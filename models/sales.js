@@ -4,6 +4,8 @@ import SaleProduct from "./saleProduct.js";
 const Sale = sequelize.define('sale', {
     OrderDate: {type: DataTypes.DATE, allowNull: false},
     Total: {type: DataTypes.DECIMAL, allowNull: false},
+    CustomerName: {type: DataTypes.STRING, allowNull: true},
+    Description: {type: DataTypes.STRING, allowNull: true}
 }, {
     updatedAt: false,
     createdAt: false,

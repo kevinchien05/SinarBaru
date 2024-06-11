@@ -70,6 +70,14 @@ router.get('/purchase', async (req, res) => {
     }
 });
 
+router.get('/api/purchase/:kode',  (req, res) => {
+    Purchase.findOne({
+        where: { id: req.params.kode }
+    }).then((results) => {
+        res.json({ status: 200, error: null, response: results });
+    });
+});
+
 //tambah table purchase
 router.post('/api/purchase-purchases', (req, res) => {
     Purchase.create({ id: req.body.id, OrderDate: req.body.OrderDate, Total: req.body.Total, Status: req.body.Status, SupplierID: req.body.SupplierID }
