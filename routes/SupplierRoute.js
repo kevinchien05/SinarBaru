@@ -12,10 +12,10 @@ router.get('/supplier', async (req, res) => {
 
         const searchCondition = search ? {
             [Op.or]: [
-                {Id: {[Op.like]: `%${search}%`}},
-                {SupplierName: {[Op.like]: `%${search}%`}},
-                {PhoneNumber: {[Op.like]: `%${search}%`}},
-                {Address: {[Op.like]: `%${search}%`}}
+                { Id: { [Op.like]: `%${search}%` } },
+                { SupplierName: { [Op.like]: `%${search}%` } },
+                { PhoneNumber: { [Op.like]: `%${search}%` } },
+                { Address: { [Op.like]: `%${search}%` } }
             ]
 
         } : {};
@@ -75,13 +75,17 @@ router.get('/api/supplier', (req, res) => {
     });
 });
 
-router.post('/api/supplier', (req, res) => {
-    Supplier.create({ Id: req.body.Id, SupplierName: req.body.SupplierName, PhoneNumber: req.body.PhoneNumber, Address: req.body.Address, Description: req.body.Description }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
+router.post('/api/supplier', async (req, res) => {
+    const existingSupplier  = await Supplier.findOne({where: {}})
+    try {
+        Supplier.create({ Id: req.body.Id, SupplierName: req.body.SupplierName, PhoneNumber: req.body.PhoneNumber, Address: req.body.Address, Description: req.body.Description }
+        ).then((results) => {
+            res.json({ status: 200, error: null, Response: results });
+        });
+    } catch (error) {
+        console.log(error.message);
+    }
+
 });
 
 router.put('/api/supplier/:id', (req, res) => {

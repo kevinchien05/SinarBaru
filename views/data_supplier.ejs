@@ -175,7 +175,7 @@
 
           <!-- Dana Toko Page -->
           <li>
-            <a href="dana_toko.html" class="nav-link link-dark">
+            <a href="/fund" class="nav-link link-dark">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bank"
                 viewBox="0 0 16 16">
                 <path
@@ -423,6 +423,7 @@
       let isi_no = document.getElementById("nomor").value;
       let isi_alamat = document.getElementById("alamat").value;
       let isi_keterangan = document.getElementById("keterangan").value;
+      let countTmp = 0;
       const regex = /^[A-Za-z][a-zA-Z\s]+$/;
       const num = /^08[0-9]{8,11}$/;
       if (isi_nama == "" || isi_no == "" || isi_alamat == "") {
@@ -432,7 +433,13 @@
         document.getElementById("msg").innerText = "Nama Wajib Huruf";
       } else if (!num.test(isi_no)) {
         document.getElementById("msg").innerText = "Nomor Wajib Angka dan Tidak Boleh Melebihi 13 Angka";
-      } 
+      } else if (isi_nama != "" && isi_no != "" && isi_alamat != "") {
+        countTmp = await axios.get(`/api/supplier2/${isi_nama}/${isi_no}/${isi_alamat}`);
+      }
+      if(countTmp.data.Response[0].total != 0){
+        document.getElementById("msg").innerText = "Data Sudah Ada";
+        console.log(countTmp);
+      }
       else {
         axios({
           method: 'post',

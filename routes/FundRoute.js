@@ -39,4 +39,13 @@ router.post('/api/fund', (req, res) => {
     })
 });
 
+router.delete('/api/fund/:id', (req, res) => {
+    Fund.destroy({ where: { id: req.params.id } }
+    ).then((results) => {
+        res.json({ status: 200, error: null, Response: results });
+    }).catch(err => {
+        res.json({ status: 500, error: err, Response: {} });
+    })
+});
+
 export default router;
