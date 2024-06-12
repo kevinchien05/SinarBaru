@@ -32,6 +32,7 @@ import DebtRoute from './routes/DebtRoute.js';
 import OperationalRoute from './routes/OperationalRoute.js';
 import FundRoute from './routes/FundRoute.js';
 import SaleRoute from './routes/SaleRoute.js';
+import ReturRoute from './routes/ReturRoute.js';
 
 
 
@@ -71,27 +72,9 @@ app.use(OperationalRoute);
 app.use(FundRoute);
 //Sales
 app.use(SaleRoute);
-
-
 //Retur
-app.get('/retur', async (req, res) => {
-    try {
-        let returCount = await Retur.count();
-        Retur.findAll({
-            include: [
-                { model: ReturProduct, include: [{ model: Product }] },
-                { model: Supplier }]
-        }).then((results) => {
-            Supplier.findAll().then((sup) => {
-                Product.findAll().then((pro) => {
-                    res.render("retur", { i_user: req.session.user || "", returs: results, suppliers: sup, products: pro, counter: returCount });
-                })
-            })
-        });
-    } catch (error) {
-        res.status(500).send("Terjadi Error");
-    }
-});
+app.use(ReturRoute);
+
 
 //Laporan kas
 app.get('/kas', (req, res) => {
@@ -110,86 +93,6 @@ app.get('/api/user', (req, res) => {
     User.findAll().then((results) => {
         res.json({ status: 200, error: null, response: results });
     });
-});
-
-
-
-
-
-
-
-//Sale
-
-
-//Retur
-app.get('/api/retur/:id/:date', async (req, res) => {
-    try {
-        await Purchase.findAll({
-            where: {
-                SupplierID: req.params.id, OrderDate: {
-                    [Op.eq]: new Date(req.params.date)
-                }
-            }, include: [{ model: PurchaseProduct, include: [{ model: Product }] }]
-        }).then((results) => {
-            res.json({ status: 200, error: null, response: results });
-        })
-    } catch (error) {
-        res.json({ status: 500, error: error, response: {} });
-    }
-
-});
-
-//tambah table returpurchases
-app.post('/api/retur-purchases', (req, res) => {
-    Retur.create({ id: req.body.id, ReturDate: req.body.ReturDate, Total: req.body.Total, SupplierID: req.body.SupplierID }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
-
-//tambah table returproducts
-app.post('/api/retur-returproducts', (req, res) => {
-    ReturProduct.create({ Qnt: req.body.Qnt, Price: req.body.Price, Total: req.body.ProductTotal, ReturID: req.body.ReturID, ProductCode: req.body.ProductCode }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
-
-//update table product
-app.put('/api/retur-product/:kode', (req, res) => {
-    Product.update({ Qnt: req.body.ProductQnt, BuyPrice: req.body.BuyPrice },
-        { where: { ProductCode: req.params.kode } }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
-
-//update table purchase
-app.put('/api/retur-purchase/:id', (req, res) => {
-    Purchase.update({ Total: req.body.Total },
-        { where: { id: req.params.id } }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
-
-//update table purchase
-app.put('/api/retur-purchaseproduct/:id', (req, res) => {
-    PurchaseProduct.update({ Qnt: req.body.Qnt, Total: req.body.Total },
-        { where: { id: req.params.id } }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
 });
 
 //Laporan Kas
@@ -357,17 +260,6 @@ app.get('/api/create_table', (req, res) => {
     SaleProduct.sync();
     res.end("Tabel berhasil dibuat");
 })
-
-app.get('/res3', (req, res) => {
-    Purchase.findAll({
-        where: { Status: 1 },
-        include: [
-            { model: PurchaseProduct, include: [{ model: Product }] },
-            { model: Supplier }]
-    }).then((results) => {
-        res.json({ status: 200, error: null, response: results });
-    });
-});
 
 app.get('/res', (req, res) => {
     Debt.findAll({

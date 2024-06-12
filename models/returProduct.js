@@ -7,7 +7,7 @@ const ReturProduct = sequelize.define('returproduct', {
     Price: { type: DataTypes.DECIMAL, allowNull: false },
     Total: { type: DataTypes.DECIMAL, allowNull: false },
     ReturID: { type: DataTypes.INTEGER, allowNull: false },
-    ProductCode: { type: DataTypes.STRING, allowNull: false }
+    ProductCode: { type: DataTypes.STRING, allowNull: false },
 }, {
     updatedAt: false,
     createdAt: false,
