@@ -249,8 +249,9 @@
             <label for="tglpesanan">Tanggal Pesanan</label>
             <input type="date" name="tanggal" id="date-picked" required>
           </div>
-          <div>
-            <button type="button" class="btn" onclick="fetchData()">Submit</button>
+
+          <div class="generateButton-retur-pembelian">
+            <button class="btn btn-success yes-form-btn" type="button" onclick="fetchData()">Check</button>
           </div>
 
           <div class="list-retur-pembelian" id="list-retur-pembelian">
@@ -273,8 +274,9 @@
               </tbody>
             </table>
           </div>
+          <p id="msg" style="color: red;"></p>
           <div class="button-form">
-            <button class="btn btn-success yes-form-btn" onclick="save()">Simpan</button>
+            <button class="btn btn-success yes-form-btn" type="button" onclick="save()">Simpan</button>
             <button type="button" class="btn btn-danger no-form-btn" onclick="closeForm()">Batal</button>
           </div>
         </form>
@@ -320,9 +322,8 @@
       <div class="harga-stok">
         Harga Total
         <button type="button" class="btn btn-sorting" id=""
-          onclick="sortData('Total',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
-            xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up"
-            viewBox="0 0 16 16">
+          onclick="sortData('Total',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg xmlns="http://www.w3.org/2000/svg"
+            width="16" height="16" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
               d="M11.5 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L11 2.707V14.5a.5.5 0 0 0 .5.5m-7-14a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L4 13.293V1.5a.5.5 0 0 1 .5-.5" />
           </svg></button>
@@ -424,7 +425,11 @@
       const resultTableBody = document.getElementById('resultTable').querySelector('tbody');
       resultTableBody.innerHTML = ''; // Mengosongkan hasil sebelumnya
       results = [];
-      if (supplier && date) {
+      if(supplier == ""){
+        document.getElementById('msg').innerText = "Supplier Kosong";
+      }
+      else if (supplier && date) {
+        document.getElementById("list-retur-pembelian").style.display = "flex";
         try {
           const responses = await axios.get(`/api/retur/${supplier}/${date}`);
           console.log(responses.data.response)
@@ -436,6 +441,7 @@
                     ProductCode: pur.ProductCode,
                     ProductName: pur.product.ProductName,
                     ProductQnt: pur.Qnt,
+                    TotalQnt: pur.product.Qnt,
                     ProductPrice: pur.Price,
                     ID: pur.id,
                     PurchasesID: pur.PurchasesID
@@ -464,9 +470,8 @@
               })
             })
           } else {
-            const row = document.createElement('p');
-            row.innerText = 'Tidak ada Pembelian';
-            resultTableBody.appendChild(row);
+            document.getElementById("list-retur-pembelian").style.display = "none";
+            document.getElementById('msg').innerText = "Tidak Ada Pembelian";
           }
 
         } catch (error) {
@@ -480,6 +485,7 @@
     let total = 0;
     let purchaseFinalTotal = 0;
     let idPurchase;
+    let status = false;
     let save = () => {
       const products = JSON.parse('<%- JSON.stringify(products)%> ');
       total = 0;
@@ -494,94 +500,106 @@
         //tambah pengecekan input dengan status
         let returnQuantityValue = document.getElementById(`returnQuantityInput_${res.ID}`).value;
         let price = res.ProductPrice;
-        let tmpTotal = returnQuantityValue * price;
-        total += tmpTotal;
+        let qnt = res.ProductQnt;
+        let totalQnt = res.TotalQnt;
         idPurchase = res.PurchasesID;
-      });
-      axios({
-        method: 'post',
-        url: '/api/retur-purchases',
-        data: {
-          id: isi_id,
-          ReturDate: isi_date,
-          Total: total,
-          SupplierID: isi_supplier,
-          PurchasesID: idPurchase
+        if (returnQuantityValue <= qnt && returnQuantityValue <= totalQnt) {
+          status = true;
+          let tmpTotal = returnQuantityValue * price;
+          total += tmpTotal;
+        } else {
+          status = false;
         }
-      }).then(() => {
-        results.forEach((tmp) => {
-          let jumlah = document.getElementById(`returnQuantityInput_${tmp.ID}`).value;
-          let price = tmp.ProductPrice;
-          let Total = jumlah * price;
-          let purchaseQnt = tmp.ProductQnt - jumlah;
-          let purchaseTotal = purchaseQnt * price;
-          purchaseFinalTotal += purchaseTotal;
-
-          axios({
-            method: 'post',
-            url: '/api/retur-returproducts',
-            data: {
-              Qnt: jumlah,
-              Price: price,
-              ProductTotal: Total,
-              ReturID: isi_id,
-              ProductCode: tmp.ProductCode
-            }
-          }).then(() => {
-            axios({
-              method: 'put',
-              url: `/api/retur-purchaseproduct/${tmp.ID}`,
-              data: {
-                Qnt: purchaseQnt,
-                Total: purchaseTotal,
-              }
-            }).then(() => {
-              products.forEach((pro) => {
-                if (pro.ProductCode == tmp.ProductCode) {
-                  qnt = pro.Qnt - jumlah;
-                  let tmpPrice = pro.Qnt * pro.BuyPrice;
-                  price = (tmpPrice - Total) / qnt;
-                  axios({
-                    method: 'put',
-                    url: `/api/purchase-product/${tmp.ProductCode}`,
-                    data: {
-                      ProductQnt: qnt,
-                      BuyPrice: price,
-                    }
-                  }).then(() => {
-                    location.reload();
-                    closeForm();
-                  }).catch((err) => {
-                    alert('Error : ' + err);
-                  });
-                }
-              });
-              location.reload();
-              closeForm();
-            }).catch((err) => {
-              alert('Error : ' + err);
-            });
-
-          }).catch((err) => {
-            alert('error' + err);
-          });
-        });
+      });
+      if (status == true) {
         axios({
-          method: 'put',
-          url: `/api/retur-purchase/${idPurchase}`,
+          method: 'post',
+          url: '/api/retur-purchases',
           data: {
-            Total: purchaseFinalTotal
+            id: isi_id,
+            ReturDate: isi_date,
+            Total: total,
+            SupplierID: isi_supplier,
+            PurchasesID: idPurchase
           }
         }).then(() => {
+          results.forEach((tmp) => {
+            let jumlah = document.getElementById(`returnQuantityInput_${tmp.ID}`).value;
+            let price = tmp.ProductPrice;
+            let Total = jumlah * price;
+            let purchaseQnt = tmp.ProductQnt - jumlah;
+            let purchaseTotal = purchaseQnt * price;
+            purchaseFinalTotal += purchaseTotal;
+
+            axios({
+              method: 'post',
+              url: '/api/retur-returproducts',
+              data: {
+                Qnt: jumlah,
+                Price: price,
+                ProductTotal: Total,
+                ReturID: isi_id,
+                ProductCode: tmp.ProductCode
+              }
+            }).then(() => {
+              axios({
+                method: 'put',
+                url: `/api/retur-purchaseproduct/${tmp.ID}`,
+                data: {
+                  Qnt: purchaseQnt,
+                  Total: purchaseTotal,
+                }
+              }).then(() => {
+                products.forEach((pro) => {
+                  if (pro.ProductCode == tmp.ProductCode) {
+                    qnt = pro.Qnt - jumlah;
+                    let tmpPrice = pro.Qnt * pro.BuyPrice;
+                    price = (tmpPrice - Total) / qnt;
+                    axios({
+                      method: 'put',
+                      url: `/api/purchase-product/${tmp.ProductCode}`,
+                      data: {
+                        ProductQnt: qnt,
+                        BuyPrice: price,
+                      }
+                    }).then(() => {
+                      location.reload();
+                      closeForm();
+                    }).catch((err) => {
+                      alert('Error : ' + err);
+                    });
+                  }
+                });
+                location.reload();
+                closeForm();
+              }).catch((err) => {
+                alert('Error : ' + err);
+              });
+
+            }).catch((err) => {
+              alert('error' + err);
+            });
+          });
+          axios({
+            method: 'put',
+            url: `/api/retur-purchase/${idPurchase}`,
+            data: {
+              Total: purchaseFinalTotal
+            }
+          }).then(() => {
+            location.reload();
+            closeForm();
+          }).catch((err) => {
+            alert('Error : ' + err);
+          });
           location.reload();
-          closeForm();
         }).catch((err) => {
-          alert('Error : ' + err);
+          alert('error' + err);
         });
-        location.reload();
-      }).catch((err) => {
-        alert('error' + err);
-      });
+      }else{
+        document.getElementById('msg').innerText = "Stok Tidak Cukup";
+      }
+
 
 
     }

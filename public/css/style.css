@@ -605,7 +605,7 @@ tr.separated td{
 /*Decoration for list retur can be scrolled*/
 .list-retur-pembelian{
     overflow:auto;
-    display: flex;
+    display: none;
 }
 th.nametableforproduct{
     width: 50%;
@@ -696,5 +696,8 @@ hr.hutang-break{
 .hutang-wrapper-scorlling{
     overflow: auto;
     height: 500px;
+}
+.generateButton-retur-pembelian{
+    text-align: end;
 }
 
