@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <link href="css/style.css" rel="stylesheet">
+  <title>Data Supplier</title>
+  <style>
+    td {
+      margin: 0px;
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation Bar-->
+  <nav class="navbar">
+    <button class="btn ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+      aria-controls="offcanvasWithBothOptions"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+        fill="currentColor" class="bi bi-list" viewBox="3 3 10 10">
+        <path fill-rule="evenodd"
+          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5">
+        </path>
+      </svg>
+    </button>
+    <h1>Sinar Baru</h1>
+    <ul>
+      <li>
+        <!-- Showing User Name -->
+        <a class="nav-link disabled" href="#" tabindex="-2" aria-disabled="true">
+          <%= i_user.Username %>
+        </a>
+      </li>
+    </ul>
+    </div>
+  </nav>
+
+  <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+    aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+      <button type="button" class="btn" data-bs-dismiss="offcanvas" aria-label="Close"><svg
+          xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list"
+          viewBox="3 3 10 10">
+          <path fill-rule="evenodd"
+            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5">
+          </path>
+        </svg></button>
+    </div>
+
+    <!-- List Draft for Menu -->
+    <div class="offcanvas-body">
+      <div class="d-flex flex-column flex-shrink-0" style="width: 100%; height: 100%;">
+        <ul class="nav nav-pills flex-column mb-auto">
+          <!-- Data Supplier Page -->
+          <li>
+            <a href="/supplier" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                class="bi bi-people-fill" viewBox="0 0 16 16">
+                <path
+                  d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
+              </svg>
+              Data Supplier
+            </a>
+          </li><br>
+
+          <!-- Stok Barang Page -->
+          <li>
+            <a href="/product" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-seam"
+                viewBox="0 0 16 16">
+                <path
+                  d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z" />
+              </svg>
+              Stok Barang
+            </a>
+          </li><br>
+
+          <!-- Data Pembelian Page -->
+          <li>
+            <a href="/purchase" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart-plus"
+                viewBox="0 0 16 16">
+                <path d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z" />
+                <path
+                  d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+              </svg>
+              Data Pembelian
+            </a>
+          </li><br>
+
+          <!-- Retur Pembelian Page -->
+          <li>
+            <a href="/retur" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cart-x"
+                viewBox="0 0 16 16">
+                <path
+                  d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793z" />
+                <path
+                  d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+              </svg>
+              Retur Pembelian
+            </a>
+          </li><br>
+
+          <!-- Data Penjualan Page -->
+          <li>
+            <a href="/sale" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bag-check"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                <path
+                  d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+              </svg>
+              Data Penjualan
+            </a>
+          </li><br>
+
+          <!-- Prediksi Penjualan Page -->
+          <li>
+            <a href="/data" class="nav-link active" aria-current="page">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5" />
+              </svg>
+              Prediksi Penjualan
+            </a>
+          </li><br>
+
+          <!-- Laporan Kas Page -->
+          <li>
+            <a href="laporan_kas.html" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                class="bi bi-journal-check" viewBox="0 0 16 16">
+                <path fill-rule="evenodd"
+                  d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                <path
+                  d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
+                <path
+                  d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
+              </svg>
+              Laporan Kas
+            </a>
+          </li><br>
+
+          <!-- Data Utang Page -->
+          <li>
+            <a href="/debt" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                class="bi bi-credit-card" viewBox="0 0 16 16">
+                <path
+                  d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />
+                <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+              </svg> Data Utang
+            </a>
+          </li><br>
+
+          <!-- Biaya Operasional Page -->
+          <li>
+            <a href="/operational" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-cash-coin"
+                viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0" />
+                <path
+                  d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z" />
+                <path
+                  d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z" />
+                <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567" />
+              </svg>
+              Biaya Operasional
+            </a>
+          </li><br>
+
+          <!-- Dana Toko Page -->
+          <li>
+            <a href="/fund" class="nav-link link-dark">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-bank"
+                viewBox="0 0 16 16">
+                <path
+                  d="m8 0 6.61 3h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.38l.5 2a.498.498 0 0 1-.485.62H.5a.498.498 0 0 1-.485-.62l.5-2A.5.5 0 0 1 1 13V6H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 3h.89zM3.777 3h8.447L8 1zM2 6v7h1V6zm2 0v7h2.5V6zm3.5 0v7h1V6zm2 0v7H12V6zM13 6v7h1V6zm2-1V4H1v1zm-.39 9H1.39l-.25 1h13.72z" />
+              </svg> Dana Toko
+            </a>
+          </li>
+        </ul>
+        <hr>
+
+        <!-- Logout Button -->
+        <a href="/logout">
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-danger">Logout</button>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container for Showing List Pembelian -->
+  <div class="list-data-awal">
+    <div class="before-divider">
+      <div class="item-for-all">
+        Prediksi
+      </div>
+    </div>
+
+    <div class="title-divider-prediksipenjualan">
+      <!-- Identification Data -->
+
+      <div class="bulan-prediksi">
+        <div class="btn-group prediksi">
+          <button class="btn btn-secondary btn-sm prediksi-btn" type="button" disabled>
+            <label class="tulisan-label-prediksi">Pilih Produk</label>
+          </button>
+          <select class="form-select form-select-sm prediksi" name="product" id="product" required>
+            <!-- Looping Item -->
+            <option value="" disabled selected>Pilih Produk</option>
+            <% for( let i=0; i < products.length; i++ ) { %>
+              <option value="<%= products[i].ProductCode %>">
+                <%= products[i].ProductName %>
+              </option>
+              <% } %>
+          </select>
+        </div>
+      </div>
+      <div class="tahun-prediksi">
+        <div class="btn-group prediksi">
+          <button class="btn btn-secondary btn-sm prediksi-btn" type="button" disabled>
+            <label class="tulisan-label-prediksi">Bulan</label>
+          </button>
+          <select class="form-select form-select-sm prediksi" id="bulan" name="bulan" required>
+            <option value="" disabled selected>Pilih Bulan</option>
+            <!-- Looping Month -->
+            <script>
+              var monthList = ['Januari', 'Febuari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+              var month_count = monthList.length;
+              for (var d = 0; d < month_count; d++) {
+                document.write("<option value=" + d + ">" + monthList[d] + "</option>");
+              };
+            </script>
+          </select>
+        </div>
+      </div>
+      <div class="tahun-prediksi">
+        <div class="btn-group prediksi">
+          <button class="btn btn-secondary btn-sm prediksi-btn" type="button" disabled>
+            <label class="tulisan-label-prediksi">Tahun</label>
+          </button>
+          <select class="form-select form-select-sm prediksi" id="tahun" name="tahun" required>
+            <!-- Looping Year -->
+            <option value="" disabled selected>Pilih Tahun</option>
+            <script>
+              const startYear = 2024;
+              const endYear = new Date().getFullYear();
+              for (let year = startYear; year <= endYear; year++) {
+                document.write(`<option value="${year}">${year}</option>`)
+              }
+            </script>
+          </select>
+        </div>
+      </div>
+      <div class="item-btn prediksi">
+        <button class="btn btn-success prediksi" onclick="generateTableRows();">Mulai Prediksi</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="list-data-awal-graph" id="list-data-awal-graph">
+    <div class="card-body">
+      <h5 class="card-title">Reports</h5>
+
+      <!-- Line Chart -->
+      <div id="reportsChart"></div>
+      
+      <!-- End Line Chart -->
+    </div>
+  </div>
+
+  <!-- Data Generated Here -->
+  <div id="list-data-awal-prediksi">
+    <div id="title-divider-prediksipenjualan-hasil">
+    </div>
+  </div>
+
+  <div id="text-prediksi-bulandpn">
+    <span id="totalHasilPrediksi"></span>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+
+    // Data for the table
+    const title_SalesData = [
+      { titleBulan: 'Bulan', titleTerjual: 'Terjual', titleTotalTerjual: 'Total Terjual' }
+    ];
+
+    function giveBreak(x) {
+      // Add a line break after each row
+      const lineBreak = document.createElement('tr');
+      lineBreak.classList.add('line-break-prediksi');
+      const lineBreakCell = document.createElement('td');
+      lineBreakCell.setAttribute('colspan', '3');
+      lineBreak.appendChild(lineBreakCell);
+      x.appendChild(lineBreak);
+    };
+    let months = [];
+    let qnts = [];
+    // Function to generate table rows
+    async function generateTableRows() {
+      let sumY = 0, sumX = 0, sumXY = 0, sumX2 = 0, avgY = 0, b = 0, a = 0, y = 0, im = 0, hasil = 0;
+      let sumMonth = 0;
+      const year = document.getElementById('tahun').value;
+      const month = document.getElementById('bulan').value;
+      const start = new Date(year - 1, 0, 1);
+      const end = new Date(year - 1, 11, 31);
+      const sales = await axios.get(`/api/predictTrend/${document.getElementById("product").value}/${start}/${end}`)
+      console.log(sales);
+      document.getElementById('title-divider-prediksipenjualan-hasil').innerText = '';
+      document.getElementById('list-data-awal-graph').style.display = 'flex';
+      document.getElementById('list-data-awal-prediksi').classList.add("list-data-awal-prediksi");
+      document.getElementById('title-divider-prediksipenjualan-hasil').classList.add("title-divider-prediksipenjualan-hasil");
+
+      //Create the table and append it
+      const newTable = document.createElement("table");
+      const newThead = document.createElement("thead");
+      const newTbody = document.createElement("tbody");
+      const newTfoot = document.createElement("tfoot");
+
+      newTable.setAttribute('id', 'sales-table');
+      document.getElementById('title-divider-prediksipenjualan-hasil').appendChild(newTable);
+      document.getElementById('sales-table').appendChild(newThead);
+      document.getElementById('sales-table').appendChild(newTbody);
+      document.getElementById('sales-table').appendChild(newTfoot);
+
+      const thead = document.querySelector('#sales-table thead');
+      const tbody = document.querySelector('#sales-table tbody');
+      const tfoot = document.querySelector('#sales-table tfoot');
+
+      const text_prediksi = document.querySelector('text-prediksi-bulandpn');
+      let totalTerjual = 0;
+
+      title_SalesData.forEach(data => {
+        const baris = document.createElement('tr');
+
+        const titleCell = document.createElement('th');
+        titleCell.textContent = data.titleBulan;
+        baris.appendChild(titleCell);
+
+        const titleCell2 = document.createElement('th');
+        titleCell2.textContent = data.titleTerjual;
+        baris.appendChild(titleCell2);
+
+        const titleCell3 = document.createElement('th');
+        titleCell3.textContent = data.titleTotalTerjual;
+        baris.appendChild(titleCell3);
+
+        thead.appendChild(baris);
+        giveBreak(thead);
+      });
+
+      sales.data.response.forEach(data => {
+        const row = document.createElement('tr');
+
+        const bulanCell = document.createElement('td');
+        let date = new Date(data.Date);
+        let tmpDate = date.getMonth();
+        let dateMonth = date.toLocaleString('default', { month: 'long' });
+        let dateYear = date.getFullYear();
+        let monthYear = `${dateMonth} ${dateYear}`
+        bulanCell.textContent = monthYear;
+        row.appendChild(bulanCell);
+
+        const terjualCell = document.createElement('td');
+        terjualCell.textContent = data.Qnt;
+        row.appendChild(terjualCell);
+
+        const totalCell = document.createElement('td');
+        row.appendChild(totalCell);
+        tbody.appendChild(row);
+        giveBreak(tbody);
+
+        totalTerjual += data.Qnt;
+        months.push(monthYear);
+        qnts.push(data.Qnt);
+        //menghitung trend moment
+        sumY += parseInt(data.Qnt);
+        sumX += parseInt(data.TimeIndex);
+        sumXY += (parseInt(data.Qnt) * parseInt(data.TimeIndex));
+        sumX2 += parseInt(data.TimeIndex) * parseInt(data.TimeIndex);
+        date = new Date(data.Date).getMonth();
+        if (date == month) {
+          sumMonth += data.Qnt;
+        }
+      });
+      console.log(sumMonth);
+      console.log(months);
+      let n = sales.data.response.length
+      avgY = (sumY / n).toFixed(2);
+      console.log(sumY, sumX, sumXY, sumX2, avgY);
+      b = ((n * (sumXY) - (sumX) * (sumY)) / (n * sumX2 - sumX2)).toFixed(2);
+      console.log(b);
+      a = ((sumY - (b * sumX)) / n).toFixed(2);
+      console.log(a);
+      y = (parseFloat(a) + (b * n)).toFixed(2);
+      console.log(y);
+      im = (sumMonth / parseFloat(avgY)).toFixed(2);
+      console.log(im);
+      hasil = Math.round(im * y)
+      console.log(hasil);
+
+      //Showing Final Result of counting on items quantity
+      const hasilPrediksi = document.createElement('tr');
+      const hasilPrediksiNumber = document.createElement('td');
+      const hasilPrediksiNumber2 = document.createElement('td');
+      hasilPrediksiNumber.setAttribute('colspan', '2');
+      hasilPrediksi.append(hasilPrediksiNumber);
+      hasilPrediksiNumber2.setAttribute('id', 'text-hasil');
+      hasilPrediksi.append(hasilPrediksiNumber);
+      hasilPrediksi.append(hasilPrediksiNumber2);
+      tfoot.appendChild(hasilPrediksi);
+      document.getElementById('text-hasil').textContent = totalTerjual;
+
+      //Spawning new box bellow for showing next dataion numbers
+      document.getElementById('text-prediksi-bulandpn').classList.add("list-data-awal-prediksi-2");
+      document.getElementById('totalHasilPrediksi').innerHTML = `Prediksi total penjualan untuk bulan <b>${monthList[month]}</b> adalah <b>${hasil}</b>`;
+    };
+  </script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      new ApexCharts(document.querySelector("#reportsChart"), {
+        series: [{
+          name: 'Sales',
+          data: qnts,
+        }],
+        chart: {
+          height: 350,
+          type: 'area',
+          toolbar: {
+            show: false
+          },
+        },
+        markers: {
+          size: 4
+        },
+        colors: ['#4154f1'],
+        fill: {
+          type: "gradient",
+          gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.3,
+            opacityTo: 0.4,
+            stops: [0, 90, 100]
+          }
+        },
+        dataLabels: {
+          enabled: false
+        },
+        stroke: {
+          curve: 'smooth',
+          width: 2
+        },
+        xaxis: {
+          type: 'datetime',
+          categories: months,
+        },
+        tooltip: {
+          x:{
+            show: false
+          }
+        }
+      }).render();
+    });
+  </script>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+</body>
+
+</html>

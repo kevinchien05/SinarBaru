@@ -33,6 +33,7 @@ import OperationalRoute from './routes/OperationalRoute.js';
 import FundRoute from './routes/FundRoute.js';
 import SaleRoute from './routes/SaleRoute.js';
 import ReturRoute from './routes/ReturRoute.js';
+import PredictRoute from './routes/PredictRoute.js';
 
 
 
@@ -74,6 +75,8 @@ app.use(FundRoute);
 app.use(SaleRoute);
 //Retur
 app.use(ReturRoute);
+//Prediksi
+app.use(PredictRoute);
 
 
 //Laporan kas
@@ -81,12 +84,7 @@ app.get('/kas', (req, res) => {
     res.render("kas", { i_user: req.session.user || "" });
 });
 
-//Prediksi
-app.get('/prediksi', (req, res) => {
-    Product.findAll().then((pro) => {
-        res.render("prediksi", { i_user: req.session.user || "", products: pro });
-    })
-});
+
 
 /*Menampilkan user */
 app.get('/api/user', (req, res) => {
@@ -202,44 +200,7 @@ app.put('/api/fund/:id', (req, res) => {
     })
 });
 
-app.get('/api/predict/:kode', async (req, res) => {
-    const productCode = req.params.kode;
 
-    try {
-        const results = await sequelize.query(
-            `
-            SELECT DATE_FORMAT(sales.OrderDate, '%M %Y') AS month, 
-                   SUM(saleproducts.Qnt) AS totalQuantity
-            FROM saleproducts
-            JOIN sales ON saleproducts.SalesID = sales.id
-            WHERE saleproducts.ProductCode = :productCode
-            GROUP BY month
-            ORDER BY month DESC
-            `,
-            {
-                replacements: { productCode },
-                type: sequelize.QueryTypes.SELECT
-            }
-        );
-
-        res.json({ status: 200, error: null, Response: results });
-    } catch (err) {
-        res.json({ status: 502, error: err });
-    }
-});
-
-app.get('/api/predictTrend/:kode/:startDate/:endDate', (req, res) => {
-    Predict.findAll({
-        where: {
-            ProductCode: req.params.kode,
-            Date: {
-                [Op.between]: [req.params.startDate, req.params.endDate]
-            }
-        }
-    }).then((results) => {
-        res.json({ status: 200, error: null, response: results });
-    });
-});
 
 
 /* Membuat tabel di database */
