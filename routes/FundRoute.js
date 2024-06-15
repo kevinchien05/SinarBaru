@@ -15,12 +15,14 @@ router.get('/fund', (req, res) => {
                 { Date: { [Op.like]: `%${search}%` } },
                 { Total: { [Op.like]: `%${search}%` } },
                 { Description: { [Op.like]: `%${search}%` } },
-            ]
-        } : {};
+            ], Status: 0
+        } : {
+            Status: 0
+        };
 
         Fund.findAll({
             where: searchCondition,
-            order: [[sort,order]],
+            order: [[sort, order]],
             include: [{ model: User }]
         }).then((results) => {
             res.render("dana_toko", { i_user: req.session.user || "", funds: results, sort, order, search });
@@ -31,7 +33,7 @@ router.get('/fund', (req, res) => {
 });
 
 router.post('/api/fund', (req, res) => {
-    Fund.create({ Date: req.body.Date, Description: req.body.Description, Total: req.body.Total, UserID: req.body.UserID }
+    Fund.create({ Date: req.body.Date, Description: req.body.Description, Total: req.body.Total, Status: req.body.Status, UserID: req.body.UserID }
     ).then((results) => {
         res.json({ status: 200, error: null, Response: results });
     }).catch(err => {
