@@ -135,7 +135,10 @@ a{
 .list-data-awal-prediksi-2,
 .list-data-awal-kas-1,
 .list-data-awal-kas-2,
-.list-data-awal-kas-3{
+.list-data-awal-kas-3,
+.list-data-awal-kas-4,
+.list-data-awal-kas-5,
+.list-data-awal-kas-6{
     width: 98%;
     margin-top: 1.5%;
     margin-left: 1%;
@@ -225,7 +228,10 @@ a{
 .title-divider-prediksipenjualan-hasil,
 .title-divider-kas-1,
 .title-divider-kas-2,
-.title-divider-kas-3{
+.title-divider-kas-3,
+.title-divider-kas-4,
+.title-divider-kas-5,
+.title-divider-kas-6{
     max-height: 50%;
     padding-top: 20px; 
     margin-left: 1%;

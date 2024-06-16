@@ -7,6 +7,8 @@ import PurchaseProduct from "../models/purchaseProduct.js";
 import SaleProduct from "../models/saleProduct.js";
 import Product from "../models/product.js";
 import Supplier from "../models/supplier.js";
+import Retur from "../models/retur.js";
+import ReturProduct from "../models/returProduct.js";
 import { sequelize } from "../models/model.js";
 import { Op, or } from "sequelize";
 
@@ -88,6 +90,35 @@ router.get('/api/fund/:startDate/:endDate', (req, res) => {
         res.json({ status: 200, error: null, response: results });
     });
 });
+
+router.get('/api/retur-kas/:startDate/:endDate', (req, res) => {
+    Retur.findAll({
+        where: {
+            ReturDate: {
+                [Op.between]: [req.params.startDate, req.params.endDate]
+            }
+        },
+        include: [
+            { model: ReturProduct, include: [{ model: Product }] },
+            { model: Supplier }, { model: Purchase }
+        ]
+    }).then((results) => {
+        res.json({ status: 200, error: null, response: results });
+    });
+});
+
+router.get('/api/retur-kas/:kode', (req, res) => {
+    Retur.findAll({
+        where: { PurchasesID: req.params.kode },
+        include: [
+            { model: ReturProduct, include: [{ model: Product }] },
+            { model: Supplier }, { model: Purchase }
+        ]
+    }).then((results) => {
+        res.json({ status: 200, error: null, response: results });
+    });
+});
+
 
 router.get('/api/next-fund/:startDate/:endDate', (req, res) => {
     Fund.findOne({

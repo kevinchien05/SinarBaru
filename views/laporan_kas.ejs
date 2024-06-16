@@ -292,7 +292,7 @@
   <script>
     choose_Kas = 0;
     // Judul Data inside for
-    const veryHeadTitle = ["Biaya Pembelian", "Pendapatan Penjualan", "Biaya Operasional"];
+    const veryHeadTitle = ["Biaya Pembelian", "Pendapatan Penjualan", "Biaya Operasional", "Utang", "Retur Pembelian", "Total Pendapatan"];
 
     // Data for pembelian
     const judulPembelianData = [
@@ -308,10 +308,24 @@
     const judulOperasionalData = [
       { titleTgl: 'Tanggal', titleDeskripsi: 'Deskripsi', titleStatus: 'Status', titleBiaya: 'Biaya' }
     ];
+
+    // Data for Utang
+    const judulUtangData = [
+      { titleTgl: 'Tanggal', titleSupplier: 'Supplier', titleBiaya: 'Biaya', titleTotalBiaya: 'Total Biaya' }
+    ];
+
+    // Data for Retur
+    const judulReturData = [
+      { titleTgl: 'Tanggal', titleProduk: 'Produk', titleKuantitas: 'Kuantitas', titleHargaTotal: 'Harga Total' }
+    ];
+
+    const judulHasilData = [
+      { titleTgl: 'Deskripsi', titleProduk: '', titleKuantitas: '', titleHargaTotal: 'Total' }
+    ];
     // Function to generate initial structure
     function generateInitialStructure() {
       const allDetailDiv = document.getElementById('all-detail');
-      for (var count_title = 1; count_title <= 3; count_title++) {
+      for (var count_title = 1; count_title <= 6; count_title++) {
         const listDataDiv = document.createElement('div');
         listDataDiv.id = `list-data-awal-kas-${count_title}`;
 
@@ -350,7 +364,7 @@
 
     async function build_up_things() {
       document.getElementById('all-detail').innerHTML = "";
-
+      let totalPembelian, totalPembelianKas, totalPenjualan, totalPenjualanOperational, totalRetur = 0;
       generateInitialStructure();
       let startDate, endDate;
       if (choose_Kas == 0) {
@@ -372,9 +386,10 @@
       const sales = await axios.get(`/api/sale/${startDate}/${endDate}`);
       const operationals = await axios.get(`/api/operational/${startDate}/${endDate}`);
       const debts = await axios.get(`/api/debt/${startDate}/${endDate}`);
+      const returs = await axios.get(`/api/retur-kas/${startDate}/${endDate}`);
       console.log(sales);
-      if (purchases.data.response.length != 0 || sales.data.response.length != 0 || operationals.data.response.length != 0 || debts.data.response.length != 0) {
-        for (var count_title = 1; count_title <= 3; count_title++) {
+      if (purchases.data.response.length != 0 || sales.data.response.length != 0 || operationals.data.response.length != 0 || debts.data.response.length != 0 || returs.data.response.length != 0) {
+        for (var count_title = 1; count_title <= 6; count_title++) {
           document.getElementById(`list-data-awal-kas-${count_title}`).classList.add(`list-data-awal-kas-${count_title}`);
           document.getElementById(`title-divider-kas-${count_title}`).classList.add(`title-divider-kas-${count_title}`);
 
@@ -396,11 +411,17 @@
           const tfoot = document.querySelector(`#sales-table-${count_title} tfoot`);
           document.getElementById(`text-form-pembelian-${count_title}`).innerHTML = veryHeadTitle[count_title - 1];
           if (count_title == 1) {
-            generatePembelianRows(thead, tbody, tfoot, purchases);
+            await generatePembelianRows(thead, tbody, tfoot, purchases);
           } else if (count_title == 2) {
             generatePenjualanRows(thead, tbody, tfoot, sales);
-          } else {
+          } else if (count_title == 3) {
             generateOperational(thead, tbody, tfoot, operationals);
+          } else if (count_title == 4) {
+            generateUtangRows(thead, tbody, tfoot, debts);
+          } else if (count_title == 5) {
+            generateReturRows(thead, tbody, tfoot, returs);
+          } else {
+            generateHasilRows(thead, tbody, tfoot);
           };
         };
       } else {
@@ -410,11 +431,12 @@
     };
 
     // Function to generate pembelian table rows
-    function generatePembelianRows(x, y, z, purchases) {
+    async function generatePembelianRows(x, y, z, purchases) {
       const thead1 = x;
       const tbody1 = y;
       const tfoot1 = z;
-      let totalPembelian = 0;
+      totalPembelian = 0;
+      totalPembelianKas = 0;
 
       judulPembelianData.forEach(data => {
         const baris = document.createElement('tr');
@@ -439,8 +461,13 @@
         giveBreak(thead1);
       });
 
-      purchases.data.response.forEach(data => {
+
+      for (const data of purchases.data.response) {
         const row = document.createElement('tr');
+
+        let returPurchase = await axios.get(`/api/retur-kas/${data.id}`);
+
+        console.log(returPurchase.data.response);
 
         const tanggalCell = document.createElement('td');
         tanggalCell.textContent = formatDate(data.OrderDate);
@@ -451,7 +478,20 @@
         row.appendChild(supplierCell);
 
         const biayaCell = document.createElement('td');
-        biayaCell.innerText = formatCurrency(parseInt(data.Total));
+        let tmpTotal = 0;
+        if (returPurchase.data.response.length == 0) {
+          tmpTotal = 0;
+          tmpTotal += parseInt(data.Total);
+          biayaCell.innerText = formatCurrency(tmpTotal);
+        } else {
+          tmpTotal = 0;
+          tmpTotal += parseInt(data.Total);
+          returPurchase.data.response.forEach(retur => {
+            tmpTotal += parseInt(retur.Total);
+          });
+          biayaCell.innerText = formatCurrency(tmpTotal);
+        }
+
         row.appendChild(biayaCell);
 
         const totalCell = document.createElement('td');
@@ -460,8 +500,11 @@
         tbody1.appendChild(row);
         giveBreak(tbody1);
 
-        totalPembelian += parseInt(data.Total);
-      });
+        totalPembelian += parseInt(tmpTotal);
+      };
+      purchases.data.response.forEach((pur)=>{
+        totalPembelianKas += parseInt(pur.Total);
+      })
       //Showing Final Result of counting on items quantity
       const hasilPrediksi = document.createElement('tr');
       const hasilPrediksiNumber = document.createElement('td');
@@ -473,7 +516,8 @@
       hasilPrediksi.append(hasilPrediksiNumber);
       hasilPrediksi.append(hasilPrediksiNumber2);
       tfoot1.appendChild(hasilPrediksi);
-      document.getElementById('text-hasil').innerHTML = `<b>${formatCurrency(totalPembelian)}</b>`;
+      console.log(totalPembelianKas);
+      document.getElementById('text-hasil').innerHTML = `<b id = "hasil-pembelian">${formatCurrency(totalPembelian)}</b>`;
     };
 
     // Function to generate penjualan table rows
@@ -481,7 +525,7 @@
       const thead2 = x;
       const tbody2 = y;
       const tfoot2 = z;
-      let totalPenjualan = 0;
+      totalPenjualan = 0;
 
       judulPenjualanData.forEach(data => {
         const baris = document.createElement('tr');
@@ -519,7 +563,7 @@
         data.saleproducts.forEach((pro) => {
           proName += pro.product.ProductName;
           proName += '\n';
-          proQnt += pro.Qnt;
+          proQnt += `${pro.Qnt} ${pro.product.Unit}`;
           proQnt += '\n';
         });
         produkCell.innerText = proName;
@@ -557,7 +601,7 @@
       const thead3 = x;
       const tbody3 = y;
       const tfoot3 = z;
-      let totalPenjualanOperational = 0;
+      totalPenjualanOperational = 0;
 
       judulOperasionalData.forEach(data => {
         const baris = document.createElement('tr');
@@ -619,6 +663,206 @@
       tfoot3.appendChild(hasilPrediksi);
       document.getElementById('text-hasil-3').innerHTML = `<b>${formatCurrency(totalPenjualanOperational)}</b>`;
     };
+
+    // Function to generate utang table rows
+    function generateUtangRows(x, y, z, debts) {
+      const thead1 = x;
+      const tbody1 = y;
+      const tfoot1 = z;
+      let totalUtang = 0;
+
+      judulUtangData.forEach(data => {
+        const baris = document.createElement('tr');
+
+        const titleCell = document.createElement('th');
+        titleCell.textContent = data.titleTgl;
+        baris.appendChild(titleCell);
+
+        const titleCell2 = document.createElement('th');
+        titleCell2.textContent = data.titleSupplier;
+        baris.appendChild(titleCell2);
+
+        const titleCell3 = document.createElement('th');
+        titleCell3.textContent = data.titleBiaya;
+        baris.appendChild(titleCell3);
+
+        const titleCell4 = document.createElement('th');
+        titleCell4.textContent = data.titleTotalBiaya;
+        baris.appendChild(titleCell4);
+
+        thead1.appendChild(baris);
+        giveBreak(thead1);
+      });
+
+      debts.data.response.forEach(data => {
+        const row = document.createElement('tr');
+
+        const tanggalCell = document.createElement('td');
+        tanggalCell.textContent = formatDate(data.OrderDate);
+        row.appendChild(tanggalCell);
+
+        const supplierCell = document.createElement('td');
+        supplierCell.textContent = data.supplier.SupplierName;
+        row.appendChild(supplierCell);
+
+        const biayaCell = document.createElement('td');
+        biayaCell.innerText = formatCurrency(parseInt(data.Total));
+        row.appendChild(biayaCell);
+
+        const totalCell = document.createElement('td');
+        row.appendChild(totalCell);
+
+        tbody1.appendChild(row);
+        giveBreak(tbody1);
+
+        totalUtang += parseInt(data.Total);
+      });
+      //Showing Final Result of counting on items quantity
+      const hasilPrediksi = document.createElement('tr');
+      const hasilPrediksiNumber = document.createElement('td');
+      const hasilPrediksiNumber2 = document.createElement('td');
+      const hasilPrediksiNumber3 = document.createElement('td');
+      hasilPrediksiNumber.setAttribute('colspan', '3');
+      hasilPrediksi.append(hasilPrediksiNumber);
+      hasilPrediksiNumber2.setAttribute('id', 'text-hasil-4');
+      hasilPrediksi.append(hasilPrediksiNumber);
+      hasilPrediksi.append(hasilPrediksiNumber2);
+      tfoot1.appendChild(hasilPrediksi);
+      document.getElementById('text-hasil-4').innerHTML = `<b>${formatCurrency(totalUtang)}</b>`;
+    };
+
+
+    // Function to generate retur table rows
+    function generateReturRows(x, y, z, returs) {
+      const thead2 = x;
+      const tbody2 = y;
+      const tfoot2 = z;
+      totalRetur = 0;
+
+      judulReturData.forEach(data => {
+        const baris = document.createElement('tr');
+
+        const titleCell = document.createElement('th');
+        titleCell.textContent = data.titleTgl;
+        baris.appendChild(titleCell);
+
+        const titleCell2 = document.createElement('th');
+        titleCell2.textContent = data.titleProduk;
+        baris.appendChild(titleCell2);
+
+        const titleCell3 = document.createElement('th');
+        titleCell3.textContent = data.titleKuantitas;
+        baris.appendChild(titleCell3);
+
+        const titleCell4 = document.createElement('th');
+        titleCell4.textContent = data.titleHargaTotal;
+        baris.appendChild(titleCell4);
+
+        thead2.appendChild(baris);
+        giveBreak(thead2);
+      });
+
+      returs.data.response.forEach(data => {
+        const row = document.createElement('tr');
+
+        const tanggalCell = document.createElement('td');
+        tanggalCell.textContent = formatDate(data.ReturDate);
+        row.appendChild(tanggalCell);
+
+        const produkCell = document.createElement('td');
+        let proName = "";
+        let proQnt = "";
+        data.returproducts.forEach((pro) => {
+          proName += pro.product.ProductName;
+          proName += '\n';
+          proQnt += `${pro.Qnt} ${pro.product.Unit}`;
+          proQnt += '\n';
+        });
+        produkCell.innerText = proName;
+        row.appendChild(produkCell);
+
+        const kuantitasCell = document.createElement('td');
+        kuantitasCell.innerText = proQnt;
+        row.appendChild(kuantitasCell);
+
+        const hargaTotalCell = document.createElement('td');
+        hargaTotalCell.textContent = formatCurrency(parseInt(data.Total));
+        row.appendChild(hargaTotalCell);
+
+        tbody2.appendChild(row);
+        giveBreak(tbody2);
+
+        totalRetur += parseInt(data.Total);
+      });
+      //Showing Final Result of counting on items quantity
+      const hasilPrediksi = document.createElement('tr');
+      const hasilPrediksiNumber = document.createElement('td');
+      const hasilPrediksiNumber2 = document.createElement('td');
+      const hasilPrediksiNumber3 = document.createElement('td');
+      hasilPrediksiNumber.setAttribute('colspan', '3');
+      hasilPrediksi.append(hasilPrediksiNumber);
+      hasilPrediksiNumber2.setAttribute('id', 'text-hasil-5');
+      hasilPrediksi.append(hasilPrediksiNumber);
+      hasilPrediksi.append(hasilPrediksiNumber2);
+      tfoot2.appendChild(hasilPrediksi);
+      document.getElementById('text-hasil-5').innerHTML = `<b>${formatCurrency(totalRetur)}</b>`;
+    }
+
+    // Function to generate hasil table rows
+    function generateHasilRows(x, y, z) {
+      const thead2 = x;
+      const tbody2 = y;
+      const tfoot2 = z;
+      let totalPendapatan = 0;
+      totalPendapatan = (totalPenjualan + totalRetur) - (totalPembelian + totalPenjualanOperational);
+      judulHasilData.forEach(data => {
+        const baris = document.createElement('tr');
+
+        const titleCell = document.createElement('th');
+        titleCell.textContent = data.titleTgl;
+        baris.appendChild(titleCell);
+
+        const titleCell2 = document.createElement('th');
+        titleCell2.textContent = data.titleProduk;
+        baris.appendChild(titleCell2);
+
+        const titleCell3 = document.createElement('th');
+        titleCell3.textContent = data.titleKuantitas;
+        baris.appendChild(titleCell3);
+
+        const titleCell4 = document.createElement('th');
+        titleCell4.textContent = data.titleHargaTotal;
+        baris.appendChild(titleCell4);
+
+        thead2.appendChild(baris);
+        giveBreak(thead2);
+      });
+
+
+      const row = document.createElement('tr');
+
+      const tanggalCell = document.createElement('td');
+      tanggalCell.innerHTML = "Peningkatan(Penurunan) Pendapatan";
+      row.appendChild(tanggalCell);
+
+      const produkCell = document.createElement('td');
+      produkCell.innerText = "";
+      row.appendChild(produkCell);
+
+      const kuantitasCell = document.createElement('td');
+      kuantitasCell.innerText = "";
+      row.appendChild(kuantitasCell);
+
+      const hargaTotalCell = document.createElement('td');
+      hargaTotalCell.innerHTML = `<b>${formatCurrency(totalPendapatan)}</b>`;
+      row.appendChild(hargaTotalCell);
+
+      tbody2.appendChild(row);
+      giveBreak(tbody2);
+
+
+
+    }
   </script>
 
   <script>
