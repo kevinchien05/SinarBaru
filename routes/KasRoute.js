@@ -11,6 +11,7 @@ import Retur from "../models/retur.js";
 import ReturProduct from "../models/returProduct.js";
 import { sequelize } from "../models/model.js";
 import { Op, or } from "sequelize";
+import moment from "moment";
 
 const router = express.Router();
 
@@ -18,8 +19,8 @@ router.get('/kas', (req, res) => {
     res.render("laporan_kas", { i_user: req.session.user || "" });
 });
 
-router.get('/api/purchase/:startDate/:endDate', (req, res) => {
-    Purchase.findAll({
+router.get('/api/purchase/:startDate/:endDate', async (req, res) => {
+    const purchases = await Purchase.findAll({
         where: {
             OrderDate: {
                 [Op.between]: [req.params.startDate, req.params.endDate]
@@ -31,9 +32,26 @@ router.get('/api/purchase/:startDate/:endDate', (req, res) => {
             { model: PurchaseProduct, include: [{ model: Product }] },
             { model: Supplier }
         ]
-    }).then((results) => {
-        res.json({ status: 200, error: null, response: results });
     });
+    const monthlyTotals = {};
+    const returPromises = purchases.map(async (purchase) => {
+        const returs = await Retur.findAll({
+            where: {
+                PurchasesID: purchase.id
+            }
+        });
+        const month = moment(purchase.OrderDate).format('YYYY-MM');
+        if (!monthlyTotals[month]) {
+            monthlyTotals[month] = 0;
+        }
+        monthlyTotals[month] += parseInt(purchase.Total);
+
+        returs.forEach((retur) => {
+            monthlyTotals[month] += parseInt(retur.Total);
+        })
+    });
+    await Promise.all(returPromises);
+    res.json({ status: 200, error: null, response: purchases, total: monthlyTotals });
 });
 
 router.get('/api/sale/:startDate/:endDate', (req, res) => {
@@ -47,7 +65,17 @@ router.get('/api/sale/:startDate/:endDate', (req, res) => {
             { model: SaleProduct, include: [{ model: Product }] },
         ]
     }).then((results) => {
-        res.json({ status: 200, error: null, response: results });
+        const monthlyTotals = {};
+
+        results.forEach((sale) => {
+            const month = moment(sale.OrderDate).format('YYYY-MM');
+
+            if (!monthlyTotals[month]) {
+                monthlyTotals[month] = 0;
+            }
+            monthlyTotals[month] += parseInt(sale.Total);
+        })
+        res.json({ status: 200, error: null, response: results, total: monthlyTotals });
     });
 });
 
@@ -59,7 +87,17 @@ router.get('/api/operational/:startDate/:endDate', (req, res) => {
             }
         }
     }).then((results) => {
-        res.json({ status: 200, error: null, response: results });
+        const monthlyTotals = {};
+
+        results.forEach((operational) => {
+            const month = moment(operational.Date).format('YYYY-MM');
+
+            if (!monthlyTotals[month]) {
+                monthlyTotals[month] = 0;
+            }
+            monthlyTotals[month] += parseInt(operational.Total);
+        })
+        res.json({ status: 200, error: null, response: results, total: monthlyTotals });
     });
 });
 
@@ -75,7 +113,17 @@ router.get('/api/debt/:startDate/:endDate', (req, res) => {
             { model: Supplier }
         ]
     }).then((results) => {
-        res.json({ status: 200, error: null, response: results });
+        const monthlyTotals = {};
+
+        results.forEach((debt) => {
+            const month = moment(debt.OrderDate).format('YYYY-MM');
+
+            if (!monthlyTotals[month]) {
+                monthlyTotals[month] = 0;
+            }
+            monthlyTotals[month] += parseInt(debt.Total);
+        })
+        res.json({ status: 200, error: null, response: results, total: monthlyTotals });
     });
 });
 
@@ -87,7 +135,17 @@ router.get('/api/fund/:startDate/:endDate', (req, res) => {
             }
         }
     }).then((results) => {
-        res.json({ status: 200, error: null, response: results });
+        const monthlyTotals = {};
+
+        results.forEach((fund) => {
+            const month = moment(fund.Date).format('YYYY-MM');
+
+            if (!monthlyTotals[month]) {
+                monthlyTotals[month] = 0;
+            }
+            monthlyTotals[month] += parseInt(fund.Total);
+        })
+        res.json({ status: 200, error: null, response: results, total: monthlyTotals });
     });
 });
 
@@ -103,7 +161,17 @@ router.get('/api/retur-kas/:startDate/:endDate', (req, res) => {
             { model: Supplier }, { model: Purchase }
         ]
     }).then((results) => {
-        res.json({ status: 200, error: null, response: results });
+        const monthlyTotals = {};
+
+        results.forEach((retur) => {
+            const month = moment(retur.ReturDate).format('YYYY-MM');
+
+            if (!monthlyTotals[month]) {
+                monthlyTotals[month] = 0;
+            }
+            monthlyTotals[month] += parseInt(retur.Total);
+        })
+        res.json({ status: 200, error: null, response: results, total: monthlyTotals });
     });
 });
 

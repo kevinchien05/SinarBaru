@@ -2,6 +2,7 @@ import { sequelize, DataTypes } from "./model.js";
 import Supplier from "./supplier.js";
 import PurchaseProduct from "./purchaseProduct.js";
 
+
 const Purchase = sequelize.define('purchase', {
     OrderDate: {type: DataTypes.DATE, allowNull: false},
     Total: {type: DataTypes.DECIMAL, allowNull: false},

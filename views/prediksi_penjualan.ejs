@@ -277,7 +277,7 @@
 
       <!-- Line Chart -->
       <div id="reportsChart"></div>
-      
+
       <!-- End Line Chart -->
     </div>
   </div>
@@ -314,173 +314,174 @@
       lineBreak.appendChild(lineBreakCell);
       x.appendChild(lineBreak);
     };
-    let months = [];
-    let qnts = [];
+
     // Function to generate table rows
     async function generateTableRows() {
-      let sumY = 0, sumX = 0, sumXY = 0, sumX2 = 0, avgY = 0, b = 0, a = 0, y = 0, im = 0, hasil = 0;
-      let sumMonth = 0;
-      const year = document.getElementById('tahun').value;
-      const month = document.getElementById('bulan').value;
-      const start = new Date(year - 1, 0, 1);
-      const end = new Date(year - 1, 11, 31);
-      const sales = await axios.get(`/api/predictTrend/${document.getElementById("product").value}/${start}/${end}`)
-      console.log(sales);
-      document.getElementById('title-divider-prediksipenjualan-hasil').innerText = '';
-      document.getElementById('list-data-awal-graph').style.display = 'flex';
-      document.getElementById('list-data-awal-prediksi').classList.add("list-data-awal-prediksi");
-      document.getElementById('title-divider-prediksipenjualan-hasil').classList.add("title-divider-prediksipenjualan-hasil");
+      if (document.getElementById('tahun').value && document.getElementById("bulan").value) {
+        let sumY = 0, sumX = 0, sumXY = 0, sumX2 = 0, avgY = 0, b = 0, a = 0, y = 0, im = 0, hasil = 0;
+        let sumMonth = 0;
+        let months = [];
+        let qnts = [];
+        const year = document.getElementById('tahun').value;
+        const month = document.getElementById('bulan').value;
+        const start = new Date(year - 1, 0, 1);
+        const end = new Date(year - 1, 11, 31);
+        const sales = await axios.get(`/api/predictTrend/${document.getElementById("product").value}/${start}/${end}`)
+        console.log(sales);
+        document.getElementById('title-divider-prediksipenjualan-hasil').innerText = '';
+        document.getElementById('list-data-awal-graph').style.display = 'flex';
+        document.getElementById('list-data-awal-prediksi').classList.add("list-data-awal-prediksi");
+        document.getElementById('title-divider-prediksipenjualan-hasil').classList.add("title-divider-prediksipenjualan-hasil");
 
-      //Create the table and append it
-      const newTable = document.createElement("table");
-      const newThead = document.createElement("thead");
-      const newTbody = document.createElement("tbody");
-      const newTfoot = document.createElement("tfoot");
+        //Create the table and append it
+        const newTable = document.createElement("table");
+        const newThead = document.createElement("thead");
+        const newTbody = document.createElement("tbody");
+        const newTfoot = document.createElement("tfoot");
 
-      newTable.setAttribute('id', 'sales-table');
-      document.getElementById('title-divider-prediksipenjualan-hasil').appendChild(newTable);
-      document.getElementById('sales-table').appendChild(newThead);
-      document.getElementById('sales-table').appendChild(newTbody);
-      document.getElementById('sales-table').appendChild(newTfoot);
+        newTable.setAttribute('id', 'sales-table');
+        document.getElementById('title-divider-prediksipenjualan-hasil').appendChild(newTable);
+        document.getElementById('sales-table').appendChild(newThead);
+        document.getElementById('sales-table').appendChild(newTbody);
+        document.getElementById('sales-table').appendChild(newTfoot);
 
-      const thead = document.querySelector('#sales-table thead');
-      const tbody = document.querySelector('#sales-table tbody');
-      const tfoot = document.querySelector('#sales-table tfoot');
+        const thead = document.querySelector('#sales-table thead');
+        const tbody = document.querySelector('#sales-table tbody');
+        const tfoot = document.querySelector('#sales-table tfoot');
 
-      const text_prediksi = document.querySelector('text-prediksi-bulandpn');
-      let totalTerjual = 0;
+        const text_prediksi = document.querySelector('text-prediksi-bulandpn');
+        let totalTerjual = 0;
 
-      title_SalesData.forEach(data => {
-        const baris = document.createElement('tr');
+        title_SalesData.forEach(data => {
+          const baris = document.createElement('tr');
 
-        const titleCell = document.createElement('th');
-        titleCell.textContent = data.titleBulan;
-        baris.appendChild(titleCell);
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleBulan;
+          baris.appendChild(titleCell);
 
-        const titleCell2 = document.createElement('th');
-        titleCell2.textContent = data.titleTerjual;
-        baris.appendChild(titleCell2);
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleTerjual;
+          baris.appendChild(titleCell2);
 
-        const titleCell3 = document.createElement('th');
-        titleCell3.textContent = data.titleTotalTerjual;
-        baris.appendChild(titleCell3);
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleTotalTerjual;
+          baris.appendChild(titleCell3);
 
-        thead.appendChild(baris);
-        giveBreak(thead);
-      });
+          thead.appendChild(baris);
+          giveBreak(thead);
+        });
 
-      sales.data.response.forEach(data => {
-        const row = document.createElement('tr');
+        sales.data.response.forEach(data => {
+          const row = document.createElement('tr');
 
-        const bulanCell = document.createElement('td');
-        let date = new Date(data.Date);
-        let tmpDate = date.getMonth();
-        let dateMonth = date.toLocaleString('default', { month: 'long' });
-        let dateYear = date.getFullYear();
-        let monthYear = `${dateMonth} ${dateYear}`
-        bulanCell.textContent = monthYear;
-        row.appendChild(bulanCell);
+          const bulanCell = document.createElement('td');
+          let date = new Date(data.Date);
+          let tmpDate = date.getMonth();
+          let dateMonth = date.toLocaleString('default', { month: 'long' });
+          let dateYear = date.getFullYear();
+          let monthYear = `${dateMonth} ${dateYear}`
+          bulanCell.textContent = monthYear;
+          row.appendChild(bulanCell);
 
-        const terjualCell = document.createElement('td');
-        terjualCell.textContent = data.Qnt;
-        row.appendChild(terjualCell);
+          const terjualCell = document.createElement('td');
+          terjualCell.textContent = data.Qnt;
+          row.appendChild(terjualCell);
 
-        const totalCell = document.createElement('td');
-        row.appendChild(totalCell);
-        tbody.appendChild(row);
-        giveBreak(tbody);
+          const totalCell = document.createElement('td');
+          row.appendChild(totalCell);
+          tbody.appendChild(row);
+          giveBreak(tbody);
 
-        totalTerjual += data.Qnt;
-        months.push(monthYear);
-        qnts.push(data.Qnt);
-        //menghitung trend moment
-        sumY += parseInt(data.Qnt);
-        sumX += parseInt(data.TimeIndex);
-        sumXY += (parseInt(data.Qnt) * parseInt(data.TimeIndex));
-        sumX2 += parseInt(data.TimeIndex) * parseInt(data.TimeIndex);
-        date = new Date(data.Date).getMonth();
-        if (date == month) {
-          sumMonth += data.Qnt;
-        }
-      });
-      console.log(sumMonth);
-      console.log(months);
-      let n = sales.data.response.length
-      avgY = (sumY / n).toFixed(2);
-      console.log(sumY, sumX, sumXY, sumX2, avgY);
-      b = ((n * (sumXY) - (sumX) * (sumY)) / (n * sumX2 - sumX2)).toFixed(2);
-      console.log(b);
-      a = ((sumY - (b * sumX)) / n).toFixed(2);
-      console.log(a);
-      y = (parseFloat(a) + (b * n)).toFixed(2);
-      console.log(y);
-      im = (sumMonth / parseFloat(avgY)).toFixed(2);
-      console.log(im);
-      hasil = Math.round(im * y)
-      console.log(hasil);
+          totalTerjual += data.Qnt;
+          months.push(monthYear);
+          qnts.push(data.Qnt);
+          //menghitung trend moment
+          sumY += parseInt(data.Qnt);
+          sumX += parseInt(data.TimeIndex);
+          sumXY += (parseInt(data.Qnt) * parseInt(data.TimeIndex));
+          sumX2 += parseInt(data.TimeIndex) * parseInt(data.TimeIndex);
+          date = new Date(data.Date).getMonth();
+          if (date == month) {
+            sumMonth += data.Qnt;
+          }
+        });
+        console.log(sumMonth);
+        console.log(months);
+        let n = sales.data.response.length
+        avgY = (sumY / n).toFixed(2);
+        console.log(sumY, sumX, sumXY, sumX2, avgY);
+        b = ((n * (sumXY) - (sumX) * (sumY)) / (n * sumX2 - sumX2)).toFixed(2);
+        console.log(b);
+        a = ((sumY - (b * sumX)) / n).toFixed(2);
+        console.log(a);
+        y = (parseFloat(a) + (b * n)).toFixed(2);
+        console.log(y);
+        im = (sumMonth / parseFloat(avgY)).toFixed(2);
+        console.log(im);
+        hasil = Math.round(im * y)
+        console.log(hasil);
 
-      //Showing Final Result of counting on items quantity
-      const hasilPrediksi = document.createElement('tr');
-      const hasilPrediksiNumber = document.createElement('td');
-      const hasilPrediksiNumber2 = document.createElement('td');
-      hasilPrediksiNumber.setAttribute('colspan', '2');
-      hasilPrediksi.append(hasilPrediksiNumber);
-      hasilPrediksiNumber2.setAttribute('id', 'text-hasil');
-      hasilPrediksi.append(hasilPrediksiNumber);
-      hasilPrediksi.append(hasilPrediksiNumber2);
-      tfoot.appendChild(hasilPrediksi);
-      document.getElementById('text-hasil').textContent = totalTerjual;
+        //Showing Final Result of counting on items quantity
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '2');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil').textContent = totalTerjual;
 
-      //Spawning new box bellow for showing next dataion numbers
-      document.getElementById('text-prediksi-bulandpn').classList.add("list-data-awal-prediksi-2");
-      document.getElementById('totalHasilPrediksi').innerHTML = `Prediksi total penjualan untuk bulan <b>${monthList[month]}</b> adalah <b>${hasil}</b>`;
-    };
-  </script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      new ApexCharts(document.querySelector("#reportsChart"), {
-        series: [{
-          name: 'Sales',
-          data: qnts,
-        }],
-        chart: {
-          height: 350,
-          type: 'area',
-          toolbar: {
-            show: false
+        //Spawning new box bellow for showing next dataion numbers
+        document.getElementById('text-prediksi-bulandpn').classList.add("list-data-awal-prediksi-2");
+        document.getElementById('totalHasilPrediksi').innerHTML = `Prediksi total penjualan untuk bulan <b>${monthList[month]}</b> adalah <b>${hasil}</b>`;
+
+        new ApexCharts(document.querySelector("#reportsChart"), {
+          series: [{
+            name: 'Sales',
+            data: qnts,
+          }],
+          chart: {
+            height: 350,
+            type: 'area',
+            toolbar: {
+              show: false
+            },
           },
-        },
-        markers: {
-          size: 4
-        },
-        colors: ['#4154f1'],
-        fill: {
-          type: "gradient",
-          gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.3,
-            opacityTo: 0.4,
-            stops: [0, 90, 100]
+          markers: {
+            size: 4
+          },
+          colors: ['#4154f1'],
+          fill: {
+            type: "gradient",
+            gradient: {
+              shadeIntensity: 1,
+              opacityFrom: 0.3,
+              opacityTo: 0.4,
+              stops: [0, 90, 100]
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            curve: 'smooth',
+            width: 2
+          },
+          xaxis: {
+            type: 'datetime',
+            categories: months,
+          },
+          tooltip: {
+            x: {
+              show: false
+            }
           }
-        },
-        dataLabels: {
-          enabled: false
-        },
-        stroke: {
-          curve: 'smooth',
-          width: 2
-        },
-        xaxis: {
-          type: 'datetime',
-          categories: months,
-        },
-        tooltip: {
-          x:{
-            show: false
-          }
-        }
-      }).render();
-    });
+        }).render();
+      }
+
+    };
   </script>
 
   <!-- Vendor JS Files -->
