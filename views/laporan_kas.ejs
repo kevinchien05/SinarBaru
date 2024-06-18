@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <link href="css/style.css" rel="stylesheet">
+  <title>Data Supplier</title>
+  <script type="text/javascript" src="js/controller.js"></script>
+  <style>
+    td {
+      margin: 0px;
+      padding: 5px;
+    }
+
+    th {
+      width: 25%;
+    }
+  </style>
+  <script type="text/javascript" src="controller.js"></script>
+</head>
+
+<body>
+  <!-- Navigation Bar-->
+  <nav class="navbar">
+    <button class="btn ms-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+      aria-controls="offcanvasWithBothOptions"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+        fill="currentColor" class="bi bi-list" viewBox="3 3 10 10">
+        <path fill-rule="evenodd"
+          d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5">
+        </path>
+      </svg>
+    </button>
+    <h1>Sinar Baru</h1>
+    <ul>
+      <li>
+        <!-- Showing User Name -->
+        <a class="nav-link disabled" href="#" tabindex="-2" aria-disabled="true">
+          <%= i_user.Username %>
+        </a>
+      </li>
+    </ul>
+    </div>
+  </nav>
+
+  <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+    aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+      <button type="button" class="btn" data-bs-dismiss="offcanvas" aria-label="Close"><svg
+          xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list"
+          viewBox="3 3 10 10">
+          <path fill-rule="evenodd"
+            d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5">
+          </path>
+        </svg></button>
+    </div>
+
+    <!-- List Draft for Menu -->
+    <div class="offcanvas-body">
+      <div class="d-flex flex-column flex-shrink-0" style="width: 100%; height: 100%;">
+        <ul class="nav nav-pills flex-column mb-auto">
+          <!-- Data Supplier Page -->
+          <% if (i_user.Status==1) { %>
+            <li>
+              <a href="/supplier" class="nav-link link-dark">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                  class="bi bi-people-fill" viewBox="0 0 16 16">
+                  <path
+                    d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
+                </svg>
+                Data Supplier
+              </a>
+            </li><br>
+            <% } %>
+
+
+              <!-- Stok Barang Page -->
+              <% if (i_user.Status==1 || i_user.Status==2) { %>
+                <li>
+                  <a href="/product" class="nav-link link-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                      class="bi bi-box-seam" viewBox="0 0 16 16">
+                      <path
+                        d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5l2.404.961L10.404 2zm3.564 1.426L5.596 5 8 5.961 14.154 3.5zm3.25 1.7-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 16 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464z" />
+                    </svg>
+                    Stok Barang
+                  </a>
+                </li><br>
+                <% } %>
+
+
+                  <!-- Data Pembelian Page -->
+                  <% if (i_user.Status==1 || i_user.Status==2) { %>
+                    <li>
+                      <a href="/purchase" class="nav-link link-dark">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                          class="bi bi-cart-plus" viewBox="0 0 16 16">
+                          <path
+                            d="M9 5.5a.5.5 0 0 0-1 0V7H6.5a.5.5 0 0 0 0 1H8v1.5a.5.5 0 0 0 1 0V8h1.5a.5.5 0 0 0 0-1H9z" />
+                          <path
+                            d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                        </svg>
+                        Data Pembelian
+                      </a>
+                    </li><br>
+                    <% } %>
+
+
+                      <!-- Retur Pembelian Page -->
+                      <% if (i_user.Status==1 || i_user.Status==2) { %>
+                        <li>
+                          <a href="/retur" class="nav-link link-dark">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                              class="bi bi-cart-x" viewBox="0 0 16 16">
+                              <path
+                                d="M7.354 5.646a.5.5 0 1 0-.708.708L7.793 7.5 6.646 8.646a.5.5 0 1 0 .708.708L8.5 8.207l1.146 1.147a.5.5 0 0 0 .708-.708L9.207 7.5l1.147-1.146a.5.5 0 0 0-.708-.708L8.5 6.793z" />
+                              <path
+                                d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1zm3.915 10L3.102 4h10.796l-1.313 7zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0m7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
+                            </svg>
+                            Retur Pembelian
+                          </a>
+                        </li><br>
+                        <% } %>
+
+
+                          <!-- Data Penjualan Page -->
+                          <% if (i_user.Status==1 || i_user.Status==2) { %>
+                            <li>
+                              <a href="/sale" class="nav-link link-dark">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                  class="bi bi-bag-check" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd"
+                                    d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                                  <path
+                                    d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                                </svg>
+                                Data Penjualan
+                              </a>
+                            </li><br>
+                            <% } %>
+
+
+                              <!-- Prediksi Penjualan Page -->
+                              <% if (i_user.Status==1) { %>
+                                <li>
+                                  <a href="/predict" class="nav-link link-dark">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                      class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd"
+                                        d="M0 0h1v15h15v1H0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5" />
+                                    </svg>
+                                    Prediksi Penjualan
+                                  </a>
+                                </li><br>
+                                <% } %>
+
+
+                                  <!-- Laporan Kas Page -->
+                                  <% if (i_user.Status==1) { %>
+                                    <li>
+                                      <a href="/kas" class="nav-link active">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                          fill="currentColor" class="bi bi-journal-check" viewBox="0 0 16 16">
+                                          <path fill-rule="evenodd"
+                                            d="M10.854 6.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 8.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                                          <path
+                                            d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
+                                          <path
+                                            d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
+                                        </svg>
+                                        Laporan Kas
+                                      </a>
+                                    </li><br>
+                                    <% } %>
+
+
+                                      <!-- Data Utang Page -->
+                                      <% if (i_user.Status==1 || i_user.Status==3) { %>
+                                        <li>
+                                          <a href="/debt" class="nav-link link-dark">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                              fill="currentColor" class="bi bi-credit-card" viewBox="0 0 16 16">
+                                              <path
+                                                d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z" />
+                                              <path
+                                                d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                                            </svg> Data Utang
+                                          </a>
+                                        </li><br>
+                                        <% } %>
+
+
+                                          <!-- Biaya Operasional Page -->
+                                          <% if (i_user.Status==1 || i_user.Status==3) { %>
+                                            <li>
+                                              <a href="/operational" class="nav-link link-dark" aria-current="page">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                  fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
+                                                  <path fill-rule="evenodd"
+                                                    d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8m5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0" />
+                                                  <path
+                                                    d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195z" />
+                                                  <path
+                                                    d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083q.088-.517.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1z" />
+                                                  <path
+                                                    d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 6 6 0 0 1 3.13-1.567" />
+                                                </svg>
+                                                Biaya Operasional
+                                              </a>
+                                            </li><br>
+                                            <% } %>
+
+
+                                              <!-- Dana Toko Page -->
+                                              <% if (i_user.Status==1 || i_user.Status==3) { %>
+                                                <li>
+                                                  <a href="/fund" class="nav-link link-dark">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                      fill="currentColor" class="bi bi-bank" viewBox="0 0 16 16">
+                                                      <path
+                                                        d="m8 0 6.61 3h.89a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v7a.5.5 0 0 1 .485.38l.5 2a.498.498 0 0 1-.485.62H.5a.498.498 0 0 1-.485-.62l.5-2A.5.5 0 0 1 1 13V6H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 3h.89zM3.777 3h8.447L8 1zM2 6v7h1V6zm2 0v7h2.5V6zm3.5 0v7h1V6zm2 0v7H12V6zM13 6v7h1V6zm2-1V4H1v1zm-.39 9H1.39l-.25 1h13.72z" />
+                                                    </svg> Dana Toko
+                                                  </a>
+                                                </li>
+                                                <% } %>
+        </ul>
+        <hr>
+
+        <!-- Logout Button -->
+        <a href="/logout">
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-danger">Logout</button>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Container for Showing List Pembelian -->
+  <div class="list-data-awal">
+    <div class="before-divider">
+      <div class="item-for-all">
+        Laporan Kas
+      </div>
+    </div>
+    <br>
+
+    <div class="title-divider-laporan-kas">
+      <div class="btn-group prediksi-top">
+        <select class="form-select form-select-sm prediksi" onchange="selectedTime(this)">
+          <!-- Looping Month -->
+          <script>
+            var choose_item = ['Per Bulan', 'Per Tahun'];
+            var choose_item_count = choose_item.length;
+            for (var d = 0; d < choose_item_count; d++) {
+              document.write(`<option value="${d}">${choose_item[d]}</option>`);
+            };
+          </script>
+        </select>
+      </div>
+      <span></span>
+      <span></span>
+      <span></span>
+
+
+      <div class="btn-group prediksi">
+        <button class="btn btn-secondary btn-sm prediksi-btn" type="button" disabled>
+          <label class="tulisan-label-prediksi">Tahun</label>
+        </button>
+        <select class="form-select form-select-sm prediksi" id="disabledTahun">
+          <!-- Looping Year -->
+          <option value="" disabled selected>Pilih Tahun</option>
+          <script>
+            const startYear = 2024;
+            const endYear = new Date().getFullYear();
+            for (let year = startYear; year <= endYear; year++) {
+              document.write(`<option value="${year}">${year}</option>`)
+            }
+          </script>
+        </select>
+      </div>
+
+      <div class="btn-group prediksi" id="tahunbulan-hide">
+        <button class="btn btn-secondary btn-sm prediksi-btn" type="button" disabled>
+          <label class="tulisan-label-prediksi">Bulan</label>
+        </button>
+        <select class="form-select form-select-sm prediksi" id="disabledBulan">
+          <option value="" disabled selected>Pilih Bulan</option>
+          <!-- Looping Month -->
+          <script>
+            var monthList = ['Januari', 'Febuari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            var monthValue = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+            var month_count = monthList.length;
+            for (var d = 0; d < month_count; d++) {
+              document.write("<option value=" + monthValue[d] + ">" + monthList[d] + "</option>");
+            };
+          </script>
+        </select>
+      </div>
+
+      <div class="item-btn prediksi">
+        <button class="btn btn-success prediksi" onclick="build_up_things();">Terapkan</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="all-detail">
+    <!-- Generate Table Here -->
+
+  </div>
+
+  <p id="msg" style="padding-left: 30px; color: red;"></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+  <script>
+    choose_Kas = 0;
+    // Judul Data inside for
+    const veryHeadTitle = ["Biaya Pembelian", "Pendapatan Penjualan", "Biaya Operasional", "Utang", "Retur Pembelian", "Dana Toko", "Total Pendapatan"];
+
+    // Data for pembelian
+    const judulPembelianData = [
+      { titleTgl: 'Tanggal', titleSupplier: 'Supplier', titleBiaya: 'Biaya', titleTotalBiaya: 'Total Biaya' }
+    ];
+    const judulPembelianDataTahunan = [
+      { titleTgl: 'Tanggal', titleSupplier: '', titleBiaya: '', titleTotalBiaya: 'Total Biaya' }
+    ];
+
+    // Data for penjualan
+    const judulPenjualanData = [
+      { titleTgl: 'Tanggal', titleProduk: 'Produk', titleKuantitas: 'Kuantitas', titleHargaTotal: 'Harga Total' }
+    ];
+    const judulPenjualanDataTahunan = [
+      { titleTgl: 'Tanggal', titleProduk: '', titleKuantitas: '', titleHargaTotal: 'Harga Total' }
+    ];
+
+    // Data for Operasional
+    const judulOperasionalData = [
+      { titleTgl: 'Tanggal', titleDeskripsi: 'Deskripsi', titleStatus: 'Status', titleBiaya: 'Biaya' }
+    ];
+    const judulOperasionalDataTahunana = [
+      { titleTgl: 'Tanggal', titleDeskripsi: '', titleStatus: '', titleBiaya: 'Biaya' }
+    ];
+
+    // Data for Utang
+    const judulUtangData = [
+      { titleTgl: 'Tanggal', titleSupplier: 'Supplier', titleBiaya: 'Biaya', titleTotalBiaya: 'Total Biaya' }
+    ];
+    const judulUtangDataTahunan = [
+      { titleTgl: 'Tanggal', titleSupplier: '', titleBiaya: '', titleTotalBiaya: 'Total Biaya' }
+    ];
+
+    // Data for Retur
+    const judulReturData = [
+      { titleTgl: 'Tanggal', titleProduk: 'Produk', titleKuantitas: 'Kuantitas', titleHargaTotal: 'Harga Total' }
+    ];
+    const judulReturDataTahunan = [
+      { titleTgl: 'Tanggal', titleProduk: '', titleKuantitas: '', titleHargaTotal: 'Harga Total' }
+    ];
+
+    // Data for Dana
+    const judulDanaData = [
+      { titleTgl: 'Tanggal', titleDeskripsi: 'Deskripsi', titleStatus: 'Status', titleBiaya: 'Biaya' }
+    ];
+    const judulDanaDataTahunana = [
+      { titleTgl: 'Tanggal', titleDeskripsi: '', titleStatus: '', titleBiaya: 'Biaya' }
+    ];
+
+    const judulHasilData = [
+      { titleTgl: 'Deskripsi', titleProduk: '', titleKuantitas: '', titleHargaTotal: 'Total' }
+    ];
+    // Function to generate initial structure
+    function generateInitialStructure() {
+      const allDetailDiv = document.getElementById('all-detail');
+      for (var count_title = 1; count_title <= 7; count_title++) {
+        const listDataDiv = document.createElement('div');
+        listDataDiv.id = `list-data-awal-kas-${count_title}`;
+
+        const titleDividerDiv = document.createElement('div');
+        titleDividerDiv.id = `title-divider-kas-${count_title}`;
+
+        const headerTitle = document.createElement('h2');
+        headerTitle.className = 'headerTitle';
+        headerTitle.id = `text-form-pembelian-${count_title}`;
+
+        titleDividerDiv.appendChild(headerTitle);
+        listDataDiv.appendChild(titleDividerDiv);
+        allDetailDiv.appendChild(listDataDiv);
+
+        const textPrediksiDiv = document.createElement('div');
+        textPrediksiDiv.id = `text-prediksi-bulandpn-${count_title}`;
+        allDetailDiv.appendChild(textPrediksiDiv);
+      }
+    }
+
+    // Add a line break after each row
+    function giveBreak(x) {
+      const lineBreak = document.createElement('tr');
+      lineBreak.classList.add('line-break-prediksi');
+      const lineBreakCell = document.createElement('td');
+      lineBreakCell.setAttribute('colspan', '3');
+      lineBreak.appendChild(lineBreakCell);
+      x.appendChild(lineBreak);
+    };
+
+    function formatDate(dateString) {
+      const date = new Date(dateString); const
+        day = String(date.getDate()).padStart(2, '0'); const month = String(date.getMonth() + 1).padStart(2, '0'); const
+          year = date.getFullYear(); return `${day}-${month}-${year}`;
+    }
+
+    async function build_up_things() {
+      document.getElementById("msg").innerHTML = "";
+      document.getElementById('all-detail').innerHTML = "";
+      let totalPembelian, totalPembelianKas, totalPenjualan, totalPenjualanOperational, totalRetur, totalDana = 0;
+      generateInitialStructure();
+      let startDate, endDate;
+      if (choose_Kas == 0) {
+        let month = document.getElementById("disabledBulan").value;
+        let year = document.getElementById("disabledTahun").value;
+        const month2 = month;
+        const today = new Date();
+        const todayMonth = today.getMonth();
+        const todayYear = today.getFullYear();
+        startDate = new Date(year, month - 1, 1);
+        month = parseInt(month) + 1;
+        endDate = new Date(year, month - 1, 1);
+      } else {
+        let year = document.getElementById('disabledTahun').value;
+        startDate = new Date(year, 0, 0);
+        endDate = new Date(year, 12, 1);
+      }
+      const purchases = await axios.get(`/api/purchase/${startDate}/${endDate}`);
+      const sales = await axios.get(`/api/sale/${startDate}/${endDate}`);
+      const operationals = await axios.get(`/api/operational/${startDate}/${endDate}`);
+      const debts = await axios.get(`/api/debt/${startDate}/${endDate}`);
+      const returs = await axios.get(`/api/retur-kas/${startDate}/${endDate}`);
+      const funds = await axios.get(`/api/fund/${startDate}/${endDate}`);
+      console.log(funds);
+      if (purchases.data.response.length != 0 || sales.data.response.length != 0 || operationals.data.response.length != 0 || debts.data.response.length != 0 || returs.data.response.length != 0 || funds.data.response.length != 0) {
+        for (var count_title = 1; count_title <= 7; count_title++) {
+          document.getElementById(`list-data-awal-kas-${count_title}`).classList.add(`list-data-awal-kas-${count_title}`);
+          document.getElementById(`title-divider-kas-${count_title}`).classList.add(`title-divider-kas-${count_title}`);
+
+          //Create the table and append it
+          const newTable = document.createElement("table");
+          const newThead = document.createElement("thead");
+          const newTbody = document.createElement("tbody");
+          const newTfoot = document.createElement("tfoot");
+
+          newTable.setAttribute('id', `sales-table-${count_title}`);
+          document.getElementById(`title-divider-kas-${count_title}`).appendChild(newTable);
+          document.getElementById(`sales-table-${count_title}`).innerText = "";
+          document.getElementById(`sales-table-${count_title}`).appendChild(newThead);
+          document.getElementById(`sales-table-${count_title}`).appendChild(newTbody);
+          document.getElementById(`sales-table-${count_title}`).appendChild(newTfoot);
+
+          const thead = document.querySelector(`#sales-table-${count_title} thead`);
+          const tbody = document.querySelector(`#sales-table-${count_title} tbody`);
+          const tfoot = document.querySelector(`#sales-table-${count_title} tfoot`);
+          document.getElementById(`text-form-pembelian-${count_title}`).innerHTML = veryHeadTitle[count_title - 1];
+          if (count_title == 1) {
+            await generatePembelianRows(thead, tbody, tfoot, purchases);
+          } else if (count_title == 2) {
+            generatePenjualanRows(thead, tbody, tfoot, sales);
+          } else if (count_title == 3) {
+            generateOperational(thead, tbody, tfoot, operationals);
+          } else if (count_title == 4) {
+            generateUtangRows(thead, tbody, tfoot, debts);
+          } else if (count_title == 5) {
+            generateReturRows(thead, tbody, tfoot, returs);
+          } else if (count_title == 6) {
+            generateDana(thead, tbody, tfoot, funds);
+          }
+          else {
+            generateHasilRows(thead, tbody, tfoot);
+          };
+        };
+      } else {
+        document.getElementById("msg").innerText = "Data tidak tersedia";
+      }
+
+    };
+
+    // Function to generate pembelian table rows
+    async function generatePembelianRows(x, y, z, purchases) {
+      const thead1 = x;
+      const tbody1 = y;
+      const tfoot1 = z;
+      totalPembelian = 0;
+      totalPembelianKas = 0;
+
+      if (choose_Kas == 1) {
+        judulPembelianDataTahunan.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleSupplier;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleBiaya;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleTotalBiaya;
+          baris.appendChild(titleCell4);
+
+          thead1.appendChild(baris);
+          giveBreak(thead1);
+        });
+        const monthlyTotals = purchases.data.total;
+        for (const month in monthlyTotals) {
+          const row = document.createElement('tr');
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = month;
+          row.appendChild(tanggalCell);
+
+          const supplierCell = document.createElement('td');
+          row.appendChild(supplierCell);
+
+          const biayaCell = document.createElement('td');
+          row.appendChild(biayaCell);
+
+          const totalCell = document.createElement('td');
+          totalCell.innerText = formatCurrency(monthlyTotals[month]);
+          row.appendChild(totalCell);
+
+          tbody1.appendChild(row);
+          giveBreak(tbody1);
+
+          totalPembelian += parseInt(monthlyTotals[month]);
+        }
+        //Showing Final Result of counting on items quantity
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot1.appendChild(hasilPrediksi);
+        console.log(totalPembelianKas);
+        document.getElementById('text-hasil').innerHTML = `<b id = "hasil-pembelian">${formatCurrency(totalPembelian)}</b>`;
+      } else {
+        judulPembelianData.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleSupplier;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleBiaya;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleTotalBiaya;
+          baris.appendChild(titleCell4);
+
+          thead1.appendChild(baris);
+          giveBreak(thead1);
+        });
+        for (const data of purchases.data.response) {
+          const row = document.createElement('tr');
+
+          let returPurchase = await axios.get(`/api/retur-kas/${data.id}`);
+
+          console.log(returPurchase.data.response);
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = formatDate(data.OrderDate);
+          row.appendChild(tanggalCell);
+
+          const supplierCell = document.createElement('td');
+          supplierCell.textContent = data.supplier.SupplierName;
+          row.appendChild(supplierCell);
+
+          const biayaCell = document.createElement('td');
+          let tmpTotal = 0;
+          if (returPurchase.data.response.length == 0) {
+            tmpTotal = 0;
+            tmpTotal += parseInt(data.Total);
+            biayaCell.innerText = formatCurrency(tmpTotal);
+          } else {
+            tmpTotal = 0;
+            tmpTotal += parseInt(data.Total);
+            returPurchase.data.response.forEach(retur => {
+              tmpTotal += parseInt(retur.Total);
+            });
+            biayaCell.innerText = formatCurrency(tmpTotal);
+          }
+
+          row.appendChild(biayaCell);
+
+          const totalCell = document.createElement('td');
+          row.appendChild(totalCell);
+
+          tbody1.appendChild(row);
+          giveBreak(tbody1);
+
+          totalPembelian += parseInt(tmpTotal);
+        };
+        purchases.data.response.forEach((pur) => {
+          totalPembelianKas += parseInt(pur.Total);
+        })
+        //Showing Final Result of counting on items quantity
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot1.appendChild(hasilPrediksi);
+        console.log(totalPembelianKas);
+        document.getElementById('text-hasil').innerHTML = `<b id = "hasil-pembelian">${formatCurrency(totalPembelian)}</b>`;
+      }
+
+
+    };
+
+    // Function to generate penjualan table rows
+    function generatePenjualanRows(x, y, z, sales) {
+      const thead2 = x;
+      const tbody2 = y;
+      const tfoot2 = z;
+      totalPenjualan = 0;
+
+      if (choose_Kas == 0) {
+        judulPenjualanData.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleProduk;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleKuantitas;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleHargaTotal;
+          baris.appendChild(titleCell4);
+
+          thead2.appendChild(baris);
+          giveBreak(thead2);
+        });
+
+        sales.data.response.forEach(data => {
+          const row = document.createElement('tr');
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = formatDate(data.OrderDate);
+          row.appendChild(tanggalCell);
+
+          const produkCell = document.createElement('td');
+          let proName = "";
+          let proQnt = "";
+          data.saleproducts.forEach((pro) => {
+            proName += pro.product.ProductName;
+            proName += '\n';
+            proQnt += `${pro.Qnt} ${pro.product.Unit}`;
+            proQnt += '\n';
+          });
+          produkCell.innerText = proName;
+          row.appendChild(produkCell);
+
+          const kuantitasCell = document.createElement('td');
+          kuantitasCell.innerText = proQnt;
+          row.appendChild(kuantitasCell);
+
+          const hargaTotalCell = document.createElement('td');
+          hargaTotalCell.textContent = formatCurrency(parseInt(data.Total));
+          row.appendChild(hargaTotalCell);
+
+          tbody2.appendChild(row);
+          giveBreak(tbody2);
+
+          totalPenjualan += parseInt(data.Total);
+        });
+        //Showing Final Result of counting on items quantity
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil-2');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot2.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil-2').innerHTML = `<b>${formatCurrency(totalPenjualan)}</b>`;
+      } else {
+        judulPenjualanDataTahunan.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleProduk;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleKuantitas;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleHargaTotal;
+          baris.appendChild(titleCell4);
+
+          thead2.appendChild(baris);
+          giveBreak(thead2);
+        });
+
+        const monthlyTotals = sales.data.total;
+        for (const month in monthlyTotals) {
+          const row = document.createElement('tr');
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = month;
+          row.appendChild(tanggalCell);
+
+          const produkCell = document.createElement('td');
+          row.appendChild(produkCell);
+
+          const kuantitasCell = document.createElement('td');
+          row.appendChild(kuantitasCell);
+
+          const hargaTotalCell = document.createElement('td');
+          hargaTotalCell.textContent = formatCurrency(parseInt(monthlyTotals[month]));
+          row.appendChild(hargaTotalCell);
+
+          tbody2.appendChild(row);
+          giveBreak(tbody2);
+
+          totalPenjualan += parseInt(monthlyTotals[month]);
+        }
+        //Showing Final Result of counting on items quantity
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil-2');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot2.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil-2').innerHTML = `<b>${formatCurrency(totalPenjualan)}</b>`;
+      }
+
+    }
+
+    // Function to generate Operational table rows
+    function generateOperational(x, y, z, operationals) {
+      const thead3 = x;
+      const tbody3 = y;
+      const tfoot3 = z;
+      totalPenjualanOperational = 0;
+
+      if (choose_Kas == 0) {
+        judulOperasionalData.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleDeskripsi;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleStatus;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleBiaya;
+          baris.appendChild(titleCell4);
+
+          thead3.appendChild(baris);
+          giveBreak(thead3);
+        });
+
+        operationals.data.response.forEach(data => {
+          const row1 = document.createElement('tr');
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = formatDate(data.Date);
+          row1.appendChild(tanggalCell);
+
+          const deskripsiCell = document.createElement('td');
+          deskripsiCell.textContent = data.Description;
+          row1.appendChild(deskripsiCell);
+
+          const statusCell = document.createElement('td');
+          statusCell.textContent = "Keluar";
+          row1.appendChild(statusCell);
+
+          const biayaOprCell = document.createElement('td');
+          biayaOprCell.textContent = formatCurrency(parseInt(data.Total));
+          row1.appendChild(biayaOprCell);
+
+          tbody3.appendChild(row1);
+          giveBreak(tbody3);
+
+          totalPenjualanOperational += parseInt(data.Total);
+        });
+        //Showing Final Result of counting on data price
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil-3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot3.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil-3').innerHTML = `<b>${formatCurrency(totalPenjualanOperational)}</b>`;
+      } else {
+        judulOperasionalDataTahunana.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleDeskripsi;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleStatus;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleBiaya;
+          baris.appendChild(titleCell4);
+
+          thead3.appendChild(baris);
+          giveBreak(thead3);
+        });
+
+        const monthlyTotals = operationals.data.total;
+        for (month in monthlyTotals) {
+          const row1 = document.createElement('tr');
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = month;
+          row1.appendChild(tanggalCell);
+
+          const deskripsiCell = document.createElement('td');
+          row1.appendChild(deskripsiCell);
+
+          const statusCell = document.createElement('td');
+          row1.appendChild(statusCell);
+
+          const biayaOprCell = document.createElement('td');
+          biayaOprCell.textContent = formatCurrency(parseInt(monthlyTotals[month]));
+          row1.appendChild(biayaOprCell);
+
+          tbody3.appendChild(row1);
+          giveBreak(tbody3);
+
+          totalPenjualanOperational += parseInt(monthlyTotals[month]);
+        };
+        //Showing Final Result of counting on data price
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil-3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot3.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil-3').innerHTML = `<b>${formatCurrency(totalPenjualanOperational)}</b>`;
+      }
+
+
+    };
+
+    // Function to generate utang table rows
+    function generateUtangRows(x, y, z, debts) {
+      const thead1 = x;
+      const tbody1 = y;
+      const tfoot1 = z;
+      let totalUtang = 0;
+
+      if (choose_Kas == 0) {
+        judulUtangData.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleSupplier;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleBiaya;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleTotalBiaya;
+          baris.appendChild(titleCell4);
+
+          thead1.appendChild(baris);
+          giveBreak(thead1);
+        });
+
+        debts.data.response.forEach(data => {
+          const row = document.createElement('tr');
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = formatDate(data.OrderDate);
+          row.appendChild(tanggalCell);
+
+          const supplierCell = document.createElement('td');
+          supplierCell.textContent = data.supplier.SupplierName;
+          row.appendChild(supplierCell);
+
+          const biayaCell = document.createElement('td');
+          biayaCell.innerText = formatCurrency(parseInt(data.Total));
+          row.appendChild(biayaCell);
+
+          const totalCell = document.createElement('td');
+          row.appendChild(totalCell);
+
+          tbody1.appendChild(row);
+          giveBreak(tbody1);
+
+          totalUtang += parseInt(data.Total);
+        });
+        //Showing Final Result of counting on items quantity
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil-4');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot1.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil-4').innerHTML = `<b>${formatCurrency(totalUtang)}</b>`;
+      } else {
+        judulUtangDataTahunan.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleSupplier;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleBiaya;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleTotalBiaya;
+          baris.appendChild(titleCell4);
+
+          thead1.appendChild(baris);
+          giveBreak(thead1);
+        });
+
+        const monthlyTotals = debts.data.total;
+        for (month in monthlyTotals) {
+          const row = document.createElement('tr');
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = month;
+          row.appendChild(tanggalCell);
+
+          const supplierCell = document.createElement('td');
+          row.appendChild(supplierCell);
+
+          const biayaCell = document.createElement('td');
+          row.appendChild(biayaCell);
+
+          const totalCell = document.createElement('td');
+          totalCell.innerHTML = formatCurrency(parseInt(monthlyTotals[month]));
+          row.appendChild(totalCell);
+
+          tbody1.appendChild(row);
+          giveBreak(tbody1);
+
+          totalUtang += parseInt(monthlyTotals[month]);
+        };
+        //Showing Final Result of counting on items quantity
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil-4');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot1.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil-4').innerHTML = `<b>${formatCurrency(totalUtang)}</b>`;
+      }
+
+
+    };
+
+
+    // Function to generate retur table rows
+    function generateReturRows(x, y, z, returs) {
+      const thead2 = x;
+      const tbody2 = y;
+      const tfoot2 = z;
+      totalRetur = 0;
+
+      if (choose_Kas == 0) {
+        judulReturData.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleProduk;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleKuantitas;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleHargaTotal;
+          baris.appendChild(titleCell4);
+
+          thead2.appendChild(baris);
+          giveBreak(thead2);
+        });
+
+        returs.data.response.forEach(data => {
+          const row = document.createElement('tr');
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = formatDate(data.ReturDate);
+          row.appendChild(tanggalCell);
+
+          const produkCell = document.createElement('td');
+          let proName = "";
+          let proQnt = "";
+          data.returproducts.forEach((pro) => {
+            proName += pro.product.ProductName;
+            proName += '\n';
+            proQnt += `${pro.Qnt} ${pro.product.Unit}`;
+            proQnt += '\n';
+          });
+          produkCell.innerText = proName;
+          row.appendChild(produkCell);
+
+          const kuantitasCell = document.createElement('td');
+          kuantitasCell.innerText = proQnt;
+          row.appendChild(kuantitasCell);
+
+          const hargaTotalCell = document.createElement('td');
+          hargaTotalCell.textContent = formatCurrency(parseInt(data.Total));
+          row.appendChild(hargaTotalCell);
+
+          tbody2.appendChild(row);
+          giveBreak(tbody2);
+
+          totalRetur += parseInt(data.Total);
+        });
+        //Showing Final Result of counting on items quantity
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil-5');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot2.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil-5').innerHTML = `<b>${formatCurrency(totalRetur)}</b>`;
+      } else {
+        judulReturDataTahunan.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleProduk;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleKuantitas;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleHargaTotal;
+          baris.appendChild(titleCell4);
+
+          thead2.appendChild(baris);
+          giveBreak(thead2);
+        });
+
+        const monthlyTotals = returs.data.total;
+
+        for (month in monthlyTotals) {
+          const row = document.createElement('tr');
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = month;
+          row.appendChild(tanggalCell);
+
+          const produkCell = document.createElement('td');
+          row.appendChild(produkCell);
+
+          const kuantitasCell = document.createElement('td');
+          row.appendChild(kuantitasCell);
+
+          const hargaTotalCell = document.createElement('td');
+          hargaTotalCell.textContent = formatCurrency(parseInt(monthlyTotals[month]));
+          row.appendChild(hargaTotalCell);
+
+          tbody2.appendChild(row);
+          giveBreak(tbody2);
+
+          totalRetur += parseInt(monthlyTotals[month]);
+        };
+        //Showing Final Result of counting on items quantity
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil-5');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot2.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil-5').innerHTML = `<b>${formatCurrency(totalRetur)}</b>`;
+      }
+
+    }
+
+    // Function to generate Operational table rows
+    function generateDana(x, y, z, funds) {
+      const thead3 = x;
+      const tbody3 = y;
+      const tfoot3 = z;
+      totalDana = 0;
+
+      if (choose_Kas == 0) {
+        judulDanaData.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleDeskripsi;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleStatus;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleBiaya;
+          baris.appendChild(titleCell4);
+
+          thead3.appendChild(baris);
+          giveBreak(thead3);
+        });
+
+        funds.data.response.forEach(data => {
+          const row1 = document.createElement('tr');
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = formatDate(data.Date);
+          row1.appendChild(tanggalCell);
+
+          const deskripsiCell = document.createElement('td');
+          deskripsiCell.textContent = data.Description;
+          row1.appendChild(deskripsiCell);
+
+          const statusCell = document.createElement('td');
+          statusCell.textContent = "Masuk";
+          row1.appendChild(statusCell);
+
+          const biayaOprCell = document.createElement('td');
+          biayaOprCell.textContent = formatCurrency(parseInt(data.Total));
+          row1.appendChild(biayaOprCell);
+
+          tbody3.appendChild(row1);
+          giveBreak(tbody3);
+          totalDana += parseInt(data.Total);
+
+
+        });
+        //Showing Final Result of counting on data price
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil-6');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot3.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil-6').innerHTML = `<b>${formatCurrency(totalDana)}</b>`;
+      } else {
+        judulDanaDataTahunana.forEach(data => {
+          const baris = document.createElement('tr');
+
+          const titleCell = document.createElement('th');
+          titleCell.textContent = data.titleTgl;
+          baris.appendChild(titleCell);
+
+          const titleCell2 = document.createElement('th');
+          titleCell2.textContent = data.titleDeskripsi;
+          baris.appendChild(titleCell2);
+
+          const titleCell3 = document.createElement('th');
+          titleCell3.textContent = data.titleStatus;
+          baris.appendChild(titleCell3);
+
+          const titleCell4 = document.createElement('th');
+          titleCell4.textContent = data.titleBiaya;
+          baris.appendChild(titleCell4);
+
+          thead3.appendChild(baris);
+          giveBreak(thead3);
+        });
+
+        const monthlyTotals = funds.data.total;
+        for (month in monthlyTotals) {
+          const row1 = document.createElement('tr');
+
+          const tanggalCell = document.createElement('td');
+          tanggalCell.textContent = month;
+          row1.appendChild(tanggalCell);
+
+          const deskripsiCell = document.createElement('td');
+          row1.appendChild(deskripsiCell);
+
+          const statusCell = document.createElement('td');
+          row1.appendChild(statusCell);
+
+          const biayaOprCell = document.createElement('td');
+          biayaOprCell.textContent = formatCurrency(parseInt(monthlyTotals[month]));
+          row1.appendChild(biayaOprCell);
+
+          tbody3.appendChild(row1);
+          giveBreak(tbody3);
+          totalDana += parseInt(monthlyTotals[month]);
+
+
+        };
+        //Showing Final Result of counting on data price
+        const hasilPrediksi = document.createElement('tr');
+        const hasilPrediksiNumber = document.createElement('td');
+        const hasilPrediksiNumber2 = document.createElement('td');
+        const hasilPrediksiNumber3 = document.createElement('td');
+        hasilPrediksiNumber.setAttribute('colspan', '3');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksiNumber2.setAttribute('id', 'text-hasil-6');
+        hasilPrediksi.append(hasilPrediksiNumber);
+        hasilPrediksi.append(hasilPrediksiNumber2);
+        tfoot3.appendChild(hasilPrediksi);
+        document.getElementById('text-hasil-6').innerHTML = `<b>${formatCurrency(totalDana)}</b>`;
+      }
+
+
+    };
+
+    // Function to generate hasil table rows
+    function generateHasilRows(x, y, z) {
+      const thead2 = x;
+      const tbody2 = y;
+      const tfoot2 = z;
+      let totalPendapatan = 0;
+      totalPendapatan = (totalPenjualan + totalRetur + totalDana) - (totalPembelian + totalPenjualanOperational);
+      judulHasilData.forEach(data => {
+        const baris = document.createElement('tr');
+
+        const titleCell = document.createElement('th');
+        titleCell.textContent = data.titleTgl;
+        baris.appendChild(titleCell);
+
+        const titleCell2 = document.createElement('th');
+        titleCell2.textContent = data.titleProduk;
+        baris.appendChild(titleCell2);
+
+        const titleCell3 = document.createElement('th');
+        titleCell3.textContent = data.titleKuantitas;
+        baris.appendChild(titleCell3);
+
+        const titleCell4 = document.createElement('th');
+        titleCell4.textContent = data.titleHargaTotal;
+        baris.appendChild(titleCell4);
+
+        thead2.appendChild(baris);
+        giveBreak(thead2);
+      });
+
+
+      const row = document.createElement('tr');
+
+      const tanggalCell = document.createElement('td');
+      tanggalCell.innerHTML = "Peningkatan(Penurunan) Pendapatan";
+      row.appendChild(tanggalCell);
+
+      const produkCell = document.createElement('td');
+      produkCell.innerText = "";
+      row.appendChild(produkCell);
+
+      const kuantitasCell = document.createElement('td');
+      kuantitasCell.innerText = "";
+      row.appendChild(kuantitasCell);
+
+      const hargaTotalCell = document.createElement('td');
+      hargaTotalCell.innerHTML = `<b>${formatCurrency(totalPendapatan)}</b>`;
+      row.appendChild(hargaTotalCell);
+
+      tbody2.appendChild(row);
+      giveBreak(tbody2);
+
+
+
+    }
+  </script>
+
+  <script>
+    function selectedTime(el) {
+      var elementInside = el.options[el.selectedIndex].value;
+      if (elementInside == (choose_item_count - 1)) {
+        document.getElementById("tahunbulan-hide").style.display = "none";
+        choose_Kas = 1;
+      } else {
+        document.getElementById("tahunbulan-hide").style.display = "flex";
+        choose_Kas = 0;
+      }
+    };
+  </script>
+</body>
+
+</html>

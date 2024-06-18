@@ -1,0 +1,711 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    height: 100%;
+}
+
+.global-container{
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/*Login Background Img*/
+.container_login {
+    background-image: url('https://klikpajak.id/wp-content/uploads/2018/10/KlikPajak_Blog_Pajak-Usaha-Bahan-Bangunan-yang-Wajib-Dibayarkan-dan-Dilaporkan.jpg');
+    height: 100vh;
+    width: 100% !important;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    padding: 20px;
+    padding-bottom: 40px;
+}
+.label-icon-login{
+    display: flex;
+    justify-content: space-between;
+}
+button.button-hide-unhide-login{
+    border: 0px;
+    background-color: whitesmoke;
+    height: 80%;
+}
+p.hide-unhide-text{
+    font-size: 12px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+h2.headerTitle{
+    text-align: left;
+    font-weight: bold;
+}
+
+.w-50 {
+    width: 30% !important;
+    background-color: whitesmoke;
+    position: absolute !important;
+    top: 25% !important;
+    border-radius: 8px !important;
+    left: 35%;
+}
+
+.form-control {
+   width: 100% !important;
+}
+
+/* Style for the form container */
+input[type="text"]{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    display: inline-block;
+    border: 1px solid white;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+/*Decoration for choosing file form submit*/
+input[type="file"]{
+    margin-bottom: 15px;
+}
+.choose-file-bg{
+    background-color: white;
+    border-radius: 8px;
+    height: 50px;
+    padding: 10px;
+}
+
+/*Decoration text inside id and pass form submit*/
+input[type="text"].form-control.for-password{
+    padding-right: 3px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin: 0px;
+    border: 1px solid #ccc;
+}
+
+/*Decoration for id and pass label*/
+label[for="username"], 
+label[for="password"]{
+    padding-top: 10px;
+    margin-bottom: 0px;
+    font-size: 12px;
+}
+
+/*Decoration for Navigation Bar*/
+nav.navbar{
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+}
+
+/*Decoration on Navigation Bar for not moving while scrolling down*/
+ul{
+    position: sticky;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+/*Decoration for Draft Bar on the left*/
+li{
+    float: left;
+}
+
+/*Decoration for hover in Draft Bar*/
+li a:hover:not(.active) {
+    background-color: rgb(102, 201, 247);
+    opacity: 90%;
+}
+
+/*Decoration for link in Draft Bar*/
+a{
+    text-decoration: none;
+    font-size: 24px;
+}
+
+/*Decoration for container showing list supplier*/
+.list-data-awal,
+.list-data-awal-graph,
+.list-data-awal-prediksi,
+.list-data-awal-prediksi-2,
+.list-data-awal-kas-1,
+.list-data-awal-kas-2,
+.list-data-awal-kas-3,
+.list-data-awal-kas-4,
+.list-data-awal-kas-5,
+.list-data-awal-kas-6,
+.list-data-awal-kas-7{
+    width: 98%;
+    margin-top: 1.5%;
+    margin-left: 1%;
+    margin-bottom: 1.5%;
+    padding-bottom: 1.5%;
+    background-color: white;
+    border-radius: 8px;
+}
+.list-data-awal-prediksi-2{
+    padding-top: 20px;
+    padding-left: 1%;
+    padding-right: 1%;
+}
+.list-data-awal-graph{
+    padding-top: 1%;
+    display: none;
+}
+
+/*Grid for dividing search, title and button into columns*/
+.before-divider{
+    display: grid;
+    grid-template-columns: 70% 15% 15%;
+    margin-left: 1%;
+}
+.before-divider-operasional{
+    display: grid;
+    grid-template-columns: 68% 17% 15%;
+    margin-left: 1%;
+}
+
+/*Grid for dividing data per row*/
+.title-divider{
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 12% 15% 15% 28% 15% 15%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.title-divider-stok{
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 10% 15% 15% 10% 15% 10% 10% 15%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.title-divider-retur-pembelian{
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 20% 20% 12% 18% 15% 15%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+
+.title-divider-pembelian{
+    display: grid;
+    grid-template-columns: 15% 15% 15% 10% 10% 15% 10% 10%; 
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.title-divider-penjualan{
+    display: grid;
+    grid-template-columns: 15% 15% 15% 10% 10% 15% 10% 10%; 
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.title-divider-prediksipenjualan{
+    display: grid;
+    grid-template-columns: 30% 25% 33% 10%; 
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.data-hutang-all{
+    display: grid;
+    grid-template-columns: 15% 15% 15% 15% 10% 15% 15%; 
+    margin-left: 1%;
+    margin-right: 1%;
+    overflow: auto;
+}
+.title-divider-operasional{
+    overflow: auto;
+    display: grid;
+    grid-template-columns: 25% 30% 30% 15%;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.title-divider-prediksipenjualan-hasil,
+.title-divider-kas-1,
+.title-divider-kas-2,
+.title-divider-kas-3,
+.title-divider-kas-4,
+.title-divider-kas-5,
+.title-divider-kas-6,
+.title-divider-kas-7{
+    max-height: 50%;
+    padding-top: 20px; 
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.title-divider-laporan-kas,
+.title-divider-pembelian-sorting{
+    display: grid;
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.title-divider-laporan-kas{
+    grid-template-columns: 30% 25% 15% 30%;
+}
+.title-divider-pembelian-sorting{
+    padding-top: 2%;
+    grid-template-columns: 30% 30% 10% 35%;
+}
+
+.title-divider > div {
+    text-align: left;
+}
+
+/*Decoration for list title*/
+.item-for-all{
+    font-weight: bolder;
+    padding-top: 20px;
+    font-size: 24px;
+    grid-column-start: 1;
+}
+
+
+/*Decoration for search and button*/
+.item-search,
+.item-search-utang,
+.item-btn{
+    padding-top: 20px;
+}
+.item-search-utang{
+    grid-column-start: 3;
+}
+.item-btn-operasional{
+    padding: 0px;
+}
+button[class="btn btn-success"]{
+    width: 80%;
+}
+
+/*Decoration for Bolding Font*/
+.nama-supplier,
+.nama-supplier-awal,
+.keterangan-supplier,
+.id-supplier,
+.nomor-telp-supplier,
+.alamat-supplier,
+.gambar-barang,
+.kode-barang,
+.nama-barang,
+.jumlah-stok,
+.jumlah-stok-pg,
+.jumlah-stok-retur,
+.satuan-stok,
+.harga-stok,
+.harga-stok-beli,
+.tgl-pesanan,
+.jenis-pembayaran,
+.nama-barang-pembelian,
+.tgl-operasional,
+.deskripsi-operasional,
+.pendapatan-operasional,
+.biaya-operasional,
+.status-operasional
+{
+    font-weight:bold;
+}
+
+/*Decoration for coloring list data looping one*/
+P{
+    font-weight:500;
+    color:rgb(112, 112, 112);
+    margin: 0;
+}
+/*Decoration for data on the (general)*/
+.centereditem{
+    align-content: center;
+}
+/*Decoration for harga rata tengah (general)*/
+.item-stok-4,
+.jumlah-stok-pg,
+.jumlah-stok,
+.item-4,
+.hutang-item-4,
+.Kuantitas-4{
+    text-align: center;
+}
+.supplier-list-4{
+    padding-right: 8px;
+}
+
+/*Decoration for adjusting action text in t
+he middle*/
+h5{
+    font-weight: bold;
+    text-align: center;
+}
+
+/*Decoration for each break on showing supplier list*/
+hr.data-supplier{
+    grid-column-start: 1;
+    grid-column-end: 7;
+    margin-bottom: 30px;
+}
+hr.stok-barang{
+    grid-column-start: 1;
+    grid-column-end: 9;
+    margin-bottom: 15px;
+}
+hr.for-pembelian,
+hr.for-retur-pembelian,
+hr.for-pembelian-penjualan{
+    grid-column-start: 1;
+    margin-bottom: 30px;
+}
+hr.for-pembelian,
+hr.for-pembelian-penjualan{
+    grid-column-end: 9;
+}
+hr.for-retur-pembelian{
+    grid-column-end: 8;
+}
+hr.data-operasional{
+    grid-column-start: 1;
+    grid-column-end: 5;
+}
+
+/*Decoration button for sorting (general)*/
+button.btn.btn-sorting{
+    padding: 0px;
+    margin-left: 5px;
+}
+
+/*Decoration for dividing edit button and delete button*/
+.icon-actions{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+.icon-actions-penjualan{
+    display: grid;
+    grid-column-start: 5;
+    grid-template-columns: auto
+}
+.actions-edit,
+.actions-delete{
+    text-align: center;
+}
+
+/* The popup form - hidden by default */
+.form-popup,
+.form-popup-produk,
+.form-popup-hutang{
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 7%;
+  }
+  .form-popup{
+    display:none;
+    position: fixed;
+    padding-inline-start: 25%;
+    padding-inline-end: 25%;
+  }
+  /* The popup showing product form - hidden by default */
+  .form-popup-produk{
+    display:none;
+    position: fixed;
+    padding-top: 5%;
+    padding-inline-start: 10%;
+    padding-inline-end: 10%;
+  }
+  /* The popup showing hutang form - hidden by default */
+  .form-popup-hutang{
+    display:none;
+    position: fixed;
+    padding-inline-start: 3%;
+    padding-inline-end: 3%;
+    padding-top: 2%;
+  }
+  
+/* Add styles to the form container */
+.form-container,
+.form-container-pembelian,
+.form-container-pembelian-produk,
+.form-container-retur-pembelian,
+.form-container-penjualan,
+.form-container-operasional,
+.form-container-hutang{
+    overflow: auto;
+    margin: 5% auto;
+    width: 100%;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+}
+    /* For All form container */
+    .form-container{
+        max-height: 600px;
+        max-width: 800px;
+        height: 65%;
+    }
+    /* For Pembelian form container */
+    .form-container-pembelian{
+        max-height: 600px;
+        max-width: 800px;
+        height: 68%;
+    }
+    /* For Pembelian Choosing Product form container */
+    .form-container-pembelian-produk{
+        height: 75%;
+        max-width: 100%;
+        max-height: 75%;
+    }
+    /* For Retur Pembelian form container */
+    .form-container-retur-pembelian{
+        height: auto;
+        max-height: 75%;
+    }
+    /* For Penjualan form container */
+    .form-container-penjualan{
+        width: 75%;
+        height: auto;
+        max-width: 100%;
+        max-height: 75%;
+    }
+    .form-container-operasional{
+        max-height: 620px;
+        max-width: 800px;
+        height: 70%;
+    }
+    .form-container-hutang{
+        max-height: 700px;
+        max-width: 1500px;
+        height: 1500px;
+    }
+
+
+/* Title style for form container */
+h2.text-form{
+    text-align: left;
+}
+
+h2.text-form-pembelian{
+    text-align: left;
+    margin-bottom: 0px;
+    padding-top: 20px;
+}
+
+/*Decoration for sorting pembelian & penjualan date*/
+input[type="date"].pembelian-sorting-time{
+    width: 60%;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    border-bottom-left-radius:  0px;
+    border-top-left-radius:  0px;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+    opacity: 1;
+}
+
+/* Decoration for button stay on the right side */
+.button-form{
+    padding-top: 40px;
+    float: right;
+}
+button[class="btn btn-success yes-form-btn"], 
+button[class="btn btn-danger no-form-btn"]{
+    width: 150px;
+}
+
+/* Decoration for drop-down on pop-up form */
+.dropdown-form{
+    margin-bottom: 15px;
+}
+select[class="dropdownsupp"]{
+    border: none;
+    outline: none;
+    scroll-behavior: smooth;
+    width: 100%;
+    padding: 15px 5px;
+    border-radius: 8px;
+}
+
+/* Decoration for date on pop-up form */
+.date-form{
+    display: grid;
+    margin-bottom: 15px;
+}
+input[type="date"]{
+    border: none;
+    outline: none;
+    padding: 15px 5px;
+    border-radius: 8px;
+}
+/*Decoration for search button adjusting a bit smaller*/
+.padright{
+    width: 90%;
+}
+/* Decoration for button tambah produk on pop-up form */
+.button-add-form{
+    display: grid;
+}
+.for-generate-qty{
+    display: flex;
+    justify-content: space-between;
+}
+hr.break-for-kuantitas{
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border: 1px solid black;
+}
+button[class="search-product-form"]{
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    border: none;
+    outline: none;
+    border-radius: 8px;
+    padding: 15px 5px;
+    margin-bottom: 15px;
+}
+
+/*Decoration For Search Product Pop-up Form*/
+.product-search-form{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/*Decoration For Table Product Pop-up Form*/
+.table-product-form{
+    height: 72%;
+    width: 100%;
+    overflow: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    padding: 20px;
+}
+th, td{
+    padding: 15px 5px;
+}
+
+/*Decoration For Input Price Table Product Pop-up Form*/
+input[class="form-harga"],
+input[class="form-qty"]{
+    border: 1px solid grey;
+    border-radius: 8px;
+}
+
+/*Decoration For Separater Table Product Pop-up Form*/
+tr.separated td{
+    padding: 0px;
+    border-bottom: 1px solid grey;
+}
+/*Decoration utk tulisan item dan kuantitas pada Pop-up Form (data pembelian)*/
+.spawn-selected-product{
+    display: flex;
+    justify-content: space-between;
+}
+
+/*Decoration for list retur can be scrolled*/
+.list-retur-pembelian{
+    overflow:auto;
+    display: none;
+}
+th.nametableforproduct{
+    width: 50%;
+}
+th.qtytableforproduct{
+    width: 20%;
+}
+th.centered-item,
+td.centered-item{
+    display: grid;
+    justify-content: center;
+}
+td.centered-item{
+    margin-top: 22px;
+}
+input.centered-item{
+    margin-top: 10px;
+}
+
+/*Decoration for label  & dropdown button in prediksi*/
+button[class="btn btn-secondary btn-sm prediksi-btn"]{
+    width: 100%;
+    border-start-start-radius: 5px;
+}
+button[class="btn btn-secondary btn-sm prediksi-btn "]{
+    width: 0%;
+    border-start-start-radius: 5px;
+}
+.btn-group.prediksi{
+    width: 95%;
+}
+.less-height{
+    height: 60%;
+}
+.btn-group.prediksi-top{
+    padding-bottom: 20px;
+    padding-right: 5%;
+}
+select[class="form-select form-select-sm prediksi"]{
+    width: 100%;
+    border-bottom-left-radius:  0px;
+    border-top-left-radius:  0px;
+}
+.item-btn.prediksi{
+    padding: 0px;
+}
+
+/*Decoration for button Prediksi*/
+button[class="btn btn-success prediksi"]{
+    width: 100%;
+    height: 34px;
+    padding-bottom: 5px;
+}
+
+/*Decoration inside table (justify the width)*/
+th.bulan-prediksi{
+    width: 35%;
+}
+th.terjual-prediksi{
+    width: 35%;
+}
+.line-break-prediksi{
+    border-top: 1px solid grey;
+}
+
+/*Decoration for input pop-up form in operasional*/
+textarea.deskripsi-operasional{
+    width: 100%;
+    min-height: 8%;
+    max-height: 15%;
+    padding: 10px;
+    font-weight: 400;
+    border-radius: 8px;
+    border: none;
+}
+
+/*Decoration Header for Utang Pop Up*/
+.header-for-utang,
+.form-popup-hutang-top{
+    display: flex;
+    justify-content: space-between;
+}
+hr.hutang-break{
+    display: flex;
+    grid-column-start: 1;
+    grid-column-end: 8;
+}
+.hutang-wrapper-scorlling{
+    overflow: auto;
+    height: 500px;
+}
+.generateButton-retur-pembelian{
+    text-align: end;
+}
+
