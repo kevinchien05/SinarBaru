@@ -9,7 +9,6 @@ import Product from "../models/product.js";
 import Supplier from "../models/supplier.js";
 import Retur from "../models/retur.js";
 import ReturProduct from "../models/returProduct.js";
-import { sequelize } from "../models/model.js";
 import { Op, or } from "sequelize";
 import moment from "moment";
 
@@ -200,23 +199,5 @@ router.get('/api/next-fund/:startDate/:endDate', (req, res) => {
     });
 });
 
-router.post('/api/fund', (req, res) => {
-    Fund.create({ Date: req.body.Date, Total: req.body.Total, Status: req.body.Status }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
-
-router.put('/api/fund/:id', (req, res) => {
-    Fund.update({ Total: req.body.Total },
-        { where: { id: req.params.id } }
-    ).then((results) => {
-        res.json({ status: 200, error: null, Response: results });
-    }).catch(err => {
-        res.json({ status: 502, error: err });
-    })
-});
 
 export default router;

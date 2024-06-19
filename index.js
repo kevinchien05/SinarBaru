@@ -20,7 +20,6 @@ import ReturRoute from './routes/ReturRoute.js';
 import SupplierRoute from './routes/SupplierRoute.js';
 import FundRoute from './routes/FundRoute.js';
 import PredictRoute from './routes/PredictRoute.js';
-;
 
 
 const app = express();
