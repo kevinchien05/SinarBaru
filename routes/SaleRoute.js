@@ -14,12 +14,12 @@ router.get('/sale', async (req, res) => {
         const { sort = 'OrderDate', order = 'ASC', search = '', startDate, endDate } = req.query;
 
         // Calculate the default date range
-        const defaultEndDate = moment().endOf('day').toDate();
-        const defaultStartDate = moment().subtract(1, 'years').startOf('day').toDate();
+        const defaultEndDate = moment().endOf('day').format('YYYY-MM-DD');
+        const defaultStartDate = moment().subtract(1, 'years').startOf('day').format('YYYY-MM-DD');
 
         // Use provided dates or default values
-        const filterStartDate = startDate ? moment(startDate).startOf('day').toDate() : defaultStartDate;
-        const filterEndDate = endDate ? moment(endDate).endOf('day').toDate() : defaultEndDate;
+        const filterStartDate = startDate ? moment(startDate).startOf('day').format('YYYY-MM-DD') : defaultStartDate;
+        const filterEndDate = endDate ? moment(endDate).endOf('day').format('YYYY-MM-DD') : defaultEndDate;
 
         const searchCondition = search ? {
             [Op.or]: [

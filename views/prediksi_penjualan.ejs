@@ -354,6 +354,7 @@
 
       if (document.getElementById('tahun').value && document.getElementById("bulan").value && document.getElementById("product").value) {
         document.getElementById("msg").innerHTML = "";
+        document.querySelector("#reportsChart").innerHTML = "";
         let sumY = 0, sumX = 0, sumXY = 0, sumX2 = 0, avgY = 0, b = 0, a = 0, y = 0, im = 0, hasil = 0;
         let sumMonth = 0;
         let months = [];
