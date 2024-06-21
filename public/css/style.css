@@ -189,20 +189,26 @@ a{
 .title-divider-retur-pembelian{
     overflow: auto;
     display: grid;
-    grid-template-columns: 20% 20% 12% 18% 15% 15%;
+    grid-template-columns: 15% 15% 12% 13% 15% 15% 15%;
     margin-left: 1%;
     margin-right: 1%;
 }
 
 .title-divider-pembelian{
     display: grid;
-    grid-template-columns: 15% 15% 15% 10% 10% 15% 10% 10%; 
+    grid-template-columns: 15% 12% 10% 10% 10% 13% 10% 10% 10%; 
+    margin-left: 1%;
+    margin-right: 1%;
+}
+.title-divider-pembelian-utang{
+    display: grid;
+    grid-template-columns: 15% 12% 10% 10% 10% 13% 15% 15%; 
     margin-left: 1%;
     margin-right: 1%;
 }
 .title-divider-penjualan{
     display: grid;
-    grid-template-columns: 15% 15% 15% 10% 10% 15% 10% 10%; 
+    grid-template-columns: 15% 15% 10% 10% 10% 10% 10% 10% 10%; 
     margin-left: 1%;
     margin-right: 1%;
 }
@@ -214,7 +220,7 @@ a{
 }
 .data-hutang-all{
     display: grid;
-    grid-template-columns: 15% 15% 15% 15% 10% 15% 15%; 
+    grid-template-columns: 15% 10% 10% 15% 10% 15% 15% 10%; 
     margin-left: 1%;
     margin-right: 1%;
     overflow: auto;
@@ -336,6 +342,7 @@ P{
 /*Decoration for adjusting action text in t
 he middle*/
 h5{
+    font-size: 16px;
     font-weight: bold;
     text-align: center;
 }
@@ -359,7 +366,7 @@ hr.for-pembelian-penjualan{
 }
 hr.for-pembelian,
 hr.for-pembelian-penjualan{
-    grid-column-end: 9;
+    grid-column-end:10;
 }
 hr.for-retur-pembelian{
     grid-column-end: 8;

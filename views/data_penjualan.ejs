@@ -432,6 +432,10 @@
         Satuan
       </div>
 
+      <div class="satuan-stok">
+        Harga Satuan
+      </div>
+
       <div class="harga-stok">
         Harga Total
         <button type="button" class="btn btn-sorting" id=""
@@ -486,6 +490,13 @@
             <% } %>
         </div>
         <div class="item centereditem" id="item">
+          <% for( let j=0; j < sales[i].saleproducts.length; j++ ) { %>
+            <p id="kode">
+              <%= formatRupiah(sales[i].saleproducts[j].Price)  %>
+            </p><br>
+            <% } %>
+        </div>
+        <div class="item centereditem" id="item">
           <p id="kode">
             <%= formatRupiah(sales[i].Total) %>
           </p>
@@ -511,6 +522,7 @@
             </svg>
           </button>
         </div>
+        <hr class="for-pembelian-penjualan">
         <% } %>
 
 

@@ -257,7 +257,11 @@
       <br>
     </div>
 
-    <div class="title-divider-pembelian">
+    <div class="<% if (i_user.Status == 1) { %>
+      title-divider-pembelian
+    <% }else{ %>
+      title-divider-pembelian-utang
+   <% } %>">
       <!-- Identification For Each Data -->
       <div class="nama-supplier">
         Supplier
@@ -291,6 +295,9 @@
 
       <div class="satuan-stok">
         Satuan
+      </div>
+      <div class="satuan-stok">
+        Harga Satuan
       </div>
 
       <div class="harga-stok">
@@ -359,6 +366,18 @@
                   <% } else { %>
                     <p id="kode-5">
                       <%= purchases[i].purchaseproducts[j].product.Unit %>
+                    </p><br>
+                    <% } %>
+
+                      <% } %>
+            </div>
+            <div class="item-5 centereditem" id="item-5">
+              <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
+                <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
+                  <p hidden></p>
+                  <% } else { %>
+                    <p id="kode-5">
+                      <%= formatRupiah(purchases[i].purchaseproducts[j].Price) %>
                     </p><br>
                     <% } %>
 

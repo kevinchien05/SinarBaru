@@ -32,14 +32,14 @@ router.get('/purchase', async (req, res) => {
                 { '$PurchaseProducts.Product.ProductName$': { [Op.like]: `%${search}%` } },
                 { '$PurchaseProducts.Qnt$': { [Op.like]: `%${search}%` } }
             ], Status: {
-                [Op.in]: [0, 2]
+                [Op.in]: [0, 1,2]
             }, OrderDate: {
                 [Op.between]: [filterStartDate, filterEndDate]
             }
 
         } : {
             Status: {
-                [Op.in]: [0, 2]
+                [Op.in]: [0, 1,2]
             }, OrderDate: {
                 [Op.between]: [filterStartDate, filterEndDate]
             }

@@ -284,7 +284,7 @@
           </div>
 
           <div class="generateButton-retur-pembelian">
-            <button class="btn btn-success yes-form-btn" type="button" onclick="fetchData()">Check</button>
+            <button class="btn btn-success yes-form-btn" type="button" onclick="fetchData()">Cek</button>
           </div>
 
           <div class="list-retur-pembelian" id="list-retur-pembelian">
@@ -351,6 +351,9 @@
       <div class="satuan-stok">
         Satuan
       </div>
+      <div class="satuan-stok">
+        Harga Satuan
+      </div>
 
       <div class="harga-stok">
         Harga Total
@@ -397,6 +400,13 @@
             </p><br>
             <% } %>
         </div>
+        <div class="item centereditem" id="item">
+          <% for( let j=0; j < returs[i].returproducts.length; j++ ) { %>
+            <p id="kode">
+              <%= formatRupiah(returs[i].returproducts[j].Price)  %>
+            </p><br>
+            <% } %>
+        </div>
         <div class="item" id="item">
           <p id="kode">
             <%= formatRupiah(returs[i].Total) %>
@@ -405,6 +415,7 @@
         <div>
           <p></p>
         </div>
+        <hr class="for-retur-pembelian">
         <% } %>
     </div>
 
