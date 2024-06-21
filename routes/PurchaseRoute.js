@@ -20,8 +20,11 @@ router.get('/purchase', async (req, res) => {
         const defaultStartDate = moment().subtract(1, 'years').startOf('day').format('YYYY-MM-DD');
 
         // Use provided dates or default values
-        const filterStartDate = startDate ? moment(startDate).startOf('day').format('YYYY-MM-DD') : defaultStartDate;
-        const filterEndDate = endDate ? moment(endDate).endOf('day').format('YYYY-MM-DD') : defaultEndDate;
+        const displayStartDate = startDate ? moment(startDate).startOf('day').format('YYYY-MM-DD') : defaultStartDate;
+        const displayEndDate = endDate ? moment(endDate).endOf('day').format('YYYY-MM-DD') : defaultEndDate;
+
+        const filterStartDate = startDate ? moment(startDate).startOf('day').format('YYYY-MM-DD HH:mm:ss') : moment(defaultStartDate).startOf('day').format('YYYY-MM-DD HH:mm:ss');
+        const filterEndDate = endDate ? moment(endDate).endOf('day').format('YYYY-MM-DD HH:mm:ss') : moment(defaultEndDate).endOf('day').format('YYYY-MM-DD HH:mm:ss');
 
 
         const searchCondition = search ? {
@@ -59,8 +62,8 @@ router.get('/purchase', async (req, res) => {
             Supplier.findAll().then((sup) => {
                 Product.findAll().then((pro) => {
                     res.render("data_pembelian", {
-                        i_user: req.session.user || "", purchases: results, suppliers: sup, products: pro, counter: purchaseCount, sort, order, search, startDate: filterStartDate,
-                        endDate: filterEndDate
+                        i_user: req.session.user || "", purchases: results, suppliers: sup, products: pro, counter: purchaseCount, sort, order, search, startDate: displayStartDate,
+                        endDate: displayEndDate
                     });
                 })
             })
