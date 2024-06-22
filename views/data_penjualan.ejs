@@ -432,7 +432,7 @@
         Satuan
       </div>
 
-      <div class="satuan-stok">
+      <div class="harga-stok">
         Harga Satuan
       </div>
 
@@ -446,12 +446,12 @@
           </svg></button>
       </div>
 
-      <div class="deskripsi-operasional">
+      <div class="deskripsi-operasional" style="text-align: center;">
         Deskripsi
       </div>
 
       <div class="actions-supplier">
-        <h5>Actions</h5>
+        <h5>Aksi</h5>
       </div>
 
 
@@ -472,37 +472,37 @@
           <% for( let j=0; j < sales[i].saleproducts.length; j++ ) { %>
             <p id="kode">
               <%= sales[i].saleproducts[j].product.ProductName %>
-            </p><br>
+            </p>
             <% } %>
         </div>
         <div class="item-4 centereditem" id="item">
           <% for( let j=0; j < sales[i].saleproducts.length; j++ ) { %>
             <p id="kode-4">
               <%= sales[i].saleproducts[j].Qnt %>
-            </p><br>
+            </p>
             <% } %>
         </div>
         <div class="item centereditem" id="item">
           <% for( let j=0; j < sales[i].saleproducts.length; j++ ) { %>
             <p id="kode">
               <%= sales[i].saleproducts[j].product.Unit %>
-            </p><br>
+            </p>
             <% } %>
         </div>
-        <div class="item centereditem" id="item">
+        <div class="item-7 centereditem" id="item-7">
           <% for( let j=0; j < sales[i].saleproducts.length; j++ ) { %>
-            <p id="kode">
+            <p id="kode-7">
               <%= formatRupiah(sales[i].saleproducts[j].Price)  %>
-            </p><br>
+            </p>
             <% } %>
         </div>
-        <div class="item centereditem" id="item">
-          <p id="kode">
+        <div class="item-7 centereditem" id="item-7">
+          <p id="kode-7">
             <%= formatRupiah(sales[i].Total) %>
           </p>
         </div>
-        <div class="item centereditem" id="item">
-          <p id="kode">
+        <div class="item-7 centereditem" id="item-7" style="text-align: center;">
+          <p id="kode-7">
             <%= sales[i].Description %>
           </p>
         </div>

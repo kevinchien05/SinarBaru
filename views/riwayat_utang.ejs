@@ -251,7 +251,7 @@
       <br>
     </div>
 
-    <div class="data-hutang-all">
+    <div class="title-divider-pembelian-utang">
       <!-- Identification For Each Data -->
       <div class="nama-supplier">
         Supplier
@@ -287,7 +287,7 @@
         Satuan
       </div>
 
-      <div class="satuan-stok">
+      <div class="harga-stok">
         Harga Satuan
       </div>
 
@@ -301,7 +301,7 @@
           </svg></button>
       </div>
 
-      <div class="jenis-pembayaran">
+      <div class="jenis-pembayaran" style="text-align: center;">
         Tanggal Pelunasan
         <button type="button" class="btn btn-sorting" id=""
           onclick="sortData('pelunasan',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg
@@ -333,7 +333,7 @@
               <% } else { %>
                 <p id="kode">
                   <%= debts[i].purchase.purchaseproducts[j].product.ProductName %>
-                </p><br>
+                </p>
                 <% } %>
 
                   <% } %>
@@ -345,7 +345,7 @@
               <% } else { %>
                 <p id="kode-4">
                   <%= debts[i].purchase.purchaseproducts[j].Qnt %>
-                </p><br>
+                </p>
                 <% } %>
 
                   <% } %>
@@ -357,29 +357,29 @@
               <% } else { %>
                 <p id="kode-5">
                   <%= debts[i].purchase.purchaseproducts[j].product.Unit %>
-                </p><br>
+                </p>
                 <% } %>
 
                   <% } %>
         </div>
-        <div class="item-5 centereditem" id="item-5">
+        <div class="item-7 centereditem" id="item-7">
           <% for( let j=0; j < debts[i].purchase.purchaseproducts.length; j++ ) { %>
             <% if (debts[i].purchase.purchaseproducts[j].Qnt==0) { %>
               <p hidden></p>
               <% } else { %>
-                <p id="kode-5">
+                <p id="kode-7">
                   <%= formatRupiah(debts[i].purchase.purchaseproducts[j].Price)  %>
-                </p><br>
+                </p>
                 <% } %>
 
                   <% } %>
         </div>
-        <div class="item centereditem" id="item">
-          <p id="kode">
+        <div class="item-7 centereditem" id="item-7">
+          <p id="kode-7">
             <%= formatRupiah(debts[i].purchase.Total) %>
           </p>
         </div>
-        <div class="item centereditem" id="item">
+        <div class="item centereditem" id="item" style="text-align: center;">
           <p id="kode">
             <%= formatDate(debts[i].purchase.OrderDate) %>
           </p>
@@ -388,6 +388,7 @@
         <div class="actions-delete centereditem">
 
         </div>
+        <hr class="for-pembelian">
 
         <% } %>
 

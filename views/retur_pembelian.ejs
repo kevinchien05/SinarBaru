@@ -273,7 +273,7 @@
               <option value="" disabled selected>Select an option</option>
               <% for( let i=0; i < suppliers.length; i++ ) { %>
                 <option value="<%= suppliers[i].Id %>">
-                  <%= suppliers[i].SupplierName %>
+                  <%= suppliers[i].SupplierName %> (<%= suppliers[i].Description || "-" %>)
                 </option>
                 <% } %>
             </select>
@@ -351,11 +351,11 @@
       <div class="satuan-stok">
         Satuan
       </div>
-      <div class="satuan-stok">
+      <div class="harga-stok">
         Harga Satuan
       </div>
 
-      <div class="harga-stok">
+      <div class="harga-stok" >
         Harga Total
         <button type="button" class="btn btn-sorting" id=""
           onclick="sortData('Total',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg xmlns="http://www.w3.org/2000/svg"
@@ -369,46 +369,46 @@
       <!-- Looping Data List Produk -->
       <hr class="for-retur-pembelian">
       <% for( let i=0; i < returs.length; i++ ) { %>
-        <div class="item" id="item">
+        <div class="item centereditem" id="item">
           <p id="kode">
             <%= returs[i].supplier.SupplierName %>
           </p>
         </div>
-        <div class="item" id="item">
+        <div class="item centereditem" id="item">
           <p id="kode">
             <%= formatDate(returs[i].ReturDate) %>
           </p>
         </div>
-        <div class="item" id="item">
+        <div class="item centereditem" id="item">
           <% for( let j=0; j < returs[i].returproducts.length; j++ ) { %>
             <p id="kode">
               <%= returs[i].returproducts[j].product.ProductName %>
-            </p><br>
+            </p>
             <% } %>
         </div>
-        <div class="item-4" id="item-4">
+        <div class="item-4 centereditem" id="item-4">
           <% for( let j=0; j < returs[i].returproducts.length; j++ ) { %>
             <p id="kode-4">
               <%= returs[i].returproducts[j].Qnt %>
-            </p><br>
+            </p>
             <% } %>
         </div>
         <div class="item centereditem" id="item">
           <% for( let j=0; j < returs[i].returproducts.length; j++ ) { %>
             <p id="kode">
               <%= returs[i].returproducts[j].product.Unit %>
-            </p><br>
+            </p>
             <% } %>
         </div>
-        <div class="item centereditem" id="item">
+        <div class="item-7 centereditem" id="item-7">
           <% for( let j=0; j < returs[i].returproducts.length; j++ ) { %>
-            <p id="kode">
+            <p id="kode-7">
               <%= formatRupiah(returs[i].returproducts[j].Price)  %>
-            </p><br>
+            </p>
             <% } %>
         </div>
-        <div class="item" id="item">
-          <p id="kode">
+        <div class="item-7 centereditem" id="item-7">
+          <p id="kode-7">
             <%= formatRupiah(returs[i].Total) %>
           </p>
         </div>

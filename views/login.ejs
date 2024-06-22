@@ -21,7 +21,7 @@
                 </div>
                 <div class="mb-2">
                     <div class="label-icon-login">
-                        <label for="password" class="form-label">Password</label>
+                        <label for="password" class="form-label">Kata Sandi</label>
                         <div class="hide-icon" id="hide-unhide">
                             <button type="button" class="button-hide-unhide-login" onclick="changeStatus()"
                                 id="show-button">
@@ -57,12 +57,12 @@
                 eyesTag.classList.remove("bi-eye-slash");
                 eyesTag.classList.add("bi-eye");
                 passField.type = "text";
-                togglePass.innerHTML = "Show";
+                togglePass.innerHTML = "Hide";
             } else if (passField.type === "text") {
                 eyesTag.classList.remove("bi-eye");
                 eyesTag.classList.add("bi-eye-slash");
                 passField.type = "password";
-                togglePass.innerHTML = "Hide";
+                togglePass.innerHTML = "Show";
             };
         };
     </script>

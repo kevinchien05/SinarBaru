@@ -4,6 +4,8 @@ import PurchaseProduct from "../models/purchaseProduct.js";
 import Product from "../models/product.js";
 import Supplier from "../models/supplier.js";
 import Debt from "../models/debt.js";
+import Retur from "../models/retur.js";
+import ReturProduct from "../models/returProduct.js";
 import { sequelize } from "../models/model.js";
 import moment from "moment";
 import { Op } from "sequelize";
@@ -81,6 +83,14 @@ router.get('/api/purchase/:kode',  (req, res) => {
     });
 });
 
+router.get('/api/purchase-retur/:kode',  (req, res) => {
+    Retur.findOne({
+        where: { PurchasesID: req.params.kode }
+    }).then((results) => {
+        res.json({ status: 200, error: null, response: results });
+    });
+});
+
 //tambah table purchase
 router.post('/api/purchase-purchases', (req, res) => {
     Purchase.create({ id: req.body.id, OrderDate: req.body.OrderDate, Total: req.body.Total, Status: req.body.Status, SupplierID: req.body.SupplierID }
@@ -138,5 +148,6 @@ router.delete('/api/purchase-purchaseproducts/:id', (req, res) => {
         res.json({ status: 500, error: err, Response: {} });
     })
 });
+
 
 export default router;

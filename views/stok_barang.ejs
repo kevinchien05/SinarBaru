@@ -353,48 +353,48 @@
       </div>
 
       <div class="actions-supplier">
-        <h5>Actions</h5>
+        <h5>Aksi</h5>
       </div>
       <!-- Looping Data List Produk -->
       <hr class="stok-barang">
       <!-- Tampilkan Produk -->
       <% for( let i=0; i < products.length; i++ ) { %>
-        <div id="item">
+        <div class="item centereditem">
           <a href="<%= products[i].Url %>" target="_blank"><img src='<%= products[i].Url %>'></a>
         </div>
-        <div class="item-stok" id="item">
+        <div class="item-stok centereditem" id="item">
           <p id="kode">
             <%= products[i].ProductCode %>
           </p>
         </div>
-        <div class="item-stok" id="item">
+        <div class="item-stok centereditem" id="item">
           <p id="kode">
             <%= products[i].ProductName %>
           </p>
         </div>
-        <div class="item-stok-4" id="item-4">
+        <div class="item-stok-4 centereditem" id="item-4">
           <p id="kode-4">
             <%= products[i].Qnt %>
           </p>
         </div>
-        <div class="item-stok" id="item">
+        <div class="item-stok centereditem" id="item">
           <p id="kode">
             <%= products[i].Unit %>
           </p>
         </div>
-        <div class="item-stok" id="item">
-          <p id="kode">
+        <div class="item-stok-7 centereditem" id="item-7">
+          <p id="kode-7">
             <%= formatRupiah(products[i].BuyPrice || 0) %>
           </p>
         </div>
-        <div class="item-stok" id="item">
-          <p id="kode">
+        <div class="item-stok-7 centereditem" id="item-7">
+          <p id="kode-7">
             <%= formatRupiah(products[i].SellPrice) %>
           </p>
         </div>
-        <div class="icon-actions" id="icon-actions">
+        
           <!-- Button for edit data Produk -->
-          <div class="actions-edit">
+          <div class="actions-edit centereditem">
             <button type="button" class="btn" id="edit"
               onclick="edit('<%= products[i].ProductCode %>','<%= products[i].ProductName %>', '<%= products[i].SellPrice %>', '<%= products[i].Unit %>','<%= products[i].Image %>')">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
@@ -406,22 +406,7 @@
               </svg>
             </button>
           </div>
-
-          <!-- Button for delete data Produk -->
-          <div id="actions-delete" class="actions-delete">
-            <button type="button" class="btn" id="delete" onclick="del('<%= products[i].ProductCode %>')">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                class="bi bi-trash text-danger" viewBox="0 0 16 16">
-                <path
-                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z">
-                </path>
-                <path
-                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z">
-                </path>
-              </svg>
-            </button>
-          </div>
-        </div>
+        
         <hr class="stok-barang">
         <% } %>
 

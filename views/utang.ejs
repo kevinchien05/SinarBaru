@@ -291,7 +291,7 @@
       <div class="satuan-stok">
         Satuan
       </div>
-      <div class="satuan-stok">
+      <div class="harga-stok">
         Harga Satuan
       </div>
 
@@ -305,13 +305,13 @@
           </svg></button>
       </div>
 
-      <div class="jenis-pembayaran">
+      <div class="jenis-pembayaran" style="text-align: center;">
         Pembayaran
       </div>
 
       <% if (i_user.Status==1) { %>
         <div class="actions-supplier">
-          <h5>Actions</h5>
+          <h5>Aksi</h5>
         </div>
         <% } %>
 
@@ -337,7 +337,7 @@
                   <% } else { %>
                     <p id="kode">
                       <%= purchases[i].purchaseproducts[j].product.ProductName %>
-                    </p><br>
+                    </p>
                     <% } %>
 
                       <% } %>
@@ -349,7 +349,7 @@
                   <% } else { %>
                     <p id="kode-4">
                       <%= purchases[i].purchaseproducts[j].Qnt %>
-                    </p><br>
+                    </p>
                     <% } %>
 
                       <% } %>
@@ -361,30 +361,30 @@
                   <% } else { %>
                     <p id="kode-5">
                       <%= purchases[i].purchaseproducts[j].product.Unit %>
-                    </p><br>
+                    </p>
                     <% } %>
 
                       <% } %>
             </div>
-            <div class="item-5 centereditem" id="item-5">
+            <div class="item-7 centereditem" id="item-7">
               <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
                 <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
                   <p hidden></p>
                   <% } else { %>
-                    <p id="kode-5">
+                    <p id="kode-7">
                       <%= formatRupiah(purchases[i].purchaseproducts[j].Price) %>
-                    </p><br>
+                    </p>
                     <% } %>
 
                       <% } %>
             </div>
-            <div class="item centereditem" id="item">
-              <p id="kode">
+            <div class="item-7 centereditem" id="item-7">
+              <p id="kode-7">
                 <%= formatRupiah(purchases[i].Total) %>
               </p>
             </div>
-            <div class="item centereditem" id="item">
-              <p id="kode">
+            <div class="item centereditem" id="item" style="text-align: center;">
+              <p id="kode-">
                 <% if (purchases[i].Status==1) { %>
                   Utang
                   <% }%>
@@ -398,7 +398,7 @@
                   onclick="pay('<%= purchases[i].id %>', '<%= purchases[i].OrderDate %>')">Bayar</button>
               </div>
               <% } %>
-
+                <hr class="for-pembelian">
 
                 <% } %>
 

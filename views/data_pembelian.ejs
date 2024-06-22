@@ -299,7 +299,7 @@
               <option value="" disabled selected>Select an option</option>
               <% for( let i=0; i < suppliers.length; i++ ) { %>
                 <option value="<%= suppliers[i].Id %>">
-                  <%= suppliers[i].SupplierName %>
+                  <%= suppliers[i].SupplierName %> (<%= suppliers[i].Description || "-" %>)
                 </option>
                 <% } %>
             </select>
@@ -444,7 +444,7 @@
         Satuan
       </div>
 
-      <div class="satuan-stok">
+      <div class="harga-stok">
         Harga Satuan
       </div>
 
@@ -458,12 +458,12 @@
           </svg></button>
       </div>
 
-      <div class="jenis-pembayaran">
+      <div class="jenis-pembayaran" style="text-align: center;">
         Pembayaran
       </div>
 
       <div class="actions-supplier">
-        <h5>Actions</h5>
+        <h5>Aksi</h5>
       </div>
 
 
@@ -480,61 +480,61 @@
             <%= formatDate(purchases[i].OrderDate) %>
           </p>
         </div>
-        <div class="item centereditem" id="item">
+        <div class="item-3 centereditem" id="item-3">
           <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
             <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
               <p hidden></p>
               <% } else { %>
-                <p id="kode">
+                <p id="kode-3-1">
                   <%= purchases[i].purchaseproducts[j].product.ProductName %>
-                </p><br>
+                </p>
                 <% } %>
 
                   <% } %>
         </div>
-        <div class="item centereditem" id="item-4">
+        <div class="item-4 centereditem" id="item-4">
           <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
             <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
               <p hidden></p>
               <% } else { %>
                 <p id="kode-4">
                   <%= purchases[i].purchaseproducts[j].Qnt %>
-                </p><br>
+                </p>
                 <% } %>
 
                   <% } %>
         </div>
-        <div class="item centereditem" id="item-5">
+        <div class="item-5 centereditem" id="item-5">
           <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
             <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
               <p hidden></p>
               <% } else { %>
                 <p id="kode-5">
                   <%= purchases[i].purchaseproducts[j].product.Unit %>
-                </p><br>
+                </p>
                 <% } %>
 
                   <% } %>
         </div>
-        <div class="item centereditem" id="item">
+        <div class="item-7 centereditem" id="item-7">
           <% for( let j=0; j < purchases[i].purchaseproducts.length; j++ ) { %>
             <% if (purchases[i].purchaseproducts[j].Qnt==0) { %>
               <p hidden></p>
               <% } else { %>
-                <p id="kode-5">
+                <p id="kode-7">
                   <%= formatRupiah(purchases[i].purchaseproducts[j].Price) %>
-                </p><br>
+                </p>
                 <% } %>
 
                   <% } %>
         </div>
-        <div class="item centereditem" id="item">
-          <p id="kode">
+        <div class="item-7 centereditem" id="item-7">
+          <p id="kode-7">
             <%= formatRupiah(purchases[i].Total) %>
           </p>
         </div>
-        <div class="item centereditem" id="item">
-          <p id="kode">
+        <div class="item-8 centereditem" id="item-8" style="text-align: center;">
+          <p id="kode-8">
             <% if (purchases[i].Status==0) { %>
               Cash
               <% }else if(purchases[i].Status==1){ %>
@@ -763,27 +763,34 @@
   <script>
     //delete
     const products = JSON.parse('<%- JSON.stringify(products)%> ');
-    let del = (id, purchaseJson) => {
-      let qnt = 0;
-      let price = 0;
-      const purchase = JSON.parse(purchaseJson);
-      purchase.forEach((tmp) => {
-        products.forEach((pro) => {
-          if (pro.ProductCode == tmp.ProductCode) {
-            qnt = pro.Qnt - tmp.Qnt;
-            let tmpPrice = parseInt(pro.Qnt) * parseFloat(pro.BuyPrice);
-            price = (parseFloat(tmpPrice) - parseInt(tmp.Total)) / parseInt(qnt);
-            axios({
-              method: 'put',
-              url: `/api/purchase-product/${tmp.ProductCode}`,
-              data: {
-                ProductQnt: qnt,
-                BuyPrice: price,
-              }
-            }).then(() => {
-              axios.delete('/api/purchase-purchaseproducts/' + id).then((result) => {
-                axios.delete('/api/purchase-debt/' + id).then((result) => {
-                  axios.delete('/api/purchase-purchases/' + id).then((result) => {
+    let del = async (id, purchaseJson) => {
+      let isRetur = await axios.get(`/api/purchase-retur/${id}`);
+      console.log(isRetur);
+      if (isRetur.data.response == null) {
+        let qnt = 0;
+        let price = 0;
+        const purchase = JSON.parse(purchaseJson);
+        purchase.forEach((tmp) => {
+          products.forEach((pro) => {
+            if (pro.ProductCode == tmp.ProductCode) {
+              qnt = pro.Qnt - tmp.Qnt;
+              let tmpPrice = parseInt(pro.Qnt) * parseFloat(pro.BuyPrice);
+              price = (parseFloat(tmpPrice) - parseInt(tmp.Total)) / parseInt(qnt);
+              axios({
+                method: 'put',
+                url: `/api/purchase-product/${tmp.ProductCode}`,
+                data: {
+                  ProductQnt: qnt,
+                  BuyPrice: price,
+                }
+              }).then(() => {
+                axios.delete('/api/purchase-purchaseproducts/' + id).then((result) => {
+                  axios.delete('/api/purchase-debt/' + id).then((result) => {
+                    axios.delete('/api/purchase-purchases/' + id).then((result) => {
+                      location.reload();
+                    }).catch((err) => {
+                      alert('error ' + err)
+                    });
                     location.reload();
                   }).catch((err) => {
                     alert('error ' + err)
@@ -792,17 +799,15 @@
                 }).catch((err) => {
                   alert('error ' + err)
                 });
-                location.reload();
               }).catch((err) => {
-                alert('error ' + err)
+                alert('Error : ' + err);
               });
-            }).catch((err) => {
-              alert('Error : ' + err);
-            });
-            console.log(qnt, price);
-          }
-        })
-      });
+              console.log(qnt, price);
+            }
+          })
+        });
+      }
+
     }
   </script>
   <script>

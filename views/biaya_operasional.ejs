@@ -312,7 +312,7 @@
         Deskripsi
       </div>
 
-      <div class="biaya-operasional">
+      <div class="biaya-operasional" style="text-align: end;">
         Biaya
         <button type="button" class="btn btn-sorting" id=""
           onclick="sortData('Total',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg xmlns="http://www.w3.org/2000/svg"
@@ -323,29 +323,29 @@
       </div>
 
       <div class="actions-supplier">
-        <h5>Actions</h5>
+        <h5>Aksi</h5>
       </div>
 
 
       <!-- Looping Data Operasional -->
       <hr class="data-operasional">
       <% for( let i=0; i < operationals.length; i++ ) { %>
-        <div id="item">
+        <div class="item centereditem">
           <p id="kode">
             <%= formatDate(operationals[i].Date) %>
           </p>
         </div>
-        <div id="item">
+        <div class="item centereditem">
           <p id="kode">
             <%= operationals[i].Description %>
           </p>
         </div>
-        <div id="item">
+        <div class="item centereditem" style="text-align: end;">
           <p id="kode">
             <%= formatRupiah(operationals[i].Total) %>
           </p>
         </div>
-        <div class="icon-actions" id="icon-actions">
+        <div class="icon-actions centereditem" id="icon-actions">
           <!-- Button for edit data  -->
           <div class="actions-edit">
             <button type="button" class="btn"
@@ -361,7 +361,7 @@
           </div>
 
           <!-- Button for delete data Produk -->
-          <div class="actions-delete">
+          <div class="actions-delete centereditem">
             <button type="button" class="btn" id="delete" onclick="del('<%= operationals[i].id %>')">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
                 class="bi bi-trash text-danger" viewBox="0 0 16 16">
@@ -375,6 +375,7 @@
             </button>
           </div>
         </div>
+        <hr class="data-operasional">
 
         <% } %>
 

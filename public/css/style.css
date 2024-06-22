@@ -228,7 +228,7 @@ a{
 .title-divider-operasional{
     overflow: auto;
     display: grid;
-    grid-template-columns: 25% 30% 30% 15%;
+    grid-template-columns: 35% 20% 25% 20%;
     margin-left: 1%;
     margin-right: 1%;
 }
@@ -325,6 +325,7 @@ P{
 /*Decoration for data on the (general)*/
 .centereditem{
     align-content: center;
+    display: grid;
 }
 /*Decoration for harga rata tengah (general)*/
 .item-stok-4,
@@ -713,6 +714,33 @@ hr.hutang-break{
     height: 500px;
 }
 .generateButton-retur-pembelian{
+    text-align: end;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button {
+    display: none;
+}
+
+input[type='file']{
+    color: transparent;
+}
+.files-button{
+    display: block;
+    width: 120px;
+    height: 30px;
+    border: 1px solid gray;
+}
+.item-stok-7,
+.item-stok-8,
+.item-7,
+.item-8,
+.harga-stok,
+.harga-stok-beli{
     text-align: end;
 }
 

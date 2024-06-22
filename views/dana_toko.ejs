@@ -310,7 +310,7 @@
         Deskripsi
       </div>
 
-      <div class="pendapatan-operasional">
+      <div class="pendapatan-operasional" style="text-align: end;">
         Pendapatan
         <button type="button" class="btn btn-sorting" id=""
           onclick="sortData('Total',`<%= order === 'ASC' ? 'DESC' : 'ASC' %>`)"><svg xmlns="http://www.w3.org/2000/svg"
@@ -321,24 +321,24 @@
       </div>
 
       <div class="actions-supplier">
-        <h5>Actions</h5>
+        <h5>Aksi</h5>
       </div>
 
 
       <!-- Looping Data Operasional -->
       <hr class="data-operasional">
       <% for( let i=0; i < funds.length; i++ ) { %>
-        <div id="item">
+        <div class="item centereditem">
           <p id="kode">
             <%= formatDate(funds[i].Date) %>
           </p>
         </div>
-        <div id="item">
+        <div class="item centereditem">
           <p id="kode">
             <%= funds[i].Description %>
           </p>
         </div>
-        <div id="item">
+        <div class="item centereditem" style="text-align: end;">
           <p id="kode">
             <%= formatRupiah(funds[i].Total) %>
           </p>
@@ -356,6 +356,7 @@
             </svg>
           </button>
         </div>
+        <hr class="data-operasional">
 
         <% } %>
 
