@@ -296,7 +296,7 @@
           <div class="dropdown-form">
             <label for="supplier">Supplier</label>
             <select class="dropdownsupp" id="supplier" name="supplier">
-              <option value="" disabled selected>Select an option</option>
+              <option value="" disabled selected>Pilih Supplier</option>
               <% for( let i=0; i < suppliers.length; i++ ) { %>
                 <option value="<%= suppliers[i].Id %>">
                   <%= suppliers[i].SupplierName %> (<%= suppliers[i].Description || "-" %>)
@@ -328,7 +328,7 @@
           <div class="dropdown-form">
             <label for="status">Pembayaran</label>
             <select class="dropdownsupp" id="status" name="status">
-              <option value="0" selected>Cash</option>
+              <option value="0" selected>Tunai</option>
               <option value="1">Utang</option>
             </select>
           </div>
@@ -347,9 +347,7 @@
         <form action="" class="form-container-pembelian-produk">
           <div class="product-search-form">
             <h2 class="text-form-pembelian">Produk</h2>
-            <div class="item-search">
-              <input class="form-control" type="search" placeholder="Cari" aria-label="Search" class="rounded">
-            </div>
+          
           </div>
           <div id="table-product-form" class="table-product-form">
             <table id="productTable">
@@ -536,7 +534,7 @@
         <div class="item-8 centereditem" id="item-8" style="text-align: center;">
           <p id="kode-8">
             <% if (purchases[i].Status==0) { %>
-              Cash
+              Tunai
               <% }else if(purchases[i].Status==1){ %>
                 Utang
                 <% }else{ %>

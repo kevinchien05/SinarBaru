@@ -16,7 +16,7 @@
             <form class="w-50 mx-auto py-5 p-4" action="/login" method="post" name="login">
                 <h2>Sinar Baru</h2>
                 <div class="mb-2">
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label">Nama Pengguna</label>
                     <input type="username" class="form-control" id="username" name="username">
                 </div>
                 <div class="mb-2">
@@ -26,7 +26,7 @@
                             <button type="button" class="button-hide-unhide-login" onclick="changeStatus()"
                                 id="show-button">
                                 <span class="hide-unhide-icon"><i class="bi bi-eye-slash"></i></span>
-                                <label for="password" class="form-label" id="hide-show">Show</label>
+                                <label for="password" class="form-label" id="hide-show">Tampilkan</label>
                             </button>
                         </div>
                     </div>
@@ -57,12 +57,12 @@
                 eyesTag.classList.remove("bi-eye-slash");
                 eyesTag.classList.add("bi-eye");
                 passField.type = "text";
-                togglePass.innerHTML = "Hide";
+                togglePass.innerHTML = "Sembunyi";
             } else if (passField.type === "text") {
                 eyesTag.classList.remove("bi-eye");
                 eyesTag.classList.add("bi-eye-slash");
                 passField.type = "password";
-                togglePass.innerHTML = "Show";
+                togglePass.innerHTML = "Tampilkan";
             };
         };
     </script>

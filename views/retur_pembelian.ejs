@@ -270,7 +270,7 @@
           <div class="dropdown-form">
             <label for="nama">Supplier</label>
             <select class="dropdownsupp" id="supplier" name="supplier">
-              <option value="" disabled selected>Select an option</option>
+              <option value="" disabled selected>Pilih Supplier</option>
               <% for( let i=0; i < suppliers.length; i++ ) { %>
                 <option value="<%= suppliers[i].Id %>">
                   <%= suppliers[i].SupplierName %> (<%= suppliers[i].Description || "-" %>)
@@ -464,6 +464,7 @@
   <script>
     let results = [];
     async function fetchData() {
+      document.getElementById('msg').innerText = "";
       let supplier = document.getElementById('supplier').value;
       let date = document.getElementById('date-picked').value;
       const resultTableBody = document.getElementById('resultTable').querySelector('tbody');
@@ -487,6 +488,7 @@
                     ProductQnt: pur.Qnt,
                     TotalQnt: pur.product.Qnt,
                     ProductPrice: pur.Price,
+                    ProductUnit : pur.product.Unit,
                     ID: pur.id,
                     PurchasesID: pur.PurchasesID
                   });
@@ -497,7 +499,7 @@
                   const cellReturQnt = document.createElement('td');
 
                   cellProductName.innerText = pur.product.ProductName;
-                  cellProductQnt.innerText = pur.Qnt;
+                  cellProductQnt.innerText = `${pur.Qnt} ${pur.product.Unit}` ;
                   cellProductQnt.className = "centered-item";
                   const inputReturQnt = document.createElement('input');
                   inputReturQnt.type = 'text';
