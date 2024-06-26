@@ -4,6 +4,7 @@ import Product from "./product.js";
 const SaleProduct = sequelize.define('saleproduct', {
     Qnt: { type: DataTypes.INTEGER, allowNull: false },
     Price: { type: DataTypes.DECIMAL, allowNull: false },
+    BuyPrice: {type: DataTypes.DECIMAL, allowNull: false},
     Total: { type: DataTypes.DECIMAL, allowNull: false },
     SalesID: { type: DataTypes.INTEGER, allowNull: false },
     ProductCode: { type: DataTypes.STRING, allowNull: false }
@@ -15,6 +16,5 @@ const SaleProduct = sequelize.define('saleproduct', {
 
 
 SaleProduct.belongsTo(Product, { foreignKey: 'ProductCode' });
-
 
 export default SaleProduct;

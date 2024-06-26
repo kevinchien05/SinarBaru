@@ -65,6 +65,7 @@ router.get('/api/sale/:startDate/:endDate', (req, res) => {
         ]
     }).then((results) => {
         const monthlyTotals = {};
+        const hppTotals = {};
 
         results.forEach((sale) => {
             const month = moment(sale.OrderDate).format('YYYY-MM');
@@ -73,8 +74,19 @@ router.get('/api/sale/:startDate/:endDate', (req, res) => {
                 monthlyTotals[month] = 0;
             }
             monthlyTotals[month] += parseInt(sale.Total);
-        })
-        res.json({ status: 200, error: null, response: results, total: monthlyTotals });
+
+            if (!hppTotals[month]) {
+                hppTotals[month] = 0;
+            }
+
+            if (sale.saleproducts && sale.saleproducts.length > 0) {
+                sale.saleproducts.forEach((saleProduct) => {
+                    hppTotals[month] += (parseInt(saleProduct.Price) - parseInt(saleProduct.BuyPrice)) * parseInt(saleProduct.Qnt);
+                });
+            }
+
+        });
+        res.json({ status: 200, error: null, response: results, total: monthlyTotals, hpp: hppTotals });
     });
 });
 
@@ -139,10 +151,12 @@ router.get('/api/fund/:startDate/:endDate', (req, res) => {
         results.forEach((fund) => {
             const month = moment(fund.Date).format('YYYY-MM');
 
-            if (!monthlyTotals[month]) {
-                monthlyTotals[month] = 0;
+            if (fund.Status == 0 || fund.Status == 2) {
+                if (!monthlyTotals[month]) {
+                    monthlyTotals[month] = 0;
+                }
+                monthlyTotals[month] += parseInt(fund.Total);
             }
-            monthlyTotals[month] += parseInt(fund.Total);
         })
         res.json({ status: 200, error: null, response: results, total: monthlyTotals });
     });
@@ -192,12 +206,43 @@ router.get('/api/next-fund/:startDate/:endDate', (req, res) => {
         where: {
             Date: {
                 [Op.between]: [req.params.startDate, req.params.endDate]
-            }, Status: 1
+            },
+            Status: 1
         }
     }).then((results) => {
         res.json({ status: 200, error: null, response: results });
     });
 });
 
+router.get('/api/next-fund-year/:startDate/:endDate', (req, res) => {
+    Fund.findOne({
+        where: {
+            Date: {
+                [Op.between]: [req.params.startDate, req.params.endDate]
+            }, Status: 2
+        }
+    }).then((results) => {
+        res.json({ status: 200, error: null, response: results });
+    });
+});
+
+router.post('/api/kasfund', (req, res) => {
+    Fund.create({ Date: req.body.Date, Description: req.body.Description, Total: req.body.Total, Status: req.body.Status }
+    ).then((results) => {
+        res.json({ status: 200, error: null, Response: results });
+    }).catch(err => {
+        res.json({ status: 502, error: err });
+    })
+});
+
+router.put('/api/fund/:id', (req, res) => {
+    Fund.update({ Total: req.body.Total },
+        { where: { id: req.params.id } }
+    ).then((results) => {
+        res.json({ status: 200, error: null, Response: results });
+    }).catch(err => {
+        res.json({ status: 502, error: err });
+    })
+});
 
 export default router;

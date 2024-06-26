@@ -12,6 +12,6 @@ const Sale = sequelize.define('sale', {
     tableName: "sales"
 });
 
-Sale.hasMany(SaleProduct, {foreignKey: 'SalesID'})
+Sale.hasMany(SaleProduct, {foreignKey: 'SalesID'});
 
 export default Sale;

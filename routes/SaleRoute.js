@@ -79,7 +79,7 @@ router.post('/api/sale-sales', (req, res) => {
 
 //tambah table purchaseproduct
 router.post('/api/sale-saleproducts', (req, res) => {
-    SaleProduct.create({ Qnt: req.body.Qnt, Price: req.body.Price, Total: req.body.ProductTotal, SalesID: req.body.SalesID, ProductCode: req.body.ProductCode }
+    SaleProduct.create({ Qnt: req.body.Qnt, Price: req.body.Price,BuyPrice: req.body.BuyPrice, Total: req.body.ProductTotal, SalesID: req.body.SalesID, ProductCode: req.body.ProductCode }
     ).then((results) => {
         res.json({ status: 200, error: null, Response: results });
     }).catch(err => {

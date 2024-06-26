@@ -378,6 +378,9 @@
                   <td id="hargabarang" class="productPrice" hidden>
                     <%= products[i].SellPrice %>
                   </td>
+                  <td id="BuyPrice" class="buyPrice" hidden>
+                    <%= products[i].BuyPrice %>
+                  </td>
                   <td><input class="form-qty" type="text" id="jumlah_<%= products[i].ProductCode %>"
                       name="jumlah_<%= products[i].ProductCode %>"></td>
                 </tr>
@@ -605,6 +608,7 @@
         const productCode = row.querySelector('#kodebarang').innerText.trim();
         const productName = row.querySelector('.productName').innerText.trim();
         const productPrice = row.querySelector('.productPrice').textContent.trim();
+        const buyPrice = row.querySelector('.buyPrice').textContent.trim();
         const productQntText = row.querySelector('.productQnt').innerText.trim();
         const productQnt = productQntText.split(" ")[0].trim();
         const jumlah = row.querySelector('.form-qty').value
@@ -616,6 +620,7 @@
             ProductName: productName,
             ProductQnt: productQnt,
             ProductPrice: productPrice,
+            BuyPrice: buyPrice,
             Jumlah: jumlah,
             Total: total
           });
@@ -706,6 +711,7 @@
               data: {
                 Qnt: tmp.Jumlah,
                 Price: tmp.ProductPrice,
+                BuyPrice: tmp.BuyPrice,
                 ProductTotal: tmp.Total,
                 SalesID: isi_id,
                 ProductCode: tmp.ProductCode

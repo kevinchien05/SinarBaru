@@ -32,7 +32,7 @@ router.get('/fund', (req, res) => {
 });
 
 router.post('/api/fund', (req, res) => {
-    Fund.create({ Date: req.body.Date, Description: req.body.Description, Total: req.body.Total, UserID: req.body.UserID }
+    Fund.create({ Date: req.body.Date, Description: req.body.Description, Total: req.body.Total, Status: req.body.Status, UserID: req.body.UserID }
     ).then((results) => {
         res.json({ status: 200, error: null, Response: results });
     }).catch(err => {
