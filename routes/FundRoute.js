@@ -15,8 +15,9 @@ router.get('/fund', (req, res) => {
                 { Date: { [Op.like]: `%${search}%` } },
                 { Total: { [Op.like]: `%${search}%` } },
                 { Description: { [Op.like]: `%${search}%` } },
-            ]
+            ],Status : 0
         } : {
+            Status : 0
         };
 
         Fund.findAll({

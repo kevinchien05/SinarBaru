@@ -147,6 +147,7 @@ router.get('/api/fund/:startDate/:endDate', (req, res) => {
         }
     }).then((results) => {
         const monthlyTotals = {};
+        const supplyTotals = {};
 
         results.forEach((fund) => {
             const month = moment(fund.Date).format('YYYY-MM');
@@ -156,9 +157,13 @@ router.get('/api/fund/:startDate/:endDate', (req, res) => {
                     monthlyTotals[month] = 0;
                 }
                 monthlyTotals[month] += parseInt(fund.Total);
+                if(!supplyTotals[month]){
+                    supplyTotals[month] = 0;
+                }
+                supplyTotals[month] += parseInt(fund.Supply);
             }
         })
-        res.json({ status: 200, error: null, response: results, total: monthlyTotals });
+        res.json({ status: 200, error: null, response: results, total: monthlyTotals, supplies: supplyTotals });
     });
 });
 
@@ -227,7 +232,7 @@ router.get('/api/next-fund-year/:startDate/:endDate', (req, res) => {
 });
 
 router.post('/api/kasfund', (req, res) => {
-    Fund.create({ Date: req.body.Date, Description: req.body.Description, Total: req.body.Total, Status: req.body.Status }
+    Fund.create({ Date: req.body.Date, Description: req.body.Description, Total: req.body.Total, Supply: req.body.Supply, Status: req.body.Status }
     ).then((results) => {
         res.json({ status: 200, error: null, Response: results });
     }).catch(err => {
@@ -236,7 +241,7 @@ router.post('/api/kasfund', (req, res) => {
 });
 
 router.put('/api/fund/:id', (req, res) => {
-    Fund.update({ Total: req.body.Total },
+    Fund.update({ Total: req.body.Total, Supply: req.body.Supply },
         { where: { id: req.params.id } }
     ).then((results) => {
         res.json({ status: 200, error: null, Response: results });

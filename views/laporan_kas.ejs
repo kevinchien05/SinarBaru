@@ -427,7 +427,7 @@
     async function build_up_things() {
       document.getElementById("msg").innerHTML = "";
       document.getElementById('all-detail').innerHTML = "";
-      let totalPembelian, totalPenjualan, totalOperational, totalRetur, totalDana, totalKeuntunganPenjualan, totalUtang = 0;
+      let totalPembelian, totalPenjualan, totalOperational, totalRetur, totalDana, totalKeuntunganPenjualan, totalUtang, totalPersediaan = 0;
       generateInitialStructure();
       let startDate, endDate;
       if (choose_Kas == 0) {
@@ -688,6 +688,7 @@
       const tfoot3 = z;
       totalDana = 0;
       totalUtang = 0;
+      totalPersediaan = 0;
 
       if (choose_Kas == 0) {
         judulPembelianData.forEach(data => {
@@ -707,13 +708,16 @@
         funds.data.response.forEach(data => {
           if (data.Status == 0 || data.Status == 1) {
             totalDana += parseInt(data.Total);
+            totalPersediaan += parseInt(data.Supply);
           };
         });
         debts.data.response.forEach((data => {
           totalUtang += parseInt(data.Total);
         }));
         let aset = totalDana + ((totalPenjualan + totalRetur) - (totalPembelian + totalOperational));
-        let arrayShow = [["Aset", formatCurrency(aset)], ["Utang", formatCurrency(totalUtang)], ["Ekuitas", formatCurrency(aset - totalUtang)]];
+        let persedian = totalPersediaan + totalPembelian - (totalPenjualan - totalKeuntunganPenjualan);
+        let TotalAset = aset + persedian;
+        let arrayShow = [["<b>Aset</b>", ""],["Kas", formatCurrency(aset)],["Persediaan", formatCurrency(persedian)],["<b>Total Aset</b>",`<b>${formatCurrency(TotalAset)}</b>`], ["Utang", formatCurrency(totalUtang)], ["<b>Ekuitas</b>", `<b>${formatCurrency(TotalAset - totalUtang)}</b>`]];
         for (let i = 0; i < arrayShow.length; i++) {
           const row = document.createElement('tr');
           const tanggalCell = document.createElement('td');
@@ -746,6 +750,7 @@
               Date: tmpstartDate,
               Description: `Aset ${tmpMonth} ${tmpYear}`,
               Total: aset,
+              Supply: persedian,
               Status: 1
             }
           }).then((result) => {
@@ -757,7 +762,8 @@
             method: 'put',
             url: `/api/fund/${monthFunds.data.response.id}`,
             data: {
-              Total: aset
+              Total: aset,
+              Supply: persedian
             }
           }).then((result) => {
           }).catch((err) => {
@@ -781,15 +787,21 @@
         });
 
         const FundmonthlyTotals = funds.data.total;
+        const SupplymonthlyTotals = funds.data.supplies;
         const DebtmonthlyTotals = debts.data.total;
         for (month in FundmonthlyTotals) {
           totalDana += parseInt(FundmonthlyTotals[month]);
+        };
+        for (month in SupplymonthlyTotals) {
+          totalPersediaan += parseInt(SupplymonthlyTotals[month]);
         };
         for (month in DebtmonthlyTotals) {
           totalUtang += parseInt(DebtmonthlyTotals[month]);
         };
         let aset = totalDana + ((totalPenjualan + totalRetur) - (totalPembelian + totalOperational));
-        let arrayShow = [["Aset", formatCurrency(aset)], ["Utang", formatCurrency(totalUtang)], ["Ekuitas", formatCurrency(aset - totalUtang)]];
+        let persedian = totalPersediaan + totalPembelian - (totalPenjualan - totalKeuntunganPenjualan);
+        let TotalAset = aset + persedian;
+        let arrayShow = [["<b>Aset</b>", ""],["Kas", formatCurrency(aset)],["Persediaan", formatCurrency(persedian)],["<b>Total Aset</b>",`<b>${formatCurrency(TotalAset)}</b>`], ["Utang", formatCurrency(totalUtang)], ["<b>Ekuitas</b>", `<b>${formatCurrency(TotalAset - totalUtang)}</b>`]];
         for (let i = 0; i < arrayShow.length; i++) {
           const row = document.createElement('tr');
           const tanggalCell = document.createElement('td');
@@ -822,6 +834,7 @@
               Date: tmpstartDate,
               Description: `Aset ${tmpYear}`,
               Total: aset,
+              Supply: persedian,
               Status: 2
             }
           }).then((result) => {
@@ -833,7 +846,8 @@
             method: 'put',
             url: `/api/fund/${yearFunds.data.response.id}`,
             data: {
-              Total: aset
+              Total: aset,
+              Supply: persedian
             }
           }).then((result) => {
           }).catch((err) => {
