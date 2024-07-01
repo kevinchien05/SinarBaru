@@ -427,7 +427,7 @@
     async function build_up_things() {
       document.getElementById("msg").innerHTML = "";
       document.getElementById('all-detail').innerHTML = "";
-      let totalPembelian, totalPenjualan, totalOperational, totalRetur, totalDana, totalKeuntunganPenjualan, totalUtang, totalPersediaan = 0;
+      let totalPembelian, totalPenjualan, totalOperational, totalRetur, totalDana, totalKeuntunganPenjualan, totalUtang, totalPersediaan, totalSeluruhPembelian = 0;
       generateInitialStructure();
       let startDate, endDate;
       if (choose_Kas == 0) {
@@ -437,21 +437,25 @@
         const today = new Date();
         const todayMonth = today.getMonth();
         const todayYear = today.getFullYear();
+        debtDate = new Date(2024,0,0);
         startDate = new Date(year, month - 1, 1);
         month = parseInt(month) + 1;
         endDate = new Date(year, month - 1, 1);
       } else {
         let year = document.getElementById('disabledTahun').value;
+        debtDate = new Date(2024,0,0);
         startDate = new Date(year, 0, 0);
         endDate = new Date(year, 12, 1);
       }
       const purchases = await axios.get(`/api/purchase/${startDate}/${endDate}`);
+      const totalPurchases = await axios.get(`/api/totalpurchase/${startDate}/${endDate}`);
       const sales = await axios.get(`/api/sale/${startDate}/${endDate}`);
       const operationals = await axios.get(`/api/operational/${startDate}/${endDate}`);
-      const debts = await axios.get(`/api/debt/${startDate}/${endDate}`);
+      const debts = await axios.get(`/api/debt/${debtDate}/${endDate}`);
       const returs = await axios.get(`/api/retur-kas/${startDate}/${endDate}`);
       const funds = await axios.get(`/api/fund/${startDate}/${endDate}`);
-      console.log(sales);
+      const pays = await axios.get(`/api/pay`);
+      console.log(pays);
       if (purchases.data.response.length != 0 || sales.data.response.length != 0 || operationals.data.response.length != 0 || debts.data.response.length != 0 || returs.data.response.length != 0 || funds.data.response.length != 0) {
         for (var count_title = 1; count_title <= 3; count_title++) {
           document.getElementById(`list-data-awal-kas-${count_title}`).classList.add(`list-data-awal-kas-${count_title}`);
@@ -475,7 +479,7 @@
           const tfoot = document.querySelector(`#sales-table-${count_title} tfoot`);
           document.getElementById(`text-form-pembelian-${count_title}`).innerHTML = veryHeadTitle[count_title - 1];
           if (count_title == 1) {
-            await generateArusRows(thead, tbody, tfoot, sales, returs, purchases, operationals);
+            await generateArusRows(thead, tbody, tfoot, sales, returs, purchases, operationals, totalPurchases, pays);
           } else if (count_title == 2) {
             await generateLabaRows(thead, tbody, tfoot, operationals);
           } else {
@@ -489,11 +493,12 @@
     };
 
     // Function to generate pembelian table rows
-    async function generateArusRows(x, y, z, sales, returs, purchases, operationals) {
+    async function generateArusRows(x, y, z, sales, returs, purchases, operationals,totalPurchase, pays) {
       const thead1 = x;
       const tbody1 = y;
       const tfoot1 = z;
       totalPembelian = 0;
+      totalSeluruhPembelian = 0;
       totalOperational = 0;
       totalPenjualan = 0;
       totalRetur = 0;
@@ -515,6 +520,7 @@
           giveBreak(thead1);
         });
         const PurmonthlyTotals = purchases.data.total;
+        const TotalmonthlyTotals = totalPurchase.data.total;
         const OpmonthlyTotals = operationals.data.total;
         const ReturmonthlyTotals = returs.data.total;
         const SalemonthlyTotals = sales.data.total;
@@ -522,6 +528,7 @@
         for (const month in PurmonthlyTotals) {
           totalPembelian += parseInt(PurmonthlyTotals[month]);
         }
+        totalSeluruhPembelian += parseInt(pays.data.total);
         for (const month in HppmonthlyTotals) {
           totalKeuntunganPenjualan += parseInt(HppmonthlyTotals[month]);
         }
@@ -578,7 +585,9 @@
             });
           }
           totalPembelian += parseInt(tmpTotal);
-        }
+        };
+        totalSeluruhPembelian += parseInt(pays.data.total);
+        
         for (const data of sales.data.response) {
           totalPenjualan += parseInt(data.Total);
           data.saleproducts.forEach((pro) => {
@@ -715,7 +724,7 @@
           totalUtang += parseInt(data.Total);
         }));
         let aset = totalDana + ((totalPenjualan + totalRetur) - (totalPembelian + totalOperational));
-        let persedian = totalPersediaan + totalPembelian - (totalPenjualan - totalKeuntunganPenjualan);
+        let persedian = totalSeluruhPembelian;
         let TotalAset = aset + persedian;
         let arrayShow = [["<b>Aset</b>", ""],["Kas", formatCurrency(aset)],["Persediaan", formatCurrency(persedian)],["<b>Total Aset</b>",`<b>${formatCurrency(TotalAset)}</b>`], ["Utang", formatCurrency(totalUtang)], ["<b>Ekuitas</b>", `<b>${formatCurrency(TotalAset - totalUtang)}</b>`]];
         for (let i = 0; i < arrayShow.length; i++) {
@@ -760,7 +769,7 @@
         } else {
           axios({
             method: 'put',
-            url: `/api/fund/${monthFunds.data.response.id}`,
+            url: `/api/kasfund/${monthFunds.data.response.id}`,
             data: {
               Total: aset,
               Supply: persedian
@@ -799,7 +808,7 @@
           totalUtang += parseInt(DebtmonthlyTotals[month]);
         };
         let aset = totalDana + ((totalPenjualan + totalRetur) - (totalPembelian + totalOperational));
-        let persedian = totalPersediaan + totalPembelian - (totalPenjualan - totalKeuntunganPenjualan);
+        let persedian = totalSeluruhPembelian;
         let TotalAset = aset + persedian;
         let arrayShow = [["<b>Aset</b>", ""],["Kas", formatCurrency(aset)],["Persediaan", formatCurrency(persedian)],["<b>Total Aset</b>",`<b>${formatCurrency(TotalAset)}</b>`], ["Utang", formatCurrency(totalUtang)], ["<b>Ekuitas</b>", `<b>${formatCurrency(TotalAset - totalUtang)}</b>`]];
         for (let i = 0; i < arrayShow.length; i++) {
@@ -844,7 +853,7 @@
         } else {
           axios({
             method: 'put',
-            url: `/api/fund/${yearFunds.data.response.id}`,
+            url: `/api/kasfund/${yearFunds.data.response.id}`,
             data: {
               Total: aset,
               Supply: persedian

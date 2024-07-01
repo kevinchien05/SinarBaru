@@ -9,6 +9,7 @@ import Product from "../models/product.js";
 import Supplier from "../models/supplier.js";
 import Retur from "../models/retur.js";
 import ReturProduct from "../models/returProduct.js";
+import Debt from "../models/debt.js";
 import { Op, or } from "sequelize";
 import moment from "moment";
 
@@ -16,6 +17,78 @@ const router = express.Router();
 
 router.get('/kas', (req, res) => {
     res.render("laporan_kas", { i_user: req.session.user || "" });
+});
+
+router.get('/api/totalpurchase/:startDate/:endDate', async (req, res) => {
+    const purchases = await Purchase.findAll({
+        where: {
+            OrderDate: {
+                [Op.between]: [req.params.startDate, req.params.endDate]
+            }
+        },
+        include: [
+            { model: PurchaseProduct, include: [{ model: Product }] },
+            { model: Supplier }
+        ]
+    });
+    const monthlyTotals = {};
+    const returPromises = purchases.map(async (purchase) => {
+        const returs = await Retur.findAll({
+            where: {
+                PurchasesID: purchase.id
+            }
+        });
+        const month = moment(purchase.OrderDate).format('YYYY-MM');
+        if (!monthlyTotals[month]) {
+            monthlyTotals[month] = 0;
+        }
+        monthlyTotals[month] += parseInt(purchase.Total);
+
+        returs.forEach((retur) => {
+            monthlyTotals[month] += parseInt(retur.Total);
+        })
+    });
+    await Promise.all(returPromises);
+    res.json({ status: 200, error: null, response: purchases, total: monthlyTotals });
+});
+
+router.get('/api/pay', (req, res) => {
+    Product.findAll().then((results) => {
+        let totalItem = 0;
+
+        results.forEach((product) => {
+            totalItem += parseInt(product.Qnt) * parseInt(product.BuyPrice);
+        })
+        res.json({ status: 200, error: null, response: results, total: totalItem });
+    });
+});
+
+router.get('/api/pay2/:startDate/:endDate', async (req, res) => {
+    try {
+        const Purchases = await Purchase.findAll({
+            where: {
+                OrderDate: {
+                    [Op.between]: [req.params.startDate, req.params.endDate]
+                }
+            }
+        });
+        const PurchasesID = Purchases.map(purchase => purchase.id);
+
+        const results = await Debt.findAll({
+            where: {
+                PayDate: {
+                    [Op.between]: [req.params.startDate, req.params.endDate]
+                },
+                PurchasesID: {
+                    [Op.notIn]: PurchasesID
+                }
+            },
+            include: [{ model: Purchase }]
+        });
+        res.json({ status: 200, error: null, response: results });
+    } catch (error) {
+        res.json({ status: 500, error: error.message, response: null });
+    }
 });
 
 router.get('/api/purchase/:startDate/:endDate', async (req, res) => {
@@ -157,7 +230,7 @@ router.get('/api/fund/:startDate/:endDate', (req, res) => {
                     monthlyTotals[month] = 0;
                 }
                 monthlyTotals[month] += parseInt(fund.Total);
-                if(!supplyTotals[month]){
+                if (!supplyTotals[month]) {
                     supplyTotals[month] = 0;
                 }
                 supplyTotals[month] += parseInt(fund.Supply);
@@ -240,7 +313,7 @@ router.post('/api/kasfund', (req, res) => {
     })
 });
 
-router.put('/api/fund/:id', (req, res) => {
+router.put('/api/kasfund/:id', (req, res) => {
     Fund.update({ Total: req.body.Total, Supply: req.body.Supply },
         { where: { id: req.params.id } }
     ).then((results) => {

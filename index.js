@@ -39,7 +39,6 @@ app.use(session({
     secret: 'Sinar secret',
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: 60 * 60 * 1000 } //1 jam
 }));
 
 //Login

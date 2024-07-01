@@ -41,6 +41,16 @@ router.post('/api/fund', (req, res) => {
     })
 });
 
+router.put('/api/fund/:id', (req, res) => {
+    Fund.update({ Date: req.body.Date, Description: req.body.Description, Total: req.body.Total },
+        { where: { id: req.params.id } }
+    ).then((results) => {
+        res.json({ status: 200, error: null, Response: results });
+    }).catch(err => {
+        res.json({ status: 502, error: err });
+    })
+});
+
 router.delete('/api/fund/:id', (req, res) => {
     Fund.destroy({ where: { id: req.params.id } }
     ).then((results) => {
